@@ -25,97 +25,100 @@
     }
 
     html, body {
-      width: 100%;
       height: 100%;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-      background-color: var(--bg-main);
-      color: var(--text);
+      width: 100%;
     }
 
     body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      min-height: 100vh;
       padding: 20px;
     }
 
     .login-container {
       width: 100%;
-      max-width: 420px;
+      max-width: 400px;
+    }
+
+    .login-card {
       background-color: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 48px 40px;
+      padding: 40px 32px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     }
 
     .login-header {
-      text-align: center;
       margin-bottom: 32px;
+      text-align: center;
     }
 
-    .login-header h1 {
+    .login-title {
       font-size: 24px;
       font-weight: 600;
       color: var(--text);
       margin-bottom: 8px;
     }
 
-    .login-header p {
+    .login-subtitle {
       font-size: 14px;
       color: var(--text-muted);
     }
 
-    .login-form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
     .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      margin-bottom: 20px;
     }
 
-    .form-group label {
-      font-size: 14px;
+    .form-group:last-of-type {
+      margin-bottom: 28px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
       font-weight: 500;
       color: var(--text);
+      margin-bottom: 8px;
     }
 
-    .form-group input {
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
       padding: 10px 12px;
       font-size: 14px;
       border: 1px solid var(--border);
-      border-radius: 4px;
+      border-radius: 6px;
       background-color: #ffffff;
       color: var(--text);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-family: inherit;
     }
 
-    .form-group input:focus {
+    input[type="text"]:focus,
+    input[type="password"]:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(74, 85, 104, 0.1);
     }
 
-    .form-group input::placeholder {
-      color: var(--text-muted);
-    }
-
     .login-button {
-      padding: 10px 16px;
+      width: 100%;
+      padding: 11px 16px;
       font-size: 14px;
       font-weight: 600;
       color: #ffffff;
       background-color: var(--primary);
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background-color 0.2s ease;
-      margin-top: 8px;
+      transition: background-color 0.2s;
+      font-family: inherit;
     }
 
     .login-button:hover {
@@ -123,67 +126,73 @@
     }
 
     .login-button:active {
-      transform: scale(0.98);
+      opacity: 0.95;
     }
 
     .login-footer {
-      margin-top: 32px;
-      padding-top: 24px;
+      margin-top: 24px;
+      padding-top: 20px;
       border-top: 1px solid var(--border);
-      text-align: center;
       font-size: 12px;
       color: var(--text-muted);
-      line-height: 1.6;
+      text-align: center;
+      line-height: 1.5;
     }
 
     @media (max-width: 480px) {
-      .login-container {
-        padding: 40px 24px;
+      .login-card {
+        padding: 32px 24px;
       }
 
-      .login-header h1 {
+      .login-title {
         font-size: 20px;
+      }
+
+      .login-subtitle {
+        font-size: 13px;
       }
     }
   </style>
 </head>
 <body>
   <div class="login-container">
-    <div class="login-header">
-      <h1 data-testid="login-title">見積査定システム</h1>
-      <p>ログイン</p>
-    </div>
-
-    <form data-testid="login-form" class="login-form" novalidate>
-      <div class="form-group">
-        <label for="username">ユーザー名</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          data-testid="username"
-          placeholder="ユーザー名を入力"
-        >
+    <div class="login-card">
+      <div class="login-header">
+        <h1 class="login-title" data-testid="login-title">見積査定システム</h1>
+        <p class="login-subtitle">ログイン</p>
       </div>
 
-      <div class="form-group">
-        <label for="password">パスワード</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          data-testid="password"
-          placeholder="パスワードを入力"
-        >
+      <form data-testid="login-form" novalidate>
+        <div class="form-group">
+          <label for="username">ユーザー名</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            data-testid="username"
+            placeholder="ユーザー名を入力"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="password">パスワード</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            data-testid="password"
+            placeholder="パスワードを入力"
+          >
+        </div>
+
+        <button type="submit" class="login-button" data-testid="login-button">
+          ログイン
+        </button>
+      </form>
+
+      <div class="login-footer">
+        ※ サンプル実装ではどの入力でもログインできます
       </div>
-
-      <button type="submit" data-testid="login-button" class="login-button">
-        ログイン
-      </button>
-    </form>
-
-    <div class="login-footer">
-      <p>サンプル実装ではどの入力でもログインできます</p>
     </div>
   </div>
 
