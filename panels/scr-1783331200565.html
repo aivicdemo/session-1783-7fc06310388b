@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>査定品質管理・標準化システム</title>
+  <style>
+:root {
+  --primary: #4a5568;
+  --primary-hover: #2d3748;
+  --bg-main: #f8f9fa;
+  --bg-card: #ffffff;
+  --bg-sidebar: #f0f1f3;
+  --border: #e2e8f0;
+  --text: #1a202c;
+  --text-muted: #718096;
+  --top-bar-bg: #ffffff;
+  --top-bar-border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-main);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: var(--top-bar-bg);
+  border-bottom: 1px solid var(--top-bar-border);
+  padding: 0 20px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.user-name {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.logout-link {
+  font-size: 12px;
+  color: var(--primary);
+  text-decoration: none;
+  cursor: pointer;
+  border-left: 1px solid var(--border);
+  padding-left: 12px;
+}
+
+.logout-link:hover {
+  color: var(--primary-hover);
+}
+
+.main-wrapper {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 220px;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  flex-shrink: 0;
+  padding: 12px 0;
+}
+
+.sidebar-section {
+  margin-bottom: 8px;
+}
+
+.sidebar-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 12px 4px;
+}
+
+.sidebar-item {
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.sidebar-item:hover {
+  background: rgba(74, 85, 104, 0.08);
+}
+
+.sidebar-item.aivic-active {
+  background: rgba(74, 85, 104, 0.12);
+  border-left-color: var(--primary);
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.content-area {
+  flex: 1;
+  overflow: auto;
+  background: var(--bg-main);
+}
+
+[data-aivic-panel] {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 180px;
+  }
+  .header-left {
+    font-size: 14px;
+  }
+}
+  </style>
+  
+<script>
+window.AIVIC_API_URL = "https://mkwmoife37uqyv4zhy4yhweozq0oddxn.lambda-url.us-east-1.on.aws/";
+window.AIVIC_APP_ID = "session-1783318203332";
+window.AIVIC_APPLICATION_NAME = "見積査定システム";
+window.AIVIC_SYSTEM_NAME = "査定品質管理・標準化システム";
+window.AIVIC_TABLES = [{"tableName":"ユーザー","purpose":"見積査定自動化・判定システムのユーザー管理","columns":[{"name":"ユーザーID","type":"uuid","required":true,"description":"ユーザーの一意識別子"},{"name":"ユーザー名","type":"varchar(100)","required":true,"description":"ユーザーの表示名"},{"name":"メールアドレス","type":"varchar(100)","required":true,"description":"ユーザーのメールアドレス（ログイン用）"},{"name":"パスワードハッシュ","type":"varchar(100)","required":true,"description":"ハッシュ化されたパスワード"},{"name":"ロール","type":"varchar(100)","required":true,"description":"ユーザーの権限ロール（管理者/査定者/申請者等）"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"ユーザーのステータス（有効/無効/休止等）"},{"name":"部門","type":"varchar(100)","required":false,"description":"ユーザーが属する部門"},{"name":"最終ログイン日時","type":"timestamp","required":false,"description":"最後にログインした日時"},{"name":"作成日時","type":"timestamp","required":true,"description":"ユーザーレコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"ユーザーレコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":false,"description":"ユーザーレコード作成者"}]},{"tableName":"査定員","purpose":"査定品質管理・標準化システムにおける査定員の基本情報と資格・権限を管理するマスタテーブル","columns":[{"name":"査定員ID","type":"uuid","required":true,"description":"査定員の一意識別子"},{"name":"ユーザーID","type":"uuid","required":true,"description":"ユーザーテーブルへの外部キー"},{"name":"査定員コード","type":"varchar(100)","required":true,"description":"査定員の業務用コード（一意）"},{"name":"査定員名","type":"varchar(100)","required":true,"description":"査定員の氏名"},{"name":"部門","type":"varchar(100)","required":false,"description":"所属部門"},{"name":"資格レベル","type":"varchar(100)","required":true,"description":"査定資格レベル（初級/中級/上級等）"},{"name":"査定対象カテゴリ","type":"varchar(100)","required":false,"description":"査定可能な商品カテゴリ"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"査定員ステータス（稼働中/休止中/退職等）"},{"name":"品質スコア","type":"integer","required":false,"description":"査定品質スコア（0-100）"},{"name":"査定件数","type":"integer","required":false,"description":"累計査定件数"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード更新日時"},{"name":"作成者ID","type":"uuid","required":false,"description":"レコード作成者のユーザーID"},{"name":"更新者ID","type":"uuid","required":false,"description":"レコード更新者のユーザーID"}]},{"tableName":"査定案件","purpose":"査定品質管理・標準化システムにおける査定案件の基本情報と進捗状況を管理するトランザクションテーブル","columns":[{"name":"案件ID","type":"uuid","required":true,"description":"査定案件の一意識別子"},{"name":"査定員ID","type":"uuid","required":true,"description":"査定を担当する査定員への外部キー"},{"name":"案件ステータス","type":"varchar(100)","required":true,"description":"案件の進捗状態（未開始/進行中/完了/保留/却下）"},{"name":"査定対象品名","type":"varchar(100)","required":true,"description":"査定対象となる品物の名称"},{"name":"査定対象品説明","type":"text","required":false,"description":"査定対象品の詳細説明"},{"name":"査定額","type":"integer","required":false,"description":"査定結果の金額（単位：円）"},{"name":"査定日時","type":"timestamp","required":false,"description":"査定が実施された日時"},{"name":"品質評価","type":"varchar(100)","required":false,"description":"品質評価レベル（優/良/可/不可等）"},{"name":"標準化チェック完了","type":"boolean","required":false,"description":"標準化プロセスのチェック完了フラグ"},{"name":"作成日時","type":"timestamp","required":true,"description":"案件が作成された日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"案件を作成したユーザーへの外部キー"},{"name":"更新日時","type":"timestamp","required":true,"description":"案件が最後に更新された日時"},{"name":"更新者ID","type":"uuid","required":true,"description":"案件を最後に更新したユーザーへの外部キー"}]},{"tableName":"査定判定結果","purpose":"査定案件に対する査定員の判定結果を記録・管理し、品質管理と標準化を実現するための中核テーブル","columns":[{"name":"査定判定結果ID","type":"uuid","required":true,"description":"査定判定結果の一意識別子"},{"name":"査定案件ID","type":"uuid","required":true,"description":"関連する査定案件への外部キー"},{"name":"査定員ID","type":"uuid","required":true,"description":"判定を実施した査定員への外部キー"},{"name":"判定日時","type":"timestamp","required":true,"description":"査定判定が実施された日時"},{"name":"判定結果","type":"varchar(100)","required":true,"description":"判定結果（合格/不合格/条件付き合格等）"},{"name":"判定理由","type":"text","required":false,"description":"判定に至った理由・根拠"},{"name":"査定額","type":"integer","required":true,"description":"査定員が判定した査定額（円）"},{"name":"品質スコア","type":"integer","required":false,"description":"品質評価スコア（0-100等の標準化スケール）"},{"name":"指摘事項","type":"text","required":false,"description":"品質管理上の指摘・改善点"},{"name":"標準化準拠フラグ","type":"boolean","required":true,"description":"査定基準・標準に準拠しているか"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"レコード作成者（ユーザーID）"}]},{"tableName":"査定判定ロジック","purpose":"査定案件に対する判定基準・ルール・閾値を管理し、査定員が一貫性のある判定を行うための標準化されたロジックを提供する","columns":[{"name":"判定ロジックID","type":"uuid","required":true,"description":"判定ロジックの一意識別子"},{"name":"ロジック名","type":"varchar(100)","required":true,"description":"判定ロジックの名称（例：『高級時計判定ロジック』）"},{"name":"対象カテゴリ","type":"varchar(100)","required":true,"description":"このロジックが適用される査定品カテゴリ"},{"name":"判定基準説明","type":"text","required":true,"description":"判定基準の詳細説明・判定フロー"},{"name":"最小価格閾値","type":"integer","required":false,"description":"判定対象となる最小価格（円）"},{"name":"最大価格閾値","type":"integer","required":false,"description":"判定対象となる最大価格（円）"},{"name":"優先度","type":"integer","required":true,"description":"複数ロジックが該当する場合の適用優先度（数値が小さいほど優先）"},{"name":"有効フラグ","type":"boolean","required":true,"description":"このロジックが現在有効かどうか"},{"name":"作成日時","type":"timestamp","required":true,"description":"ロジック作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"ロジック最終更新日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"ロジック作成者（ユーザーID）"},{"name":"更新者ID","type":"uuid","required":true,"description":"ロジック最終更新者（ユーザーID）"}]},{"tableName":"判定ロジック適用履歴","purpose":"査定判定ロジックの適用履歴を記録し、どのロジックがいつどの案件に適用されたか、その結果を追跡するための履歴管理テーブル","columns":[{"name":"判定ロジック適用履歴ID","type":"uuid","required":true,"description":"判定ロジック適用履歴の一意識別子"},{"name":"査定案件ID","type":"uuid","required":true,"description":"適用対象の査定案件ID（外部キー）"},{"name":"査定判定ロジックID","type":"uuid","required":true,"description":"適用された判定ロジックID（外部キー）"},{"name":"査定判定結果ID","type":"uuid","required":false,"description":"ロジック適用により生成された判定結果ID（外部キー）"},{"name":"適用日時","type":"timestamp","required":true,"description":"判定ロジックが実際に適用された日時"},{"name":"適用ステータス","type":"varchar(100)","required":true,"description":"適用結果のステータス（成功/失敗/スキップ等）"},{"name":"適用結果","type":"text","required":false,"description":"ロジック適用の結果内容（判定結果の詳細等）"},{"name":"エラーメッセージ","type":"text","required":false,"description":"適用失敗時のエラーメッセージ"},{"name":"適用者ID","type":"uuid","required":false,"description":"手動適用の場合の査定員ID（外部キー）"},{"name":"自動適用フラグ","type":"boolean","required":true,"description":"自動適用か手動適用かを示すフラグ"},{"name":"作成日時","type":"timestamp","required":true,"description":"履歴レコード作成日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"履歴レコード作成者のユーザーID"}]},{"tableName":"相場マスタ","purpose":"査定対象品目の市場相場情報を一元管理し、査定判定ロジックの基準値として利用するマスタテーブル","columns":[{"name":"相場マスタID","type":"uuid","required":true,"description":"相場マスタの一意識別子"},{"name":"品目コード","type":"varchar(100)","required":true,"description":"査定対象品目の分類コード"},{"name":"品目名","type":"varchar(100)","required":true,"description":"査定対象品目の名称"},{"name":"カテゴリ","type":"varchar(100)","required":true,"description":"品目の大分類カテゴリ"},{"name":"基準相場価格","type":"integer","required":true,"description":"査定判定の基準となる市場相場価格（円）"},{"name":"最低相場価格","type":"integer","required":true,"description":"品目の最低市場相場価格（円）"},{"name":"最高相場価格","type":"integer","required":true,"description":"品目の最高市場相場価格（円）"},{"name":"相場更新日","type":"timestamp","required":true,"description":"相場情報の最終更新日時"},{"name":"有効フラグ","type":"boolean","required":true,"description":"相場マスタが査定判定に使用可能かどうか"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"レコード作成者のユーザーID"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"更新者","type":"varchar(100)","required":true,"description":"レコード最終更新者のユーザーID"}]},{"tableName":"相場乖離分析","purpose":"査定判定結果と相場マスタの乖離を分析・記録し、査定品質管理と相場データの妥当性検証を支援するテーブル","columns":[{"name":"相場乖離分析ID","type":"uuid","required":true,"description":"相場乖離分析レコードの一意識別子"},{"name":"査定案件ID","type":"uuid","required":true,"description":"対象となる査定案件への外部キー"},{"name":"査定判定結果ID","type":"uuid","required":true,"description":"対象となる査定判定結果への外部キー"},{"name":"相場マスタID","type":"uuid","required":true,"description":"参照した相場マスタレコードへの外部キー"},{"name":"査定金額","type":"integer","required":true,"description":"査定判定結果の査定金額（円）"},{"name":"相場金額","type":"integer","required":true,"description":"相場マスタの相場金額（円）"},{"name":"乖離金額","type":"integer","required":true,"description":"査定金額 - 相場金額（円）"},{"name":"乖離率","type":"varchar(100)","required":true,"description":"乖離金額 / 相場金額 × 100（パーセンテージ、文字列で精度保持）"},{"name":"乖離区分","type":"varchar(100)","required":true,"description":"乖離の分類（例：高評価、低評価、正常範囲内）"},{"name":"乖離要因","type":"text","required":false,"description":"乖離の原因・理由の記述"},{"name":"品質判定","type":"varchar(100)","required":true,"description":"査定品質の判定結果（例：適正、要確認、不適正）"},{"name":"対応状況","type":"varchar(100)","required":true,"description":"乖離への対応状況（例：未対応、確認中、完了）"},{"name":"対応内容","type":"text","required":false,"description":"実施した対応内容の記述"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"作成者","type":"uuid","required":true,"description":"レコード作成者（ユーザーID）への外部キー"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"更新者","type":"uuid","required":true,"description":"レコード最終更新者（ユーザーID）への外部キー"}]},{"tableName":"判定ばらつき分析","purpose":"査定員間の判定結果のばらつきを分析・監視し、査定品質の標準化を支援するための分析テーブル","columns":[{"name":"判定ばらつき分析ID","type":"uuid","required":true,"description":"判定ばらつき分析レコードの一意識別子"},{"name":"査定案件ID","type":"uuid","required":true,"description":"対象となる査定案件への外部キー"},{"name":"査定員ID","type":"uuid","required":true,"description":"ばらつき分析対象の査定員への外部キー"},{"name":"査定判定結果ID","type":"uuid","required":true,"description":"当該査定員の判定結果への外部キー"},{"name":"相場マスタID","type":"uuid","required":true,"description":"対象商品の相場マスタへの外部キー"},{"name":"査定金額","type":"integer","required":true,"description":"当該査定員による査定金額（円）"},{"name":"相場金額","type":"integer","required":true,"description":"相場マスタの標準金額（円）"},{"name":"乖離金額","type":"integer","required":true,"description":"査定金額と相場金額の差分（円）"},{"name":"乖離率","type":"varchar(100)","required":true,"description":"乖離金額の相場金額に対する百分率（%）"},{"name":"ばらつきレベル","type":"varchar(100)","required":true,"description":"ばらつきの程度分類（正常/軽微/要注意/要改善）"},{"name":"判定ロジック適用履歴ID","type":"uuid","required":false,"description":"適用された判定ロジック履歴への外部キー"},{"name":"分析対象期間開始日","type":"timestamp","required":true,"description":"ばらつき分析の対象期間開始日時"},{"name":"分析対象期間終了日","type":"timestamp","required":true,"description":"ばらつき分析の対象期間終了日時"},{"name":"摘要","type":"text","required":false,"description":"ばらつき分析に関する備考・摘要"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"レコード作成者（ユーザーID）"}]},{"tableName":"判定精度指標","purpose":"査定判定の精度を測定・監視するための指標を管理し、査定員ごと・ロジックごと・期間ごとの判定精度を追跡","columns":[{"name":"判定精度指標ID","type":"uuid","required":true,"description":"判定精度指標の一意識別子"},{"name":"査定員ID","type":"uuid","required":true,"description":"査定員テーブルへの外部キー"},{"name":"査定判定ロジックID","type":"uuid","required":false,"description":"査定判定ロジックテーブルへの外部キー（ロジック別の精度測定用）"},{"name":"測定期間開始日","type":"timestamp","required":true,"description":"精度指標の測定期間開始日時"},{"name":"測定期間終了日","type":"timestamp","required":true,"description":"精度指標の測定期間終了日時"},{"name":"総判定件数","type":"integer","required":true,"description":"測定期間内の総判定件数"},{"name":"正確判定件数","type":"integer","required":true,"description":"正確と判定された件数"},{"name":"判定精度率","type":"varchar(100)","required":true,"description":"正確判定件数/総判定件数の百分率（例：95.5%）"},{"name":"平均乖離率","type":"varchar(100)","required":true,"description":"相場からの平均乖離率（例：2.3%）"},{"name":"最大乖離率","type":"varchar(100)","required":true,"description":"相場からの最大乖離率"},{"name":"判定ばらつき度","type":"varchar(100)","required":true,"description":"同一商品に対する判定のばらつき度（標準偏差等）"},{"name":"改善フラグ","type":"boolean","required":true,"description":"精度が基準以下で改善が必要な場合true"},{"name":"備考","type":"text","required":false,"description":"精度指標に関する備考・改善提案"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"ユーザーテーブルへの外部キー（作成者）"}]},{"tableName":"乖離パターン履歴","purpose":"査定判定結果と相場マスタ間の乖離パターンを時系列で記録し、乖離傾向の分析と査定品質改善に活用する履歴管理テーブル","columns":[{"name":"乖離パターン履歴ID","type":"uuid","required":true,"description":"乖離パターン履歴の一意識別子"},{"name":"査定案件ID","type":"uuid","required":true,"description":"関連する査定案件への外部キー"},{"name":"査定判定結果ID","type":"uuid","required":true,"description":"関連する査定判定結果への外部キー"},{"name":"相場マスタID","type":"uuid","required":true,"description":"比較対象の相場マスタレコードへの外部キー"},{"name":"乖離パターン分類","type":"varchar(100)","required":true,"description":"乖離の分類（例：高評価乖離、低評価乖離、異常値乖離）"},{"name":"乖離率","type":"integer","required":true,"description":"査定判定結果と相場の乖離率（パーセンテージ）"},{"name":"乖離金額","type":"integer","required":true,"description":"査定判定結果と相場の乖離金額（絶対値）"},{"name":"乖離方向","type":"varchar(100)","required":true,"description":"乖離の方向（高評価/低評価）"},{"name":"乖離要因","type":"text","required":false,"description":"乖離の推定要因や備考"},{"name":"検出日時","type":"timestamp","required":true,"description":"乖離パターンが検出された日時"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"レコード作成者（ユーザーID）"}]},{"tableName":"工種マスタ","purpose":"査定対象となる工事種別の定義・管理。査定判定ロジックや相場マスタと紐付け、査定案件の工種分類を統制する。","columns":[{"name":"工種ID","type":"uuid","required":true,"description":"工種マスタの一意識別子"},{"name":"工種コード","type":"varchar(100)","required":true,"description":"工種の業界標準コード（例：RC001、木造002）。ユーザーが参照・検索する主キー"},{"name":"工種名","type":"varchar(100)","required":true,"description":"工種の日本語名称（例：鉄筋コンクリート造、木造軸組工法）"},{"name":"工種分類","type":"varchar(100)","required":true,"description":"工種の大分類（例：建築構造、基礎工事、外装工事）。フィルタリング・グループ化に使用"},{"name":"説明","type":"text","required":false,"description":"工種の詳細説明・適用範囲"},{"name":"査定判定ロジックID","type":"uuid","required":true,"description":"この工種に適用される査定判定ロジックへの外部キー"},{"name":"相場マスタID","type":"uuid","required":true,"description":"この工種に紐付く相場マスタへの外部キー"},{"name":"有効フラグ","type":"boolean","required":true,"description":"工種が現在有効か否か。無効化により過去データは保持しつつ新規査定案件での使用を制限"},{"name":"作成日時","type":"timestamp","required":true,"description":"工種マスタレコード作成日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"工種マスタを作成したユーザーID"},{"name":"更新日時","type":"timestamp","required":true,"description":"工種マスタレコード最終更新日時"},{"name":"更新者","type":"varchar(100)","required":true,"description":"工種マスタを最後に更新したユーザーID"}]},{"tableName":"金額帯マスタ","purpose":"査定品質管理における金額帯の定義・分類を管理し、査定判定ロジックや相場分析の基準となる金額範囲を統一的に運用するマスタテーブル","columns":[{"name":"金額帯ID","type":"uuid","required":true,"description":"金額帯マスタの一意識別子"},{"name":"金額帯コード","type":"varchar(100)","required":true,"description":"金額帯を識別するコード（例：A001, B002）"},{"name":"金額帯名称","type":"varchar(100)","required":true,"description":"金額帯の表示名（例：100万円以下、100万～500万円）"},{"name":"最小金額","type":"integer","required":true,"description":"金額帯の下限値（円単位）"},{"name":"最大金額","type":"integer","required":true,"description":"金額帯の上限値（円単位）"},{"name":"工種ID","type":"uuid","required":false,"description":"工種マスタへの外部キー（NULL の場合は全工種共通）"},{"name":"優先度","type":"integer","required":true,"description":"複数の金額帯が該当する場合の適用優先度"},{"name":"有効フラグ","type":"boolean","required":true,"description":"金額帯が有効かどうか"},{"name":"備考","type":"text","required":false,"description":"金額帯に関する補足情報"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"レコード作成者のユーザーID"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"更新者","type":"varchar(100)","required":true,"description":"レコード最終更新者のユーザーID"}]},{"tableName":"月次集計結果","purpose":"査定業務の月次パフォーマンス指標を集計・管理し、品質管理と標準化の進捗を追跡するための集計結果テーブル","columns":[{"name":"月次集計結果ID","type":"uuid","required":true,"description":"月次集計結果の一意識別子"},{"name":"集計年月","type":"varchar(7)","required":true,"description":"集計対象の年月（YYYY-MM形式）"},{"name":"査定員ID","type":"uuid","required":false,"description":"査定員別集計の場合の査定員ID（全体集計の場合はNULL）"},{"name":"工種ID","type":"uuid","required":false,"description":"工種別集計の場合の工種ID（全体集計の場合はNULL）"},{"name":"金額帯ID","type":"uuid","required":false,"description":"金額帯別集計の場合の金額帯ID（全体集計の場合はNULL）"},{"name":"査定案件数","type":"integer","required":true,"description":"当月の査定案件総数"},{"name":"平均判定精度","type":"varchar(5)","required":true,"description":"当月の平均判定精度（パーセンテージ）"},{"name":"相場乖離率","type":"varchar(5)","required":true,"description":"当月の相場乖離率（パーセンテージ）"},{"name":"判定ばらつき指数","type":"varchar(5)","required":true,"description":"当月の判定ばらつき指数"},{"name":"標準化達成度","type":"varchar(5)","required":true,"description":"当月の標準化達成度（パーセンテージ）"},{"name":"不一致案件数","type":"integer","required":true,"description":"判定ロジックとの不一致案件数"},{"name":"乖離パターン件数","type":"integer","required":true,"description":"検出された乖離パターンの件数"},{"name":"改善指摘事項数","type":"integer","required":true,"description":"当月に抽出された改善指摘事項の件数"},{"name":"前月比精度向上率","type":"varchar(5)","required":false,"description":"前月比での精度向上率（パーセンテージ）"},{"name":"集計ステータス","type":"varchar(20)","required":true,"description":"集計ステータス（確定/仮集計/再集計）"},{"name":"備考","type":"text","required":false,"description":"集計に関する備考・特記事項"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者ID","type":"uuid","required":true,"description":"集計を作成したユーザーID"}]}];
+window.AIVIC_PRESET_SEED = {"ユーザー":[{"ユーザーID":"rec-001","ユーザー名":"山田太郎","メールアドレス":"yamada.taro@company.jp","パスワードハッシュ":"$2b$12$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86AGR0Ifq2a","ロール":"管理者","ステータス":"有効","部門":"システム管理部","最終ログイン日時":"2025-01-15T09:30:45+09:00","作成日時":"2024-04-01T10:00:00+09:00","更新日時":"2025-01-15T09:30:45+09:00","作成者":"初期設定"},{"ユーザーID":"rec-001","ユーザー名":"佐藤美咲","メールアドレス":"sato.misaki@company.jp","パスワードハッシュ":"$2b$12$kL9mN2pQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIj","ロール":"査定者","ステータス":"有効","部門":"営業部門","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-10T14:22:15+09:00","更新日時":"2025-01-10T16:45:30+09:00","作成者":"admin_yamada"},{"ユーザーID":"rec-001","ユーザー名":"佐藤美咲","メールアドレス":"sato.misaki@company.jp","パスワードハッシュ":"$2b$12$8kL9vN2mQpR5xY3jH7wZe.5K4mN6pQ8rS1tU2vW3xY4zA5bC6dE7f","ロール":"査定者","ステータス":"有効","部門":"企画部門","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-10T14:20:00+09:00","更新日時":"2025-01-15T09:30:00+09:00","作成者":"鈴木太郎"},{"ユーザーID":"rec-001","ユーザー名":"鈴木美咲","メールアドレス":"suzuki.misaki@company.co.jp","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ","ロール":"申請者","ステータス":"有効","部門":"営業部","最終ログイン日時":"2025-01-15 09:30:45","作成日時":"2024-04-10 14:20:30","更新日時":"2025-01-15 09:30:45","作成者":"admin"},{"ユーザーID":"rec-001","ユーザー名":"佐藤美咲","メールアドレス":"sato.misaki@company.jp","パスワードハッシュ":"$2b$12$N9qo8uLOickgx2ZMRZoMye.IVfVG4b1Gj4pxI5qJ1zE5L5qJ1zE5L","ロール":"査定者","ステータス":"有効","部門":"経理部門","最終ログイン日時":"2025-01-15T09:30:45+09:00","作成日時":"2024-04-10T14:20:00+09:00","更新日時":"2025-01-10T16:45:30+09:00","作成者":"山田太郎"},{"ユーザーID":"rec-001-20250115-0847","ユーザー名":"佐藤花子","メールアドレス":"sato.hanako@company.jp","パスワードハッシュ":"$2b$12$K8vN9pL2mQ4rS6tU8vW9x.e5fG7hI8jK9lM0nO1pQ2rS3tU4vW5x","ロール":"申請者","ステータス":"研修中","部門":"営業部","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2025-01-10T14:20:00+09:00","更新日時":"2025-01-15T09:30:00+09:00","作成者":"鈴木太郎"},{"ユーザーID":"rec-001","ユーザー名":"鈴木美咲","メールアドレス":"misaki.suzuki@company.jp","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUV","ロール":"査定者","ステータス":"休止","部門":"営業部","最終ログイン日時":"2024-09-15 14:32:00","作成日時":"2023-04-10 09:00:00","更新日時":"2024-11-20 10:15:00","作成者":"田中太郎"},{"ユーザーID":"rec-001","ユーザー名":"山田花子","メールアドレス":"yamada.hanako@company.jp","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890","ロール":"申請者","ステータス":"無効","部門":"営業部","最終ログイン日時":"2024-08-15 17:45:30","作成日時":"2022-04-01 09:00:00","更新日時":"2025-01-31 14:20:00","作成者":"admin"},{"ユーザーID":"rec-001","ユーザー名":"鈴木健一","メールアドレス":"suzuki.kenichi@partnerco.jp","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","ロール":"査定者","ステータス":"有効","部門":"外部パートナー企業・品質管理部","最終ログイン日時":"2025-01-15T14:32:00Z","作成日時":"2024-06-20T09:15:00Z","更新日時":"2025-01-15T14:32:00Z","作成者":"admin-001"},{"ユーザーID":"rec-001","ユーザー名":"山田太郎","メールアドレス":"yamada.taro@company.jp","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","ロール":"管理者","ステータス":"有効","部門":"システム運用部","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-01T10:00:00+09:00","更新日時":"2025-01-10T14:20:00+09:00","作成者":"鈴木花子"}],"査定員":[{"査定員ID":"rec-001","ユーザーID":"rec-usr-0847","査定員コード":"AP-2019-0032","査定員名":"山田健一","部門":"品質査定部","資格レベル":"上級","査定対象カテゴリ":"腕時計,ジュエリー,ブランドバッグ","ステータス":"稼働中","品質スコア":94,"査定件数":3847,"作成日時":"2019-06-15T09:30:00+09:00","更新日時":"2025-01-28T14:22:00+09:00","作成者ID":"rec-usr-0001","更新者ID":"rec-usr-0002"},{"査定員ID":"rec-001","ユーザーID":"rec-u-0847","査定員コード":"AP-2024-0156","査定員名":"佐藤美咲","部門":"鑑定部第二課","資格レベル":"中級","査定対象カテゴリ":"ブランド品・時計","ステータス":"稼働中","品質スコア":94,"査定件数":2847,"作成日時":"2024-04-15T09:30:00Z","更新日時":"2025-01-22T14:45:00Z","作成者ID":"rec-u-0001","更新者ID":"rec-u-0001"},{"査定員ID":"rec-001","ユーザーID":"rec-u-0042","査定員コード":"AS20250108001","査定員名":"山田花子","部門":"商品査定部","資格レベル":"初級","査定対象カテゴリ":"衣料品・雑貨","ステータス":"稼働中","品質スコア":88,"査定件数":47,"作成日時":"2025-01-08T09:30:00","更新日時":"2025-01-15T14:22:00","作成者ID":"rec-u-0001","更新者ID":"rec-u-0015"},{"査定員ID":"rec-001","ユーザーID":"rec-usr-0847","査定員コード":"AP-2019-0342","査定員名":"鈴木健一","部門":"美術品・骨董品査定部","資格レベル":"上級","査定対象カテゴリ":"美術品,骨董品,工芸品","ステータス":"稼働中","品質スコア":62,"査定件数":1847,"作成日時":"2019-06-15 09:30:00","更新日時":"2025-01-20 14:15:00","作成者ID":"rec-usr-0001","更新者ID":"rec-usr-0015"},{"査定員ID":"rec-001-a7f2-4c8e-9b3d","ユーザーID":"rec-user-5e1b-2f9a-7c4d","査定員コード":"ASS-2024-0847","査定員名":"佐藤美咲","部門":"宝飾品査定部","資格レベル":"中級","査定対象カテゴリ":"ジュエリー・時計","ステータス":"休止中","品質スコア":87,"査定件数":1247,"作成日時":"2023-06-15T10:30:00+09:00","更新日時":"2024-11-01T14:20:00+09:00","作成者ID":"rec-user-admin-001","更新者ID":"rec-user-manager-042"},{"査定員ID":"rec-001","ユーザーID":"rec-u-0847","査定員コード":"ASS-2024-0156","査定員名":"山田健一","部門":"高級品査定部","資格レベル":"上級","査定対象カテゴリ":"腕時計・高級宝飾品","ステータス":"稼働中","品質スコア":94,"査定件数":2847,"作成日時":"2024-03-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者ID":"rec-u-0001","更新者ID":"rec-u-0102"},{"査定員ID":"rec-001","ユーザーID":"rec-u-0847","査定員コード":"AP-2025-0156","査定員名":"佐藤健太","部門":"商品査定部第二課","資格レベル":"初級","査定対象カテゴリ":"衣類・雑貨","ステータス":"稼働中","品質スコア":72,"査定件数":18,"作成日時":"2025-01-15T09:30:00","更新日時":"2025-01-22T16:45:00","作成者ID":"rec-u-0001","更新者ID":"rec-u-0042"},{"査定員ID":"rec-001","ユーザーID":"rec-0042","査定員コード":"SA-2019-0847","査定員名":"鈴木健一","部門":"美術品査定部","資格レベル":"上級","査定対象カテゴリ":"絵画/骨董品/工芸品","ステータス":"退職","品質スコア":92,"査定件数":3847,"作成日時":"2019-04-15 09:30:00","更新日時":"2025-01-31 16:45:00","作成者ID":"rec-0001","更新者ID":"rec-0015"},{"査定員ID":"rec-001","ユーザーID":"rec-user-0847","査定員コード":"AP-2024-0156","査定員名":"佐藤美咲","部門":"鑑定部/営業推進部","資格レベル":"中級","査定対象カテゴリ":"時計・宝飾品","ステータス":"稼働中","品質スコア":87,"査定件数":2847,"作成日時":"2024-04-15 09:30:00","更新日時":"2025-01-22 14:15:00","作成者ID":"rec-user-admin-001","更新者ID":"rec-user-manager-012"},{"査定員ID":"rec-001","ユーザーID":"rec-usr-0847","査定員コード":"APR-2024-0156","査定員名":"佐藤美咲","部門":"鑑定部門","資格レベル":"上級","査定対象カテゴリ":"ブランド品・時計","ステータス":"稼働中","品質スコア":94,"査定件数":187,"作成日時":"2024-04-15 09:30:00","更新日時":"2025-01-20 14:22:00","作成者ID":"rec-usr-0001","更新者ID":"rec-usr-0002"}],"査定案件":[{"案件ID":"rec-001","査定員ID":"rec-emp-047","案件ステータス":"完了","査定対象品名":"ロレックス デイトナ 116500LN","査定対象品説明":"2023年製造、ステンレススチール製、文字盤はブラック、ベゼルはセラミック、付属品は箱・ギャランティーカード・保証書完備、傷は極めて少なく使用感が少ない状態","査定額":3850000,"査定日時":"2024-11-15 14:30:00","品質評価":"優","標準化チェック完了":true,"作成日時":"2024-11-08 09:15:00","作成者ID":"rec-user-012","更新日時":"2024-11-15 15:45:00","更新者ID":"rec-emp-047"},{"案件ID":"rec-001","査定員ID":"rec-102","案件ステータス":"保留","査定対象品名":"江戸時代の染付磁器花瓶","査定対象品説明":"高さ約35cm、青と白の染付文様が施された磁器製花瓶。底部に銘あり。経年による若干の色褪せと微細なひび割れが見られる。","査定額":0,"査定日時":null,"品質評価":"可","標準化チェック完了":false,"作成日時":"2025-01-15 10:30:00","作成者ID":"rec-201","更新日時":"2025-01-22 14:45:00","更新者ID":"rec-102"},{"案件ID":"rec-001","査定員ID":"rec-002","案件ステータス":"却下","査定対象品名":"ウォールナット材ダイニングテーブル","査定対象品説明":"サイズ：幅180cm×奥行90cm×高さ75cm。ウォールナット材使用。脚部に複数の傷あり。天板に水シミと色褪せが著しく、塗装の剥離箇所が複数箇所存在。左脚に割れが確認される。","査定額":0,"査定日時":"2024-11-15 14:30:00","品質評価":"不可","標準化チェック完了":true,"作成日時":"2024-11-08 09:15:00","作成者ID":"rec-003","更新日時":"2024-11-15 15:45:00","更新者ID":"rec-002"},{"案件ID":"rec-001","査定員ID":"rec-002","案件ステータス":"未開始","査定対象品名":"明治期の日本画 『春景山水図』","査定対象品説明":"明治中期の日本画で、掛軸仕立て。絹本彩色。サイズ：縦120cm×横60cm。保存状態は良好だが、軸装部分に軽微な傷あり。作者は狩野派系統の画家と推定される。顧客提出の由来書等の書類確認待ち。","査定額":null,"査定日時":null,"品質評価":null,"標準化チェック完了":false,"作成日時":"2025-01-15T10:30:00Z","作成者ID":"rec-003","更新日時":"2025-01-15T10:30:00Z","更新者ID":"rec-003"},{"案件ID":"rec-001","査定員ID":"rec-002","案件ステータス":"完了","査定対象品名":"ルイ・ヴィトン モノグラム ネヴァーフル MM","査定対象品説明":"ルイ・ヴィトンの定番トートバッグ。モノグラムキャンバス素材、ハンドル部分に軽微な使用感あり。内側ポケット良好。付属品なし。","査定額":185000,"査定日時":"2024-11-15 14:30:00","品質評価":"良","標準化チェック完了":true,"作成日時":"2024-11-10 09:15:00","作成者ID":"rec-003","更新日時":"2024-11-15 15:45:00","更新者ID":"rec-002"},{"案件ID":"rec-20250147","査定員ID":"rec-00234","案件ステータス":"進行中","査定対象品名":"パナソニック 55型4K液晶テレビ TH-55LX950","査定対象品説明":"2021年製造モデル。画面に軽微な傷あり。リモコン欠品。電源及び映像出力確認済み。前回査定額との乖離確認のため再査定実施中。","査定額":48000,"査定日時":"2025-01-15T14:30:00+09:00","品質評価":"良","標準化チェック完了":false,"作成日時":"2025-01-10T09:15:00+09:00","作成者ID":"rec-00156","更新日時":"2025-01-15T14:35:00+09:00","更新者ID":"rec-00234"},{"案件ID":"rec-20250115-001","査定員ID":"rec-assessor-0847","案件ステータス":"完了","査定対象品名":"18金ネックレス（喜平チェーン）","査定対象品説明":"18金製喜平チェーンネックレス、総重量約45g、刻印確認済み、傷や変形なし、光沢良好","査定額":198000,"査定日時":"2025-01-15 14:30:00","品質評価":"可","標準化チェック完了":true,"作成日時":"2025-01-15 10:45:00","作成者ID":"rec-user-0521","更新日時":"2025-01-15 16:20:00","更新者ID":"rec-user-0521"},{"案件ID":"rec-001","査定員ID":"rec-emp-047","案件ステータス":"保留","査定対象品名":"ヴィクトリア朝ウォールナット材サイドボード","査定対象品説明":"19世紀後半のイギリス製と推定されるウォールナット材の食器棚。装飾的な彫刻が施された扉、真鍮製の取手、内部に調整可能な棚板を備えている。表面に軽微な傷と色褪せが見られるが、構造的には良好な状態。","査定額":null,"査定日時":null,"品質評価":null,"標準化チェック完了":false,"作成日時":"2024-11-15T10:30:00","作成者ID":"rec-user-012","更新日時":"2024-11-22T14:15:00","更新者ID":"rec-user-012"},{"案件ID":"rec-20250115-001","査定員ID":"rec-emp-0847","案件ステータス":"進行中","査定対象品名":"ノートパソコン（DELL XPS 13）ロット5台セット","査定対象品説明":"2023年製造、使用年数1年未満。キーボード・タッチパッド動作確認済み。液晶ディスプレイに軽微なキズあり。バッテリー充放電正常。付属品：ACアダプタ、取扱説明書。","査定額":385000,"査定日時":"2025-01-15T10:30:00","品質評価":"良","標準化チェック完了":false,"作成日時":"2025-01-10T14:22:00","作成者ID":"rec-user-0512","更新日時":"2025-01-15T11:45:00","更新者ID":"rec-emp-0847"},{"案件ID":"rec-001","査定員ID":"rec-045","案件ステータス":"完了","査定対象品名":"ノートパソコン（Dell XPS 13）","査定対象品説明":"返品品。2024年3月購入。使用期間約8ヶ月。キーボード動作不良により返品対象。外観に軽微な傷あり。バッテリー劣化度15%。","査定額":78000,"査定日時":"2025-01-15T14:30:00+09:00","品質評価":"良","標準化チェック完了":true,"作成日時":"2025-01-10T09:15:00+09:00","作成者ID":"rec-102","更新日時":"2025-01-15T16:45:00+09:00","更新者ID":"rec-045"}],"査定判定結果":[{"査定判定結果ID":"rec-001","査定案件ID":"rec-102","査定員ID":"rec-501","判定日時":"2024-11-15T14:30:00","判定結果":"合格","判定理由":"走行距離8万km、年式2019年式トヨタプリウス。外装・内装の損傷なし、エンジン・トランスミッション正常、定期メンテナンス記録完備。全査定基準を満たしており合格判定とする。","査定額":1850000,"品質スコア":88,"指摘事項":"特に指摘事項なし。タイヤの溝が4mm程度残存しており良好な状態。次回車検までの使用に問題なし。","標準化準拠フラグ":true,"作成日時":"2024-11-15T14:35:22","更新日時":"2024-11-15T14:35:22","作成者ID":"rec-501"},{"査定判定結果ID":"rec-20250147","査定案件ID":"rec-20250089","査定員ID":"rec-20240056","判定日時":"2025-01-15T14:30:00+09:00","判定結果":"条件付き合格","判定理由":"査定額が基準上限の850万円を超過し920万円となったが、市場動向及び物件の立地・築年数を勘案し、条件付きで承認。ただし融資額は基準範囲内に抑制することを条件とする。","査定額":9200000,"品質スコア":78,"指摘事項":"外壁のひび割れが複数箇所で確認された。今後3年以内の補修工事を実施することを条件とする。また、屋根瓦の部分的な劣化も見られるため、定期的な点検が必要。","標準化準拠フラグ":false,"作成日時":"2025-01-15T14:35:22+09:00","更新日時":"2025-01-15T14:35:22+09:00","作成者ID":"rec-20240056"},{"査定判定結果ID":"rec-001","査定案件ID":"rec-002","査定員ID":"rec-003","判定日時":"2024-11-15T14:30:00","判定結果":"不合格","判定理由":"フロントバンパーの亀裂が基準値（5cm以上）を超過しており、修復不可能な損傷と判定。また、右側ドアのへこみが深さ3cm以上あり、外装基準を満たしていない。","査定額":0,"品質スコア":28,"指摘事項":"フロントバンパー右側に約8cmの亀裂あり。右側ドアに複数のへこみ（最大深さ3.5cm）。塗装剥がれが複数箇所で確認。修復には全面塗装と部品交換が必要。","標準化準拠フラグ":false,"作成日時":"2024-11-15T14:32:15","更新日時":"2024-11-15T14:32:15","作成者ID":"rec-004"},{"査定判定結果ID":"rec-001","査定案件ID":"rec-002","査定員ID":"rec-003","判定日時":"2024-11-15T14:30:00+09:00","判定結果":"条件付き合格","判定理由":"外観品質は良好だが、内部機能検査で基準値を下回る箇所が複数確認された。査定額の大幅な減額が必要と判断される。","査定額":2800000,"品質スコア":52,"指摘事項":"1.基板の半田付け不良が3箇所で検出。2.動作テスト時の応答遅延が規格値を15%超過。3.耐久性テストにおいて早期劣化の兆候あり。査定員による過度な寛容判定と考えられる。再査定を推奨。","標準化準拠フラグ":false,"作成日時":"2024-11-16T09:15:00+09:00","更新日時":"2024-11-17T11:45:00+09:00","作成者ID":"rec-004"},{"査定判定結果ID":"rec-20250115-0847","査定案件ID":"rec-案件-20250110-5234","査定員ID":"rec-査定員-新人-001","判定日時":"2025-01-15T14:30:00+09:00","判定結果":"条件付き合格","判定理由":"基本的な査定プロセスは実施されているが、細部の確認項目が不十分であり、標準化チェックリストの項目4及び項目7において確認漏れが認められた。再査定指導後の再審査を条件に条件付き合格とする。","査定額":2850000,"品質スコア":68,"指摘事項":"1. 外観検査時の傷・凹みの記録が不完全。写真証拠の撮影角度・照度が基準に達していない。2. 動作確認レポートの記載内容が簡潔すぎる。各機能の詳細テスト結果を明記すること。3. 標準評価表の記入欄に空白項目が複数存在。全項目の入力を徹底すること。","標準化準拠フラグ":false,"作成日時":"2025-01-15T15:45:00+09:00","更新日時":"2025-01-15T15:45:00+09:00","作成者ID":"rec-ユーザー-上司-鈴木花子"},{"査定判定結果ID":"rec-20250215-001","査定案件ID":"rec-案件-20240918-045","査定員ID":"rec-査定員-佐藤-002","判定日時":"2025-02-15T10:30:00+09:00","判定結果":"条件付き合格","判定理由":"前回査定時の外観検査不備により不合格判定されていたが、再査定により当該箇所の詳細検査を実施。微細な傷は存在するが業界基準の許容範囲内であることが確認された。ただし塗装面の色ムラについては改善指導が必要。","査定額":2850000,"品質スコア":78,"指摘事項":"前回判定：不合格（品質スコア62）。今回再査定にて：塗装面の色ムラ（運転席ドア下部）について製造業者への改善依頼が必要。納入前に再塗装推奨。その他の機械的性能および構造的問題は認められない。","標準化準拠フラグ":true,"作成日時":"2025-02-15T10:35:22+09:00","更新日時":"2025-02-15T10:35:22+09:00","作成者ID":"rec-ユーザー-佐藤-002"},{"査定判定結果ID":"rec-20250156","査定案件ID":"rec-20250089","査定員ID":"rec-20240045","判定日時":"2025-01-15T14:30:00+09:00","判定結果":"条件付き合格","判定理由":"ブランド腕時計の査定。全体的な状態は良好だが、風防に微細な傷が複数箇所確認され、また防水性能の再検査が必要と判断された。修復可能な範囲内のため条件付き合格とした。","査定額":385000,"品質スコア":72,"指摘事項":"1. 風防に0.5mm程度の傷が3箇所確認。研磨による修復を推奨。\n2. ケース裏蓋の刻印が薄れ気味。真正性確認のため詳細調査が必要。\n3. ブレスレットのコマに軽微なガタつきあり。調整推奨。\n4. 防水性能検査で50m防水の表示だが、実測では30m程度の可能性。メーカー修理を条件に査定額を決定。","標準化準拠フラグ":true,"作成日時":"2025-01-15T14:35:22+09:00","更新日時":"2025-01-15T14:35:22+09:00","作成者ID":"rec-20240045"},{"査定判定結果ID":"rec-001","査定案件ID":"rec-002","査定員ID":"rec-003","判定日時":"2024-11-15T09:30:00+09:00","判定結果":"合格","判定理由":"全ての評価項目において基準を満たし、品質基準に完全に準拠している。特に寸法精度、表面仕上げ、機能性において優れた水準を確認した。","査定額":"850000","品質スコア":"100","指摘事項":"特に改善点なし。今後も現在の品質水準の維持を期待する。","標準化準拠フラグ":true,"作成日時":"2024-11-15T09:35:00+09:00","更新日時":"2024-11-15T09:35:00+09:00","作成者ID":"rec-004"},{"査定判定結果ID":"rec-20250215-001","査定案件ID":"rec-案件-20240618-047","査定員ID":"rec-査定員-鈴木","判定日時":"2025-02-15T09:30:00+09:00","判定結果":"条件付き合格","判定理由":"2025年1月の査定基準改定により、耐久性評価項目の基準値が引き上げられた。既存判定では合格としていたが、新基準適用時の再査定では、塗装の耐候性が基準値（85点以上）に対して78点であるため、条件付き合格とした。ただし、部品交換による改善が可能なため、改善実施後の再評価を条件とする。","査定額":2850000,"品質スコア":78,"指摘事項":"外装塗装の耐候性が新基準に未達。UV耐性テストで基準値より3年早期に劣化の兆候を確認。フロントパネルおよびドアの再塗装、または耐候性塗料への変更を推奨。実施期限：2025年4月30日。","標準化準拠フラグ":false,"作成日時":"2025-02-15T09:45:22+09:00","更新日時":"2025-02-15T09:45:22+09:00","作成者ID":"rec-ユーザー-山田花子"},{"査定判定結果ID":"rec-20250215-0847","査定案件ID":"rec-案件-20250210-1523","査定員ID":"rec-査定員-佐藤健一","判定日時":"2025-02-15T14:30:00+09:00","判定結果":"条件付き合格","判定理由":"外観品質は基準値内だが、寸法精度が規格下限値に近く、製造プロセスの改善が必要。他の査定員による同一案件の判定（不合格）との乖離が確認されたため、標準化研修対象として上程する。","査定額":45000,"品質スコア":62,"指摘事項":"・寸法公差が-0.8mm（許容範囲-1.0mm以内だが下限に接近）\n・表面処理にムラが見られる箇所が2箇所\n・検査記録の記載漏れ\n・同一案件で査定員間の判定が大きく異なっているため、判定基準の解釈について標準化研修が必要","標準化準拠フラグ":false,"作成日時":"2025-02-15T14:35:22+09:00","更新日時":"2025-02-16T10:12:45+09:00","作成者ID":"rec-ユーザー-品質管理部長-鈴木花子"}],"査定判定ロジック":[{"判定ロジックID":"rec-001","ロジック名":"高級時計真正性・状態判定ロジック","対象カテゴリ":"高級腕時計","判定基準説明":"ロレックス、オメガ、パテックフィリップなどの高級時計を対象とし、以下の基準で査定を実施する。【真正性判定】正規品証明書の有無、シリアルナンバーの照合、ケース・ムーブメント・文字盤の製造品質確認。【状態判定】外装傷スコア（0-10段階）、ガラス風防の状態、バンド/ブレスレットの磨耗度、ムーブメント動作確認、防水性能テスト。【価格算出】基準価格から真正性スコア（係数0.8-1.0）と状態スコア（係数0.5-1.0）を乗算。正規品証明書ありかつ良好状態で最高評価。","最小価格閾値":300000,"最大価格閾値":5000000,"優先度":1,"有効フラグ":true,"作成日時":"2024-06-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者ID":"rec-u-0042","更新者ID":"rec-u-0087"},{"判定ロジックID":"rec-001","ロジック名":"ブランド品バッグ傷汚れレベル別判定ロジック","対象カテゴリ":"ブランド品バッグ","判定基準説明":"ブランド品バッグの査定において、外観の傷・汚れレベルを5段階で評価し、買取価格を決定するロジック。\n【判定フロー】\n1. 商品写真を複数角度から確認\n2. 傷レベル判定：目立つ傷なし→軽微な傷→複数の浅い傷→深い傷や目立つ傷→大きなダメージ\n3. 汚れレベル判定：汚れなし→軽微な汚れ→部分的な汚れ→全体的な汚れ→著しい汚れ\n4. 複合評価：傷と汚れの総合スコアで価格係数を決定\n5. 最終査定額：参考買取価格 × 価格係数","最小価格閾値":8000,"最大価格閾値":500000,"優先度":2,"有効フラグ":true,"作成日時":"2024-06-15T09:30:00Z","更新日時":"2025-01-22T14:45:00Z","作成者ID":"rec-user-0847","更新者ID":"rec-user-0521"},{"判定ロジックID":"rec-001","ロジック名":"中古スマートフォン動作確認・外観損傷統合判定ロジック","対象カテゴリ":"スマートフォン","判定基準説明":"【判定フロー】\n1. 電源起動確認：起動可能か判定\n2. 画面表示確認：液晶表示に異常がないか確認\n3. タッチ操作確認：タッチパネルの反応性を確認\n4. 外観損傷評価：画面割れ、フレーム傷、背面損傷を5段階評価\n5. 機能動作確認：カメラ、マイク、スピーカー、通信機能を確認\n【判定結果】\n- 全機能正常かつ外観損傷なし：S（買取価格100%）\n- 軽微な傷のみ、全機能正常：A（買取価格85%）\n- 軽度の外観損傷または軽微な機能不具合：B（買取価格60%）\n- 中程度の外観損傷または複数機能不具合：C（買取価格30%）\n- 重度損傷または重大な機能不具合：D（買取価格0円・引取のみ）","最小価格閾値":8000,"最大価格閾値":120000,"優先度":1,"有効フラグ":true,"作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:30+09:00","作成者ID":"rec-user-001","更新者ID":"rec-user-005"},{"判定ロジックID":"rec-001","ロジック名":"貴金属・宝石純度重量価格帯別判定ロジック","対象カテゴリ":"貴金属・宝石","判定基準説明":"金・プラチナ・銀などの貴金属および宝石（ダイヤモンド・ルビー・サファイア等）の査定において、純度表示（K18・Pt900等）と実測重量に基づいて価格帯を5段階に分類。10g未満は軽量品として割増、50g以上は大口取扱として専門鑑定士による二次査定を必須とする。","最小価格閾値":5000,"最大価格閾値":5000000,"優先度":2,"有効フラグ":true,"作成日時":"2024-04-15T09:30:00Z","更新日時":"2025-01-22T14:45:00Z","作成者ID":"user-0847","更新者ID":"user-0847"},{"判定ロジックID":"rec-001-gc-op-2024","ロジック名":"ゲーム機動作確認・付属品判定ロジック","対象カテゴリ":"ゲーム機・周辺機器","判定基準説明":"Nintendo Switch、PlayStation 5などのゲーム機を対象に、以下の基準で査定判定を実施する。【動作確認】電源投入、映像出力、コントローラー接続、ゲーム起動の4項目を確認。全て正常=A判定、3項目正常=B判定、2項目以下=C判定。【付属品完備度】純正ACアダプタ、HDMIケーブル、コントローラー、元箱の有無を確認。4点完備=+30%、3点=+15%、2点以下=±0%。動作不可の場合はジャンク品扱いで最低買取価格を適用。","最小価格閾値":5000,"最大価格閾値":80000,"優先度":2,"有効フラグ":true,"作成日時":"2024-06-15T09:30:00+09:00","更新日時":"2025-01-20T14:45:00+09:00","作成者ID":"rec-user-0042","更新者ID":"rec-user-0087"},{"判定ロジックID":"rec-001","ロジック名":"美術品・骨董品希少性保存状態判定ロジック","対象カテゴリ":"美術品・骨董品","判定基準説明":"美術品・骨董品の査定において、以下の基準に基づいて価値を判定する。\n【希少性評価】作家の知名度、製作時期、現存数、美術市場での取引実績を総合的に評価。江戸期以前の作品、国内外の著名作家作品は高評価。\n【保存状態評価】色褪せ、破損、シミ、虫食い、カビの有無を確認。A級（完好状態）からD級（大損傷）まで4段階で評価。\n【判定フロー】①作品の時代・作家を特定→②希少性スコア算出（1-100点）→③保存状態ランク判定→④スコアと保存状態の組合せで最終価格帯を決定。希少性スコア70以上かつ保存状態A級で高値判定。","最小価格閾値":50000,"最大価格閾値":5000000,"優先度":2,"有効フラグ":true,"作成日時":"2024-06-15T09:30:00Z","更新日時":"2025-01-22T14:15:00Z","作成者ID":"rec-user-0847","更新者ID":"rec-user-0923"},{"判定ロジックID":"rec-001","ロジック名":"衣類・靴素材品質・流行シーズン判定ロジック","対象カテゴリ":"衣類・靴","判定基準説明":"衣類・靴の査定において、素材品質ランク（上質素材：カシミア・シルク・本革等は+20%、標準素材：綿・ポリエステル・合皮等は基準値、低品質素材：化学繊維混率高は-15%）と流行シーズン（現シーズン及び翌シーズン対応品は基準値、前シーズン品は-10%、2シーズン以上前は-25%）を組み合わせて最終査定額を算出。ブランド品は素材ランクを+10%加算。状態良好（未使用・美品）かつ上質素材の場合は+30%まで加算可能。","最小価格閾値":3000,"最大価格閾値":150000,"優先度":2,"有効フラグ":true,"作成日時":"2024-06-15T09:30:00Z","更新日時":"2025-01-20T14:15:00Z","作成者ID":"rec-user-0042","更新者ID":"rec-user-0087"},{"判定ロジックID":"rec-cam-001","ロジック名":"カメラ・レンズ光学性能複合判定ロジック","対象カテゴリ":"カメラ・レンズ","判定基準説明":"【光学性能評価】レンズコーティング状態、カビ・クモリの有無、AFモーター動作確認、絞り羽根の動作滑らかさを5段階評価。【機械的劣化度評価】シャッター音、ミラー動作、露出計動作、ボディ外装傷・ベタつきを確認。光学性能スコア（0-100点）と機械的劣化スコア（0-100点）の加重平均（光学70%、機械30%）で総合スコアを算出。総合スコア80点以上で高査定、60-79点で標準査定、40-59点で低査定、40点未満は修理判定対象。","最小価格閾値":8000,"最大価格閾値":350000,"優先度":2,"有効フラグ":true,"作成日時":"2024-06-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者ID":"rec-user-0847","更新者ID":"rec-user-0923"},{"判定ロジックID":"rec-001-hw-2024-001","ロジック名":"家電製品製造年・機能保持状況判定ロジック","対象カテゴリ":"家電製品","判定基準説明":"製造年と現在の機能保持状況を複合的に評価する。製造から5年以内かつ主要機能が正常に動作する場合は高評価、5～10年で機能の80%以上が正常な場合は中評価、10年以上または機能喪失率が20%を超える場合は低評価とする。具体的な判定フロー：①製造年から経過年数を算出、②動作確認テストで機能保持率を測定、③外観状態（傷・汚れ）を加味して最終評価を決定。","最小価格閾値":3000,"最大価格閾値":150000,"優先度":2,"有効フラグ":true,"作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2025-01-08T14:22:00+09:00","作成者ID":"rec-user-2024-001","更新者ID":"rec-user-2025-002"},{"判定ロジックID":"rec-20250115-001","ロジック名":"楽器総合評価判定ロジック","対象カテゴリ":"楽器","判定基準説明":"楽器の査定において、音質評価（音の明瞭性・響き・音量の均一性）、外観評価（塗装の状態・傷・変色・クラック）、修理履歴（過去の修理内容・修理箇所数・修理時期）を5段階スコアで総合評価する。各項目の配点は音質40%、外観35%、修理履歴25%とし、合計スコアが80点以上で高級品判定、60〜79点で標準品判定、60点未満で要修理品判定となる。修理履歴は直近3年以内の重大修理があれば減点対象とする。","最小価格閾値":15000,"最大価格閾値":800000,"優先度":2,"有効フラグ":true,"作成日時":"2024-11-20T09:30:00+09:00","更新日時":"2025-01-15T14:45:00+09:00","作成者ID":"rec-user-0047","更新者ID":"rec-user-0082"}],"判定ロジック適用履歴":[{"判定ロジック適用履歴ID":"rec-20250115-001","査定案件ID":"rec-case-2025-00847","査定判定ロジックID":"rec-logic-std-001","査定判定結果ID":"rec-result-2025-03421","適用日時":"2025-01-15T09:30:45+09:00","適用ステータス":"成功","適用結果":"標準査定ロジックにより自動評価を実施。物件種別：マンション、築年数：12年、所在地：東京都渋谷区、査定価格帯：4,200万円～4,500万円、信頼度スコア：0.92。全ての必須チェック項目をクリア。","エラーメッセージ":null,"適用者ID":null,"自動適用フラグ":true,"作成日時":"2025-01-15T09:30:47+09:00","作成者ID":"rec-system-auto"},{"判定ロジック適用履歴ID":"rec-20250215-001","査定案件ID":"rec-case-2025-0847","査定判定ロジックID":"rec-logic-special-high-value","査定判定結果ID":"rec-result-2025-0847-001","適用日時":"2025-02-15T14:32:18+09:00","適用ステータス":"成功","適用結果":"高額案件（査定額3,500万円）に対して特別査定ロジックを適用。市場価格との比較検証、担保価値の再評価、リスク係数の調整を実施。最終査定額3,420万円に決定。追加調査項目なし。","エラーメッセージ":null,"適用者ID":"rec-user-appraiser-yamada","自動適用フラグ":false,"作成日時":"2025-02-15T14:32:18+09:00","作成者ID":"rec-user-appraiser-yamada"},{"判定ロジック適用履歴ID":"rec-20250115-001","査定案件ID":"rec-case-2025-0847","査定判定ロジックID":"rec-logic-credit-check-v2","査定判定結果ID":null,"適用日時":"2025-01-15T14:32:18+09:00","適用ステータス":"失敗","適用結果":"顧客信用度チェックロジックの実行中に外部信用情報サービスとの連携でエラーが発生しました。チェック対象顧客ID：CUST-202501-5634","エラーメッセージ":"信用情報サービスへの接続がタイムアウトしました。ステータスコード：504 Gateway Timeout。リトライ回数：3回。最終試行時刻：2025-01-15 14:32:15","適用者ID":null,"自動適用フラグ":true,"作成日時":"2025-01-15T14:32:18+09:00","作成者ID":"rec-user-system-001"},{"判定ロジック適用履歴ID":"rec-001","査定案件ID":"rec-002","査定判定ロジックID":"rec-003","査定判定結果ID":null,"適用日時":"2024-11-15T09:30:45+09:00","適用ステータス":"スキップ","適用結果":"対象案件の車両年式が2015年のため、新型車向けロジックの適用対象外となりスキップされました。","エラーメッセージ":null,"適用者ID":null,"自動適用フラグ":true,"作成日時":"2024-11-15T09:30:45+09:00","作成者ID":"rec-004"},{"判定ロジック適用履歴ID":"rec-20250115-0847-a3f2","査定案件ID":"rec-案件-2024-0012847","査定判定ロジックID":"rec-ロジック-自動査定-v2.1","査定判定結果ID":"rec-結果-2025-0156234","適用日時":"2025-01-15T02:47:33+09:00","適用ステータス":"成功","適用結果":"自動査定ロジック(v2.1)により標準査定額を算出。物件種別:マンション、築年数:12年、面積:65㎡、立地スコア:78/100。基準価格から15%減額、査定額:2,890万円と判定。","エラーメッセージ":null,"適用者ID":null,"自動適用フラグ":true,"作成日時":"2025-01-15T02:47:34+09:00","作成者ID":"rec-システムユーザー-バッチ001"},{"判定ロジック適用履歴ID":"rec-20250215-001","査定案件ID":"rec-20250101-042","査定判定ロジックID":"rec-20240615-008","査定判定結果ID":"rec-20250215-003","適用日時":"2025-02-15 14:32:18","適用ステータス":"成功","適用結果":"過去ロジック（事故歴判定ロジックv2.1）を再適用。初回適用時は事故歴なしと判定されていたが、追加情報の確認により軽微事故1件が判明。判定結果を「事故歴あり（軽微）」に更新。査定額減額幅：5,000円。","エラーメッセージ":null,"適用者ID":"rec-user-2024-156","自動適用フラグ":false,"作成日時":"2025-02-15 14:32:18","作成者ID":"rec-user-2024-156"},{"判定ロジック適用履歴ID":"rec-20250215-001","査定案件ID":"rec-20240815-042","査定判定ロジックID":"rec-20250201-ai-logic-v2","査定判定結果ID":"rec-20250215-result-042","適用日時":"2025-02-15 14:32:18","適用ステータス":"成功","適用結果":"AI判定ロジックv2.0による遡及適用。事故歴スコア: 8.5/10、修復履歴判定: 軽微、走行距離評価: 標準範囲内。総合判定: 適正査定額範囲内。従来判定との差分: +2.3万円。","エラーメッセージ":null,"適用者ID":"rec-user-ai-system","自動適用フラグ":true,"作成日時":"2025-02-15 14:32:18","作成者ID":"rec-user-system-admin"},{"判定ロジック適用履歴ID":"rec-20250115-001","査定案件ID":"rec-20250110-case-042","査定判定ロジックID":"rec-logic-manufacturing-001","査定判定結果ID":"rec-result-20250115-089","適用日時":"2025-01-15T09:30:45+09:00","適用ステータス":"成功","適用結果":"業界別査定ロジック（製造業）が正常に適用されました。対象案件は自動車部品製造業であり、売上高5億2000万円、営業利益率8.5%、債務超過なし、直近3年の売上成長率4.2%の条件下で、査定等級Bランク（信用スコア720）と判定されました。","エラーメッセージ":null,"適用者ID":null,"自動適用フラグ":true,"作成日時":"2025-01-15T09:30:45+09:00","作成者ID":"rec-system-auto"},{"判定ロジック適用履歴ID":"rec-20250214-001","査定案件ID":"rec-20250210-case-0847","査定判定ロジックID":"rec-logic-0156","査定判定結果ID":null,"適用日時":"2025-02-14T14:32:45+09:00","適用ステータス":"失敗","適用結果":"判定ロジック実行中にシステムエラーが発生し、処理が中断されました。リトライが必要です。","エラーメッセージ":"データベース接続タイムアウト: 判定ロジック実行エンジンへの接続が120秒以内に確立できませんでした。","適用者ID":null,"自動適用フラグ":true,"作成日時":"2025-02-14T14:32:47+09:00","作成者ID":"rec-system-auto"},{"判定ロジック適用履歴ID":"rec-20250215-001","査定案件ID":"rec-case-20250101-847","査定判定ロジックID":"rec-logic-v2.3-001","査定判定結果ID":"rec-result-20250215-1203","適用日時":"2025-02-15T14:30:00+09:00","適用ステータス":"成功","適用結果":"査定基準改定版ロジック（v2.3）を適用。従前の減価率を0.8倍に調整し、再評価額を2,450,000円から2,380,000円に修正。判定ランクはBからBに据え置き。","エラーメッセージ":null,"適用者ID":null,"自動適用フラグ":true,"作成日時":"2025-02-15T14:30:00+09:00","作成者ID":"rec-user-system-batch"}],"相場マスタ":[{"相場マスタID":"rec-001","品目コード":"BW-LUX-001","品目名":"ロレックス サブマリーナ デイト","カテゴリ":"高級腕時計","基準相場価格":1850000,"最低相場価格":1650000,"最高相場価格":2200000,"相場更新日":"2025-01-15T10:30:00+09:00","有効フラグ":true,"作成日時":"2024-06-20T14:25:00+09:00","作成者":"山田太郎","更新日時":"2025-01-15T10:30:00+09:00","更新者":"佐藤花子"},{"相場マスタID":"rec-001","品目コード":"USED-SP-001","品目名":"iPhone 13 128GB ブラック 中古良好","カテゴリ":"スマートフォン","基準相場価格":45000,"最低相場価格":38000,"最高相場価格":52000,"相場更新日":"2025-01-15T10:30:00+09:00","有効フラグ":true,"作成日時":"2024-06-20T14:22:15+09:00","作成者":"田中太郎","更新日時":"2025-01-15T10:30:00+09:00","更新者":"鈴木花子"},{"相場マスタID":"rec-001","品目コード":"PM-AU-9999","品目名":"純金インゴット（1g）","カテゴリ":"貴金属","基準相場価格":13200,"最低相場価格":12800,"最高相場価格":13600,"相場更新日":"2025-01-15T09:30:00+09:00","有効フラグ":true,"作成日時":"2024-06-01T14:20:00+09:00","作成者":"鈴木花子","更新日時":"2025-01-15T09:30:00+09:00","更新者":"山田太郎"},{"相場マスタID":"rec-001","品目コード":"CL-NB-0015","品目名":"ノーブランド綿混紡Tシャツ","カテゴリ":"衣類","基準相場価格":800,"最低相場価格":500,"最高相場価格":1200,"相場更新日":"2025-01-15T10:30:00","有効フラグ":true,"作成日時":"2024-06-20T09:15:00","作成者":"佐藤花子","更新日時":"2025-01-15T10:30:00","更新者":"鈴木次郎"},{"相場マスタID":"rec-001","品目コード":"GAME-CONSOLE-PS5-STD","品目名":"PlayStation 5 本体 標準版（型落ち品）","カテゴリ":"ゲーム機器","基準相場価格":42000,"最低相場価格":35000,"最高相場価格":48000,"相場更新日":"2025-01-15T09:30:00+09:00","有効フラグ":true,"作成日時":"2024-06-20T14:45:00+09:00","作成者":"佐藤花子","更新日時":"2025-01-15T09:30:00+09:00","更新者":"鈴木健一"},{"相場マスタID":"rec-001","品目コード":"LENS-CANON-EF70200F28","品目名":"Canon EF 70-200mm F2.8L IS III USM","カテゴリ":"カメラレンズ","基準相場価格":185000,"最低相場価格":178000,"最高相場価格":192000,"相場更新日":"2025-01-15T09:30:00","有効フラグ":true,"作成日時":"2024-06-20T14:22:15","作成者":"田中太郎","更新日時":"2025-01-15T09:30:00","更新者":"鈴木花子"},{"相場マスタID":"rec-001","品目コード":"ELEC-AC-2024","品目名":"ルームエアコン 2.8kW","カテゴリ":"冷暖房機器","基準相場価格":85000,"最低相場価格":62000,"最高相場価格":128000,"相場更新日":"2024-09-15T14:30:00+09:00","有効フラグ":true,"作成日時":"2024-04-10T09:00:00+09:00","作成者":"山田花子","更新日時":"2024-09-15T14:30:00+09:00","更新者":"佐藤次郎"},{"相場マスタID":"rec-001","品目コード":"BOOK-FIRST-ED-001","品目名":"初版プレミアム書籍・DVD","カテゴリ":"書籍・映像メディア","基準相場価格":8500,"最低相場価格":3000,"最高相場価格":25000,"相場更新日":"2025-01-15T10:30:00+09:00","有効フラグ":true,"作成日時":"2024-06-20T14:45:00+09:00","作成者":"田中太郎","更新日時":"2025-01-15T10:30:00+09:00","更新者":"佐藤花子"},{"相場マスタID":"rec-001","品目コード":"AP-0342-001","品目名":"汎用ラジエーターホース（内径16mm）","カテゴリ":"冷却系部品","基準相場価格":3500,"最低相場価格":1200,"最高相場価格":8900,"相場更新日":"2025-01-15T10:30:00+09:00","有効フラグ":true,"作成日時":"2024-06-20T14:15:00+09:00","作成者":"山田太郎","更新日時":"2025-01-15T10:30:00+09:00","更新者":"鈴木花子"},{"相場マスタID":"rec-001","品目コード":"BAG-LV-001","品目名":"ルイヴィトン モノグラム スピーディ30","カテゴリ":"ブランドバッグ","基準相場価格":185000,"最低相場価格":165000,"最高相場価格":210000,"相場更新日":"2025-01-15T10:30:00","有効フラグ":true,"作成日時":"2024-11-20T09:15:00","作成者":"田中太郎","更新日時":"2025-01-15T10:30:00","更新者":"鈴木花子"}],"相場乖離分析":[{"相場乖離分析ID":"rec-001-20250115-001","査定案件ID":"rec-002-20250110-001","査定判定結果ID":"rec-003-20250110-001","相場マスタID":"rec-004-20241201-001","査定金額":1850000,"相場金額":1650000,"乖離金額":200000,"乖離率":"12.12%","乖離区分":"高評価","乖離要因":"ルイ・ヴィトン モノグラム ハンドバッグの査定案件。保存状態が良好で、付属品（保証書、ダストバッグ、箱）が完備されていた。また、限定色であることが相場より高い評価につながった。","品質判定":"要確認","対応状況":"確認中","対応内容":"査定士の松本由美による初期査定を実施。高評価の根拠となった保存状態と限定色について、シニア査定士の佐藤健一による再査定を2025年1月20日に予定。査定基準の妥当性を検証中。","作成日時":"2025-01-15T09:30:00+09:00","作成者":"rec-005-user-001","更新日時":"2025-01-15T14:45:00+09:00","更新者":"rec-005-user-002"},{"相場乖離分析ID":"rec-001","査定案件ID":"rec-002","査定判定結果ID":"rec-003","相場マスタID":"rec-004","査定金額":45000,"相場金額":68000,"乖離金額":-23000,"乖離率":"-33.82%","乖離区分":"低評価","乖離要因":"商品全体に多数の傷が確認され、特に画面部分に深いスクラッチ傷が複数箇所あり、背面にも落下による凹みが見られる。また、内部にホコリの堆積が認められ、清掃が不十分な状態での買取となった。","品質判定":"要確認","対応状況":"確認中","対応内容":"査定担当者の鈴木花子に確認を依頼。傷の深さ・範囲が相場マスタの基準を満たしているか、また清掃による改善可能性について再評価予定。","作成日時":"2024-11-15T10:30:00Z","作成者":"rec-005","更新日時":"2024-11-16T14:20:00Z","更新者":"rec-006"},{"相場乖離分析ID":"rec-20250115-001","査定案件ID":"rec-20250110-case-087","査定判定結果ID":"rec-20250112-judge-042","相場マスタID":"rec-master-winter-coat-2025","査定金額":28500,"相場金額":22000,"乖離金額":6500,"乖離率":"29.55%","乖離区分":"高評価","乖離要因":"冬季商品の需要ピーク時期（1月中旬）での査定のため、季節需要による相場上昇を反映。同一ブランドの冬用コートは現在市場で高需要状態にあり、相場マスタの基準値（11月作成）よりも需要が増加している。","品質判定":"適正","対応状況":"完了","対応内容":"季節変動分析チームにより確認済み。冬季ピーク需要による正当な相場上昇と判定。相場マスタの更新スケジュール（2月初旬）まで現在の査定基準で継続することを決定。","作成日時":"2025-01-15T09:30:00+09:00","作成者":"rec-user-yamamoto-hanako","更新日時":"2025-01-15T14:45:00+09:00","更新者":"rec-user-suzuki-taro"},{"相場乖離分析ID":"rec-20250215-001","査定案件ID":"rec-20250210-542","査定判定結果ID":"rec-20250210-8847","相場マスタID":"rec-master-2024-11-156","査定金額":2800000,"相場金額":3500000,"乖離金額":-700000,"乖離率":"-20.0%","乖離区分":"低評価","乖離要因":"新人査定者による過度な割引評価。傷や汚れの評価基準が厳しすぎ、市場相場を大きく下回る金額を提示。同一条件の類似案件との比較で乖離が明確。","品質判定":"要確認","対応状況":"確認中","対応内容":"2025年2月15日に査定者（佐藤健一）に対してフィードバック実施。相場マスタとの乖離理由をヒアリング中。査定基準の再教育を予定。","作成日時":"2025-02-15T10:30:00+09:00","作成者":"rec-user-supervisor-0847","更新日時":"2025-02-15T14:45:00+09:00","更新者":"rec-user-supervisor-0847"},{"相場乖離分析ID":"rec-20250115-001","査定案件ID":"rec-20241201-case-042","査定判定結果ID":"rec-20241203-judge-015","相場マスタID":"rec-20250110-market-108","査定金額":2850000,"相場金額":2800000,"乖離金額":50000,"乖離率":"1.79%","乖離区分":"正常範囲内","乖離要因":"査定実施時点で相場マスタが未更新状態にあり、前月データを参照していたため、市場価格上昇に伴う乖離が発生。その後、相場マスタの更新により乖離が解消された。","品質判定":"適正","対応状況":"完了","対応内容":"2025年1月10日に相場マスタを最新市場データで更新。乖離率が1.79%に収まり、正常範囲内であることを確認。査定案件の品質判定は適正と判定。","作成日時":"2024-12-03T14:30:00","作成者":"rec-user-0847","更新日時":"2025-01-15T09:45:00","更新者":"rec-user-0923"},{"相場乖離分析ID":"rec-001","査定案件ID":"rec-002","査定判定結果ID":"rec-003","相場マスタID":null,"査定金額":2850000,"相場金額":null,"乖離金額":null,"乖離率":"N/A","乖離区分":"相場参照不可","乖離要因":"希少品・限定品（2015年製造 ポルシェ911カレラRS 限定500台）のため、相場マスタに該当レコードが存在しない。市場流通量が極めて少なく、標準的な相場設定が困難。","品質判定":"要確認","対応状況":"確認中","対応内容":"査定担当者による専門家評価を実施。オークション落札価格およびコレクター市場の取引事例3件を参考に査定金額を決定。希少性加算係数1.15を適用。","作成日時":"2024-11-15T10:30:00","作成者":"rec-004","更新日時":"2024-11-22T14:45:00","更新者":"rec-005"},{"相場乖離分析ID":"rec-001","査定案件ID":"rec-002","査定判定結果ID":"rec-003","相場マスタID":"rec-004","査定金額":1250000,"相場金額":1180000,"乖離金額":70000,"乖離率":"5.93%","乖離区分":"高評価","乖離要因":"査定者Aが追加オプション装備（本革シート、プレミアムオーディオシステム）の価値を適切に評価した結果、相場マスタの基準金額を上回った。査定者Bの評価との差異は装備品の状態判定基準の相違に起因。","品質判定":"要確認","対応状況":"確認中","対応内容":"2025年1月15日に査定者A（山田花子）と査定者B（佐藤次郎）による合同検査を実施。装備品の実装状況と劣化度を再確認し、評価基準の統一化を進行中。","作成日時":"2025-01-10T14:32:15+09:00","作成者":"rec-005","更新日時":"2025-01-15T11:47:22+09:00","更新者":"rec-006"},{"相場乖離分析ID":"rec-001-2024-1127-a8f2","査定案件ID":"rec-002-2024-1015-b3e5","査定判定結果ID":"rec-003-2024-1015-c7d1","相場マスタID":"rec-004-2024-1100-d2k9","査定金額":2850000,"相場金額":3200000,"乖離金額":-350000,"乖離率":"-10.94%","乖離区分":"低評価","乖離要因":"買取直後の10月中旬から11月下旬にかけて、同一型式の中古車市場相場が急速に下落。新型モデルの発表と在庫増加により市場が軟化。査定時点では相場3,200,000円で適正と判定されたが、買取後わずか6週間で相場が3,200,000円→2,850,000円に下落したため、現在の市場価値との乖離が発生した。","品質判定":"要確認","対応状況":"確認中","対応内容":"市場相場の急速な下落が確認されたため、相場マスタの更新スケジュール見直しを検討中。買取タイミングと相場変動のリスク管理プロセスについて営業部門と協議予定。今後の類似案件では相場変動リスクヘッジの強化を推奨。","作成日時":"2024-11-27T14:32:15Z","作成者":"rec-005-user-2024-e4m7","更新日時":"2024-11-28T09:18:42Z","更新者":"rec-006-user-2024-f1n3"},{"相場乖離分析ID":"rec-20250115-001","査定案件ID":"rec-案件-20241228-045","査定判定結果ID":"rec-判定-20241228-089","相場マスタID":"rec-相場-トヨタプリウス-2022年式","査定金額":1850000,"相場金額":1680000,"乖離金額":170000,"乖離率":"10.12%","乖離区分":"高評価","乖離要因":"初回査定では走行距離を誤認識していたが、顧客クレーム対応時の再検証で実走行距離が当初報告より60,000km少ないことが判明。また、定期メンテナンス記録が充実していることが確認され、車両状態が相場より良好と判定された。","品質判定":"適正","対応状況":"完了","対応内容":"2025年1月12日に顧客立会いのもと再査定を実施。走行距離メーター確認、整備記録簿の精査、外装・内装の詳細検査を実施。初回査定との差異について顧客に説明し、査定金額を1,850,000円に修正。顧客より納得の意思確認を得た。","作成日時":"2025-01-15T09:30:00+09:00","作成者":"rec-ユーザー-佐藤花子","更新日時":"2025-01-15T14:45:00+09:00","更新者":"rec-ユーザー-鈴木一郎"},{"相場乖離分析ID":"rec-20250215-001","査定案件ID":"rec-20250210-045","査定判定結果ID":"rec-20250212-089","相場マスタID":"rec-20241120-156","査定金額":2850000,"相場金額":2100000,"乖離金額":750000,"乖離率":"35.71%","乖離区分":"高評価","乖離要因":"相場マスタの登録時に年式を2022年と誤入力していたが、実際は2024年新型モデルであり、市場価値が大幅に異なっていた。相場マスタ側の入力ミスが原因。","品質判定":"要確認","対応状況":"完了","対応内容":"2025年2月13日に相場マスタを年式2024年に修正し、相場金額を2,850,000円に更新した。同時に過去3ヶ月間の同型式案件5件の査定結果を再検証し、全て適正であることを確認。査定担当者の佐藤花子に報告済み。","作成日時":"2025-02-14T10:30:00","作成者":"rec-user-0087","更新日時":"2025-02-14T16:45:00","更新者":"rec-user-0042"}],"判定ばらつき分析":[{"判定ばらつき分析ID":"rec-001","査定案件ID":"rec-002","査定員ID":"rec-003","査定判定結果ID":"rec-004","相場マスタID":"rec-005","査定金額":130000,"相場金額":100000,"乖離金額":30000,"乖離率":"30.0%","ばらつきレベル":"要改善","判定ロジック適用履歴ID":"rec-006","分析対象期間開始日":"2024-10-01T00:00:00Z","分析対象期間終了日":"2024-12-31T23:59:59Z","摘要":"ブランド品（ルイヴィトン モノグラム ハンドバッグ）の査定において、査定員Aが相場金額100,000円に対して130,000円と評価。商品の状態は中古品（使用感あり）であり、相場基準では30,000円の過大評価となっている。査定員Aの判定傾向として、ブランド品に対して相場より高めの評価を付与する傾向が見られるため、査定基準の再教育が必要。","作成日時":"2024-11-15T10:30:00Z","更新日時":"2024-11-15T10:30:00Z","作成者":"rec-007"},{"判定ばらつき分析ID":"rec-20250115-001","査定案件ID":"rec-20250110-case-042","査定員ID":"rec-emp-b-0156","査定判定結果ID":"rec-20250110-judge-089","相場マスタID":"rec-market-lcd-55in-2024","査定金額":45000,"相場金額":50000,"乖離金額":-5000,"乖離率":"-10.0%","ばらつきレベル":"要注意","判定ロジック適用履歴ID":"rec-logic-hist-2025-001","分析対象期間開始日":"2024-11-01T00:00:00+09:00","分析対象期間終了日":"2025-01-15T23:59:59+09:00","摘要":"査定員Bによる中古液晶テレビ（55インチ）の査定において、相場金額50,000円に対し45,000円での判定が確認。同期間内に同一査定員による類似商品（冷蔵庫、洗濯機）でも-8%～-12%の乖離が複数件検出されており、判定基準の厳格化傾向が認められる。査定員研修による是正が必要。","作成日時":"2025-01-15T14:30:00+09:00","更新日時":"2025-01-15T14:30:00+09:00","作成者":"rec-user-admin-0821"},{"判定ばらつき分析ID":"rec-001","査定案件ID":"rec-002","査定員ID":"rec-003","査定判定結果ID":"rec-004","相場マスタID":"rec-005","査定金額":48500,"相場金額":50000,"乖離金額":-1500,"乖離率":"-3.0%","ばらつきレベル":"正常","判定ロジック適用履歴ID":"rec-006","分析対象期間開始日":"2024-04-01T00:00:00","分析対象期間終了日":"2024-04-30T23:59:59","摘要":"新人査定員Cの初月査定。相場との乖離が±5%以内に収まっており、判定精度は良好。継続的な指導により更なる精度向上が期待できる。","作成日時":"2024-05-02T10:30:00","更新日時":"2024-05-02T10:30:00","作成者":"rec-007"},{"判定ばらつき分析ID":"rec-20250115-001","査定案件ID":"rec-20250110-case-042","査定員ID":"rec-staff-D-004","査定判定結果ID":"rec-judgment-20250110-156","相場マスタID":"rec-market-watch-rolex-sub-2024","査定金額":1500000,"相場金額":1000000,"乖離金額":500000,"乖離率":"50.0%","ばらつきレベル":"要改善","判定ロジック適用履歴ID":"rec-logic-history-20250115-08","分析対象期間開始日":"2024-12-01T00:00:00Z","分析対象期間終了日":"2025-01-15T23:59:59Z","摘要":"査定員D（佐藤健一）が高級時計ロレックスサブマリーナの査定で相場150万円に対し200万円と50%高い査定額を提示。同時期の他査定員との乖離が顕著。査定基準の再教育と査定プロセスの厳格化が必要。","作成日時":"2025-01-15T09:30:00Z","更新日時":"2025-01-15T14:45:00Z","作成者":"rec-user-manager-001"},{"判定ばらつき分析ID":"rec-20250215-001","査定案件ID":"rec-20250214-cas-0847","査定員ID":"rec-emp-00005","査定判定結果ID":"rec-20250214-jdg-0847","相場マスタID":"rec-mst-iphone15pro-256gb","査定金額":78000,"相場金額":92000,"乖離金額":-14000,"乖離率":"-15.2%","ばらつきレベル":"要注意","判定ロジック適用履歴ID":"rec-logic-2025-01-monthly","分析対象期間開始日":"2025-01-01T00:00:00Z","分析対象期間終了日":"2025-01-31T23:59:59Z","摘要":"査定員E（佐藤健一）の1月度査定実績において乖離率が-12%～-18%の範囲に集中。過去3ヶ月の平均乖離率-3.5%から大きく乖離。スマートフォン・タブレット部門で特に過度な減額傾向が顕著。正規分布からの逸脱が統計的に有意。2月度査定前の面談・再教育推奨。","作成日時":"2025-02-15T09:30:00Z","更新日時":"2025-02-15T09:30:00Z","作成者":"rec-usr-admin-001"},{"判定ばらつき分析ID":"rec-20250115-001","査定案件ID":"rec-20250110-542","査定員ID":"rec-emp-0847","査定判定結果ID":"rec-20250112-jdg-3421","相場マスタID":"rec-mst-2024-lcd-32","査定金額":28500,"相場金額":30000,"乖離金額":-1500,"乖離率":"-5.0%","ばらつきレベル":"軽微","判定ロジック適用履歴ID":"rec-logic-20250101-v2.3","分析対象期間開始日":"2024-10-01T00:00:00Z","分析対象期間終了日":"2024-12-31T23:59:59Z","摘要":"営業部査定チームの第4四半期ばらつき分析。山田花子査定員は軽微な低め乖離が常態化。相場比-3%～-7%の範囲内で推移。査定基準の保守的解釈が要因と推定。次期研修で基準の統一化を実施予定。","作成日時":"2025-01-15T09:30:00Z","更新日時":"2025-01-15T09:30:00Z","作成者":"rec-usr-0312"},{"判定ばらつき分析ID":"rec-001","査定案件ID":"rec-002","査定員ID":"rec-003","査定判定結果ID":"rec-004","相場マスタID":"rec-005","査定金額":285000,"相場金額":280000,"乖離金額":5000,"乖離率":"1.79%","ばらつきレベル":"正常","判定ロジック適用履歴ID":"rec-006","分析対象期間開始日":"2025-01-01T00:00:00Z","分析対象期間終了日":"2025-01-31T23:59:59Z","摘apt":"新判定ロジック適用後の査定員F（鈴木花子）の乖laziness率改善を確認。従来は平均4.2%の乖離があったが、ロジック適用後は1.79%に低下。査定精度向上が顕著。","作成日時":"2025-02-05T10:30:00Z","更新日時":"2025-02-05T10:30:00Z","作成者":"rec-007"},{"判定ばらつき分析ID":"rec-20250215-001","査定案件ID":"rec-20250210-case-0847","査定員ID":"rec-user-suzuki-0234","査定判定結果ID":"rec-result-20250210-5621","相場マスタID":"rec-market-smartwatch-2024","査定金額":18500,"相場金額":22000,"乖離金額":-3500,"乖離率":"-15.9%","ばらつきレベル":"要改善","判定ロジック適用履歴ID":"rec-logic-cat-electronics-v3.2","分析対象期間開始日":"2024-11-01T00:00:00Z","分析対象期間終了日":"2025-02-15T23:59:59Z","摘要":"スマートウォッチカテゴリにおいて、鈴木査定員を含む3名の査定員が一貫して相場より低く評価している傾向を確認。同期間における該当カテゴリ査定案件32件中28件で相場下回り。電池残量評価基準の解釈相違が原因と推定。査定員研修実施予定。","作成日時":"2025-02-15T10:30:00Z","更新日時":"2025-02-15T10:30:00Z","作成者":"rec-user-tanaka-0156"},{"判定ばらつき分析ID":"rec-20250115-001","査定案件ID":"rec-案件-20250110-042","査定員ID":"rec-査定員-G-00789","査定判定結果ID":"rec-判定-20250110-156","相場マスタID":"rec-相場-iPhone15Pro-256GB","査定金額":95000,"相場金額":94500,"乖離金額":500,"乖離率":"0.53%","ばらつきレベル":"正常","判定ロジック適用履歴ID":"rec-ロジック-v2.1-20241201","分析対象期間開始日":"2024-12-01T00:00:00Z","分析対象期間終了日":"2025-01-15T23:59:59Z","摘要":"査定員Gは対象期間中の全73件の判定において相場金額との乖離率が±2%以内に収まっており、継続的な高精度判定を実現している。特に高額商品の判定精度が優れており、品質管理上の模範事例として推奨される。","作成日時":"2025-01-15T09:30:00Z","更新日時":"2025-01-15T09:30:00Z","作成者":"rec-ユーザー-品質管理部-00215"},{"判定ばらつき分析ID":"rec-20250215-001","査定案件ID":"rec-case-20250210-087","査定員ID":"rec-assessor-H-001","査定判定結果ID":"rec-judgment-20250210-156","相場マスタID":"rec-market-iphone15pro-001","査定金額":78000,"相場金額":79500,"乖離金額":-1500,"乖離率":"-1.89%","ばらつきレベル":"正常","判定ロジック適用履歴ID":"rec-logic-20250101-042","分析対象期間開始日":"2025-02-01T00:00:00Z","分析対象期間終了日":"2025-02-14T23:59:59Z","摘要":"査定員Hは2024年12月の研修受講後、判定ばらつきが要改善レベル（乖離率-8.5%）から正常レベルへ改善。2月度の査定案件における乖離率は-1.89%と基準値内に収束。査定基準の理解度向上が確認された。継続フォローアップを推奨。","作成日時":"2025-02-15T10:30:45Z","更新日時":"2025-02-15T10:30:45Z","作成者":"rec-user-suzuki-001"}],"判定精度指標":[{"判定精度指標ID":"rec-20240201-001","査定員ID":"rec-assessor-0847","査定判定ロジックID":"rec-logic-standard-v2","測定期間開始日":"2024-01-01T00:00:00Z","測定期間終了日":"2024-01-31T23:59:59Z","総判定件数":287,"正確判定件数":272,"判定精度率":"94.8%","平均乖離率":"1.8%","最大乖離率":"5.2%","判定ばらつき度":"0.87","改善フラグ":false,"備考":"ベテラン査定員として安定した精度を維持。特に中古車両の外装評価において高い精度を示している。1月下旬の大型商品判定で若干の乖離が見られるが、全体的には基準値を上回る成績。","作成日時":"2024-02-05T09:30:00Z","更新日時":"2024-02-05T09:30:00Z","作成者":"rec-user-supervisor-0123"},{"判定精度指標ID":"rec-20250115-001","査定員ID":"rec-assessor-B-2024","査定判定ロジックID":"rec-logic-standard-001","測定期間開始日":"2025-01-01T00:00:00Z","測定期間終了日":"2025-01-15T23:59:59Z","総判定件数":87,"正確判定件数":73,"判定精度率":"83.9%","平均乖離率":"4.7%","最大乖離率":"12.3%","判定ばらつき度":"8.5%","改善フラグ":true,"備考":"新人査定員Bの研修第2週の成績。精度目標90%に対して83.9%と下回っており、特に高額商品の判定にばらつきが見られる。標準ロジックの理解不足が原因と推定。来週の集中研修と先輩査定員との同行査定を推奨。","作成日時":"2025-01-16T09:30:00Z","更新日時":"2025-01-16T09:30:00Z","作成者":"rec-user-supervisor-2024"},{"判定精度指標ID":"rec-001-2024-12-15-001","査定員ID":"rec-user-2024-001","査定判定ロジックID":"rec-logic-brand-ai-001","測定期間開始日":"2024-11-01T00:00:00Z","測定期間終了日":"2024-11-30T23:59:59Z","総判定件数":1250,"正確判定件数":1187,"判定精度率":"94.96%","平均乖離率":"3.2%","最大乖離率":"8.7%","判定ばらつき度":"0.45","改善フラグ":false,"備考":"ルイ・ヴィトン、グッチ等の高級ブランド品の判定精度は良好。ただし、新作商品や限定品での乖離が若干見られる。偽造品判定の精度は98.5%で優秀。来月は中古相場データベースの更新を予定し、さらなる精度向上を目指す。","作成日時":"2024-12-01T09:30:00Z","更新日時":"2024-12-15T14:45:00Z","作成者":"rec-user-admin-2024-001"},{"判定精度指標ID":"rec-20250115-001","査定員ID":"rec-assessor-c-003","査定判定ロジックID":"rec-logic-watch-002","測定期間開始日":"2025-01-01T00:00:00Z","測定期間終了日":"2025-01-31T23:59:59Z","総判定件数":287,"正確判定件数":261,"判定精度率":"90.9%","平均乖離率":"3.8%","最大乖離率":"8.5%","判定ばらつき度":"6,200円（標準偏差）","改善フラグ":true,"備考":"腕時計の高級ブランド品（ロレックス、オメガ等）の判定において、同一商品の状態評価にばらつきが見られる。特に傷・使用感の評価基準が個人差に左右されやすい傾向。来月は品質基準マニュアルの再教育と、複数査定員による相互検証プロセスの導入を推奨。","作成日時":"2025-02-01T09:30:00Z","更新日時":"2025-02-01T09:30:00Z","作成者":"rec-user-manager-001"},{"判定精度指標ID":"rec-20250215-001","査定員ID":"rec-user-2024-087","査定判定ロジックID":"rec-logic-appliance-v2.1","測定期間開始日":"2025-01-01T00:00:00Z","測定期間終了日":"2025-02-14T23:59:59Z","総判定件数":2847,"正確判定件数":2534,"判定精度率":"89.0%","平均乖離率":"5.8%","最大乖離率":"18.2%","判定ばらつき度":"12.4%","改善フラグ":true,"備考":"冷蔵庫・洗濯機カテゴリで精度低下が顕著。特に型落ち商品の相場判定で乖離が拡大。推奨対応：学習データに2024年下期の相場変動を追加反映、冷蔵庫容量別の判定ロジック細分化、査定員による目視確認プロセスの強化。次回測定は3月15日予定。","作成日時":"2025-02-15T09:30:00Z","更新日時":"2025-02-15T09:30:00Z","作成者":"rec-user-2024-156"},{"判定精度指標ID":"rec-20250115-001","査定員ID":"rec-assessor-047","査定判定ロジックID":"rec-logic-consistency-check","測定期間開始日":"2024-10-01T00:00:00Z","測定期間終了日":"2024-12-31T23:59:59Z","総判定件数":245,"正確判定件数":218,"判定精度率":"89.0%","平均乖離率":"3.7%","最大乖離率":"8.2%","判定ばらつき度":"1.24σ","改善フラグ":true,"備考":"複数査定員による同一商品（ブランドバッグ、時計）の判定結果において、査定員間の判定価格乖離が顕著。特に状態評価の基準が査定員ごとに異なる傾向。山田花子、佐藤次郎との判定乖離が大きい（最大8.2%）。査定判定基準の統一研修と事例共有会の実施を推奨。","作成日時":"2025-01-15T09:30:00Z","更新日時":"2025-01-15T14:45:00Z","作成者":"rec-user-admin-012"},{"判定精度指標ID":"rec-001-2024q1-001","査定員ID":"rec-usr-assessor-0047","査定判定ロジックID":"rec-logic-standard-v2.1","測定期間開始日":"2024-01-01T00:00:00Z","測定期間終了日":"2024-03-31T23:59:59Z","総判定件数":1247,"正確判定件数":1186,"判定精度率":"95.1%","平均乖離率":"1.8%","最大乖離率":"6.2%","判定ばらつき度":"0.87","改善フラグ":false,"備考":"Q1全体で目標精度95%を達成。特に1月の新規査定員研修の効果が2月以降の精度向上に寄与。同一商品の判定ばらつきは業界標準範囲内。3月の乖離率が若干上昇した案件については相場変動の影響と判断。","作成日時":"2024-04-05T09:30:00Z","更新日時":"2024-04-05T09:30:00Z","作成者":"rec-usr-admin-0012"},{"判定精度指標ID":"rec-20250115-001","査定員ID":"rec-assessor-0047","査定判定ロジックID":"rec-logic-standard-v2","測定期間開始日":"2024-10-01T00:00:00Z","測定期間終了日":"2025-01-15T23:59:59Z","総判定件数":287,"正確判定件数":273,"判定精度率":"95.1%","平均乖離率":"1.8%","最大乖離率":"5.2%","判定ばらつき度":"2.4%","改善フラグ":false,"備考":"査定員D（佐藤健一）の昇進前最終評価期間。全指標で基準を達成。特に平均乖離率1.8%は部門内で優秀。同一商品の判定ばらつき度も低く、安定した査定能力を確認。昇進推奨。","作成日時":"2025-01-16T09:30:00Z","更新日時":"2025-01-16T09:30:00Z","作成者":"rec-user-supervisor-0012"},{"判定精度指標ID":"rec-001","査定員ID":"rec-0042","査定判定ロジックID":"rec-0015","測定期間開始日":"2024-11-01T09:00:00Z","測定期間終了日":"2024-12-15T17:30:00Z","総判定件数":450,"正確判定件数":387,"判定精度率":"86.0%","平均乖離率":"3.8%","最大乖離率":"12.5%","判定ばらつき度":"4.2","改善フラグ":true,"備考":"新導入の画像認識ロジック（AIモデルv2.1）のパイロット検証期間。精度は目標の92%に対して86%と下回っている。特に状態判定（傷・汚れ検出）の精度が84.5%に留まっており、学習データの拡充と閾値調整が必要。ただし導入初期としては許容範囲内。2025年1月の改善施策実施後に再検証予定。","作成日時":"2024-12-20T14:15:00Z","更新日時":"2024-12-20T14:15:00Z","作成者":"rec-0089"},{"判定精度指標ID":"rec-001-2025-001","査定員ID":"rec-assessor-0847","査定判定ロジックID":"rec-logic-winter-clothing-v2.1","測定期間開始日":"2024-11-01T00:00:00Z","測定期間終了日":"2025-01-31T23:59:59Z","総判定件数":1247,"正確判定件数":1186,"判定精度率":"95.1%","平均乖離率":"1.8%","最大乖離率":"5.2%","判定ばらつき度":"0.34","改善フラグ":false,"備考":"冬物衣類（ダウンジャケット、ウールコート等）の季節判定において高精度を維持。12月のセール時期における価格変動への対応が良好。同一商品の複数出品に対する判定のばらつきも許容範囲内で推移。引き続き1月の初売りシーズン動向を監視し、2月の春物切替時期に向けたロジック調整を検討。","作成日時":"2025-02-03T10:30:00Z","更新日時":"2025-02-03T10:30:00Z","作成者":"rec-user-admin-0215"}],"乖離パターン履歴":[{"乖離パターン履歴ID":"rec-001","査定案件ID":"rec-002","査定判定結果ID":"rec-003","相場マスタID":"rec-004","乖離パターン分類":"高評価乖離","乖離率":28,"乖離金額":420000,"乖離方向":"高評価","乖離要因":"ブランド品の高級ラインである限定モデルで、希少性が高く市場需要が強い。相場マスタの基準価格は標準ラインを参考としているため、高級ライン特有の付加価値が反映されていない。また、査定時点での流通在庫が少なく、買取需要が相場を上回っている。","検出日時":"2024-11-15T14:32:00+09:00","作成日時":"2024-11-15T14:35:22+09:00","更新日時":"2024-11-15T14:35:22+09:00","作成者":"rec-005"},{"乖離パターン履歴ID":"rec-001","査定案件ID":"rec-002","査定判定結果ID":"rec-003","相場マスタID":"rec-004","乖離パターン分類":"高評価乖離","乖離率":12,"乖離金額":480000,"乖離方向":"高評価","乖離要因":"走行距離が同年式同グレード車の平均走行距離（約8万km）に対して4万2千kmと大幅に少なく、車体状態が良好であることが査定額に反映された。相場マスタは平均的な走行距離を前提としているため乖離が発生。","検出日時":"2024-11-15 14:32:00","作成日時":"2024-11-15 14:35:00","更新日時":"2024-11-15 14:35:00","作成者":"rec-005"},{"乖離パターン履歴ID":"rec-001","査定案件ID":"rec-002","査定判定結果ID":"rec-003","相場マスタID":"rec-004","乖離パターン分類":"低評価乖離","乖離率":18,"乖離金額":45000,"乖離方向":"低評価","乖離要因":"冬物衣料品の需要期終了に伴う季節相場下落。前月の相場情報に基づいた査定判定のため、現在の市場相場との乖離が発生。在庫調整による市場供給増加が主要因と推定される。","検出日時":"2025-03-15 14:32:00","作成日時":"2025-03-15 14:35:00","更新日時":"2025-03-15 14:35:00","作成者":"rec-005"},{"乖離パターン履歴ID":"rec-001","査定案件ID":"rec-002","査定判定結果ID":"rec-003","相場マスタID":"rec-004","乖離パターン分類":"低評価乖離","乖離率":18,"乖離金額":540000,"乖離方向":"低評価","乖離要因":"査定担当者（経験年数1年未満）が内装の軽微な傷を過度に減点。相場マスタとの比較により、同等条件の物件に比べて査定額が過度に低く設定されていることが判明。内装減点項目で本来5万円程度の減点が、誤って30万円以上の減点として計上された可能性が高い。","検出日時":"2025-01-15 09:30:00","作成日時":"2025-01-15 09:30:00","更新日時":"2025-01-15 09:30:00","作成者":"rec-005"},{"乖離パターン履歴ID":"rec-001","査定案件ID":"rec-002","査定判定結果ID":"rec-003","相場マスタID":"rec-004","乖離パターン分類":"高評価乖離","乖離率":18,"乖離金額":2800000,"乖離方向":"高評価","乖離要因":"半導体不足による中古車市場の急騰。相場マスタは2024年9月時点の情報で更新されているが、2024年11月の急速な需要増加に追従できていない。該当車種（トヨタ・プリウス2021年式）は市場で異常な高値で取引されている。","検出日時":"2024-11-15 14:32:00","作成日時":"2024-11-15 14:35:00","更新日時":"2024-11-15 14:35:00","作成者":"rec-005"},{"乖離パターン履歴ID":"rec-001","査定案件ID":"rec-002","査定判定結果ID":"rec-003","相場マスタID":"rec-004","乖離パターン分類":"高評価乖離","乖離率":35,"乖離金額":280000,"乖離方向":"高評価","乖離要因":"限定版モデル・生産終了品の希少性を標準ロジックが未考慮。市場流通量が極めて少なく、コレクター需要が高い。査定システムは基本スペックのみで評価し、プレミアム価値を反映できていない。","検出日時":"2024-11-15T14:32:00","作成日時":"2024-11-15T14:35:22","更新日時":"2024-11-15T14:35:22","作成者":"rec-005"},{"乖離パターン履歴ID":"rec-001","査定案件ID":"rec-002","査定判定結果ID":"rec-003","相場マスタID":"rec-004","乖離パターン分類":"低評価乖離","乖離率":28,"乖離金額":450000,"乖離方向":"低評価","乖離要因":"返品・修復歴ありの商品が相場マスタ上で『未使用品』として分類されていたため、査定判定結果が相場より大幅に低くなった。実際には前回の修復箇所に塗装ムラが確認されており、適切な減額処理が必要。相場マスタの商品状態フラグ更新が必要。","検出日時":"2024-11-15T14:32:00+09:00","作成日時":"2024-11-15T14:35:22+09:00","更新日時":"2024-11-15T14:35:22+09:00","作成者":"rec-005"},{"乖離パターン履歴ID":"rec-20250214-001","査定案件ID":"rec-20250210-cas-042","査定判定結果ID":"rec-20250210-jdg-156","相場マスタID":"rec-market-2024-toyota-prius-5th","乖離パターン分類":"低評価乖離","乖離率":18,"乖離金額":1850000,"乖離方向":"低評価","乖離要因":"新型プリウス（6代目）発売に伴う旧型（5代目）の相場急落。市場相場は急速に下落しているが、査定システムの相場マスタ更新が遅延。2024年11月新型発売後、中古市場で旧型在庫品の買取相場が平均15-20%下落。本案件は2025年2月時点でも旧相場データを参照しており、実勢相場との乖離が顕著。","検出日時":"2025-02-14T09:35:00+09:00","作成日時":"2025-02-14T09:35:00+09:00","更新日時":"2025-02-14T09:35:00+09:00","作成者":"rec-user-佐藤花子"},{"乖離パターン履歴ID":"rec-001","査定案件ID":"rec-002","査定判定結果ID":"rec-003","相場マスタID":"rec-004","乖離パターン分類":"高評価乖離","乖離率":12,"乖離金額":48000,"乖離方向":"低評価","乖離要因":"バルク購入による仕入原価低下が査定判定に未反映。2024年11月のA社との100台一括購入契約により、仕入単価が従来比15%削減されたが、査定システムには旧相場マスタが適用されたまま。査定判定結果は相場マスタベースで算出されており、実際の原価改善が評価に反映されていない。","検出日時":"2024-12-15 14:32:00","作成日時":"2024-12-15 14:32:00","更新日時":"2024-12-15 14:32:00","作成者":"rec-005"},{"乖離パターン履歴ID":"rec-001","査定案件ID":"rec-002","査定判定結果ID":"rec-003","相場マスタID":"rec-004","乖離パターン分類":"異常値乖離","乖離率":28,"乖離金額":850000,"乖離方向":"高評価","乖離要因":"トヨタプリウス（2022年式、走行距離45,000km）の査定額が市場相場を大きく上回っている。オークション相場では同等車両が平均2,950,000円で取引されているが、当社査定では3,800,000円と評価。修復歴なし、事故歴なしの優良車両だが、評価基準の見直しが必要。","検出日時":"2024-11-15T14:32:00","作成日時":"2024-11-15T14:35:00","更新日時":"2024-11-15T14:35:00","作成者":"rec-005"}],"工種マスタ":[{"工種ID":"rec-001","工種コード":"RC001","工種名":"鉄筋コンクリート造","工種分類":"建築構造","説明":"鉄筋を配置したコンクリート構造体。主に中高層建築物の主要構造として採用される。耐火性・耐久性に優れ、大規模商業施設・オフィスビル・共同住宅等に広く適用される。査定対象は躯体の品質、かぶり厚さ、鉄筋配置の適切性、コンクリート強度等。","査定判定ロジックID":"rec-201","相場マスタID":"rec-301","有効フラグ":true,"作成日時":"2024-04-15T09:30:00+09:00","作成者":"田中太郎","更新日時":"2025-01-22T14:15:00+09:00","更新者":"佐藤花子"},{"工種ID":"rec-001-木造軸組-20250115","工種コード":"木造001","工種名":"木造軸組工法","工種分類":"建築構造","説明":"戸建住宅の主流構造工法。柱・梁・筋交いで構成される在来工法。耐震性・耐久性・施工性に優れ、増改築対応性も高い。一般的な2階建て木造住宅に広く採用されている。","査定判定ロジックID":"rec-logic-木造軸組-001","相場マスタID":"rec-market-木造軸組-2025","有効フラグ":true,"作成日時":"2024-04-10T09:30:00+09:00","作成者":"田中太郎","更新日時":"2025-01-15T14:20:00+09:00","更新者":"佐藤花子"},{"工種ID":"rec-k001-uuid-2024-0847","工種コード":"KI001","工種名":"杭基礎工事（既成杭）","工種分類":"基礎工事","説明":"既成コンクリート杭を使用した基礎工事。支持層までの杭打ち、杭頭処理、キャップビーム施工を含む。一般住宅から中規模建築物に適用。","査定判定ロジックID":"rec-logic-2024-0312","相場マスタID":"rec-market-2024-0156","有効フラグ":true,"作成日時":"2024-04-15T09:30:00+09:00","作成者":"佐藤次郎","更新日時":"2025-01-22T14:15:00+09:00","更新者":"鈴木美咲"},{"工種ID":"rec-001","工種コード":"GF001","工種名":"屋根葺き替え工事","工種分類":"外装工事","説明":"既存屋根材の撤去・処分から新規屋根材の葺き替えまでを含む工事。瓦、スレート、ガルバリウム鋼板等の材質に対応。耐震性・断熱性の向上を図る改修工事に該当。","査定判定ロジックID":"rec-logic-047","相場マスタID":"rec-market-089","有効フラグ":true,"作成日時":"2024-04-15T09:30:00Z","作成者":"佐藤花子","更新日時":"2024-12-08T14:22:00Z","更新者":"鈴木健一"},{"工種ID":"rec-001-interior-cross-2024","工種コード":"内装001","工種名":"内装工事（クロス張替）","工種分類":"内装工事","説明":"既存壁紙の撤去から新規クロス張替までの一連の内装工事。一般住宅・賃貸物件・商業施設の壁面仕上げに対応。施工面積により単価が変動。","査定判定ロジックID":"rec-logic-interior-cross-simple","相場マスタID":"rec-market-interior-cross-2024","有効フラグ":true,"作成日時":"2024-04-15T09:30:00Z","作成者":"山田花子","更新日時":"2025-01-20T14:15:00Z","更新者":"佐藤次郎"},{"工種ID":"rec-steel-001","工種コード":"S001","工種名":"鉄骨造（中規模建築物）","工種分類":"建築構造","説明":"地上3～5階の中規模オフィスビル・商業施設向けの鉄骨造。主に重量鉄骨を使用し、耐震性と施工性を兼ね備えた工法。査定対象は躯体工事から二次部材取付までを含む。","査定判定ロジックID":"rec-logic-steel-001","相場マスタID":"rec-market-steel-001","有効フラグ":true,"作成日時":"2024-04-15T09:30:00+09:00","作成者":"佐藤花子","更新日時":"2025-01-22T14:45:00+09:00","更新者":"山田次郎"},{"工種ID":"rec-20250115-001","工種コード":"基礎001","工種名":"布基礎工事","工種分類":"基礎工事","説明":"木造住宅の基礎工事。地盤面下に連続した鉄筋コンクリート造の帯状基礎を施工する工法。地盤調査結果に基づき、基礎深さ・鉄筋仕様を決定。一般的な地盤支持力が50kN/㎡以上の場合に適用。","査定判定ロジックID":"rec-20250110-042","相場マスタID":"rec-20241220-156","有効フラグ":false,"作成日時":"2024-06-15T09:30:00+09:00","作成者":"田中太郎","更新日時":"2025-01-15T14:45:00+09:00","更新者":"鈴木花子"},{"工種ID":"rec-001-仮設足場-20250115","工種コード":"仮設001","工種名":"仮設足場工事（くさび式）","工種分類":"仮設工事","説明":"建築工事における安全性確保のためのくさび式仮設足場の組立・解体・賃借。高さ10m～50m程度の外部足場に対応。労務費・材料費・安全管理費を含む。","査定判定ロジックID":"rec-logic-002-仮設足場汎用","相場マスタID":"rec-market-003-仮設足場変動","有効フラグ":true,"作成日時":"2024-06-20T09:30:00+09:00","作成者":"山田花子","更新日時":"2025-01-15T14:45:00+09:00","更新者":"佐藤次郎"},{"工種ID":"rec-20250115-001","工種コード":"RC-REF-001","工種名":"鉄筋コンクリート造躯体補強工事","工種分類":"改修工事","説明":"既存鉄筋コンクリート造建物の躯体耐力低下に対応する補強工事。炭素繊維シート巻き付け、鋼板接着補強、柱・梁の増厚補強などを含む。建築基準法改正対応や耐震補強を主目的とする。","査定判定ロジックID":"logic-20250110-042","相場マスタID":"market-20250108-156","有効フラグ":true,"作成日時":"2025-01-15T09:30:00+09:00","作成者":"佐藤花子","更新日時":"2025-01-20T14:15:00+09:00","更新者":"鈴木健一"},{"工種ID":"rec-001","工種コード":"KT-DEM-001","工種名":"建物解体工事（RC造）","工種分類":"解体工事","説明":"鉄筋コンクリート造の建物を対象とした解体工事。足場設置、重機による躯体破砕、廃棄物処理、地盤整地までを含む。騒音・振動対策が必須。","査定判定ロジックID":"rec-002","相場マスタID":"rec-003","有効フラグ":true,"作成日時":"2024-11-15T09:30:00","作成者":"山田花子","更新日時":"2024-11-15T09:30:00","更新者":"山田花子"}],"金額帯マスタ":[{"金額帯ID":"rec-001","金額帯コード":"S001","金額帯名称":"超高額案件（5000万円以上）","最小金額":50000000,"最大金額":999999999,"工種ID":null,"優先度":1,"有効フラグ":true,"備考":"建築工事全体における超高額案件。品質管理基準の最高レベルを適用し、設計変更管理、施工実績確認、定期的な第三者検査を実施。","作成日時":"2024-04-15T09:30:00","作成者":"山田花子","更新日時":"2025-01-20T14:45:00","更新者":"佐藤次郎"},{"金額帯ID":"rec-001","金額帯コード":"C003","金額帯名称":"500万～2000万円","最小金額":5000000,"最大金額":20000000,"工種ID":"rec-arch-001","優先度":2,"有効フラグ":true,"備考":"建築工事の標準的な中規模案件。通常査定ルール適用。","作成日時":"2024-04-15T09:30:00","作成者":"田中太郎","更新日時":"2024-11-20T14:15:00","更新者":"佐藤花子"},{"金額帯ID":"rec-001","金額帯コード":"A002","金額帯名称":"100万～500万円（小規模案件）","最小金額":1000000,"最大金額":5000000,"工種ID":"rec-w001","優先度":2,"有効フラグ":true,"備考":"建築工事の小規模案件向け。簡易査定対象。見積書と平面図で対応可能。","作成日時":"2024-04-15T09:30:00","作成者":"田中太郎","更新日時":"2025-01-20T14:15:00","更新者":"鈴木花子"},{"金額帯ID":"rec-001","金額帯コード":"E001","金額帯名称":"電気工事・1000万円以上（特別査定）","最小金額":10000000,"最大金額":999999999,"工種ID":"rec-002","優先度":1,"有効フラグ":true,"備考":"高額案件向け特別査定基準。施工実績、技術者配置、安全管理体制の厳格審査対象。","作成日時":"2024-04-15T09:30:00","作成者":"田中太郎","更新日時":"2025-01-20T14:15:00","更新者":"佐藤花子"},{"金額帯ID":"rec-001","金額帯コード":"E001","金額帯名称":"100万円未満（電気工事）","最小金額":0,"最大金額":999999,"工種ID":"rec-e-type-001","優先度":1,"有効フラグ":true,"備考":"電気工事における低額案件。迅速審査対象。見積書と施工計画書の簡易版で対応可能。","作成日時":"2024-04-15 09:30:00","作成者":"田中太郎","更新日時":"2025-01-20 14:15:00","更新者":"佐藤花子"},{"金額帯ID":"rec-001","金額帯コード":"E002","金額帯名称":"300万～1000万円（中堅案件）","最小金額":3000000,"最大金額":10000000,"工種ID":"rec-w-005","優先度":2,"有効フラグ":true,"備考":"設備工事における標準的な中堅案件。営業判定基準および見積依頼フローの対象。","作成日時":"2024-04-15 09:30:00","作成者":"山田花子","更新日時":"2025-01-20 14:15:00","更新者":"佐藤次郎"},{"金額帯ID":"rec-001","金額帯コード":"C005","金額帯名称":"3000万円以上（大型プロジェクト）","最小金額":30000000,"最大金額":999999999,"工種ID":"rec-002","優先度":1,"有効フラグ":true,"備考":"土木工事の大型プロジェクト向け。厳密査定対象。技術者配置計画書および資金繰り計画書の提出必須。","作成日時":"2024-04-15 09:30:00","作成者":"佐藤健一","更新日時":"2025-01-20 14:15:00","更新者":"鈴木美咲"},{"金額帯ID":"rec-001","金額帯コード":"A001","金額帯名称":"少額案件（50万円未満）","最小金額":0,"最大金額":499999,"工種ID":null,"優先度":1,"有効フラグ":true,"備考":"全工種共通の少額案件。自動承認ライン対象。見積段階での事前承認不要。","作成日時":"2024-04-01T09:30:00","作成者":"山田太郎","更新日時":"2025-01-15T14:20:00","更新者":"鈴木花子"},{"金額帯ID":"rec-001","金額帯コード":"C003","金額帯名称":"1000万～3000万円（中堅案件）","最小金額":10000000,"最大金額":30000000,"工種ID":"rec-002","優先度":2,"有効フラグ":true,"備考":"段階的審査対象。設計金額1000万円以上3000万円未満の建築工事。稟議書・見積書・工程表の提出必須。","作成日時":"2024-04-15 09:30:00","作成者":"山田太郎","更新日時":"2025-01-10 14:20:00","更新者":"鈴木花子"},{"金額帯ID":"rec-001","金額帯コード":"P001","金額帯名称":"100万円未満（小規模専門工事）","最小金額":0,"最大金額":999999,"工種ID":"rec-paint-001","優先度":1,"有効フラグ":true,"備考":"塗装工事、防水工事などの小規模専門工事向けの簡便基準。見積書と実績報告書の簡素化が適用される。","作成日時":"2024-04-01T09:30:00","作成者":"鈴木花子","更新日時":"2024-12-15T14:20:00","更新者":"佐藤次郎"}],"月次集計結果":[{"月次集計結果ID":"rec-20240201-001","集計年月":"2024-01","査定員ID":null,"工種ID":null,"金額帯ID":null,"査定案件数":1247,"平均判定精度":"87.3%","相場乖離率":"4.2%","判定ばらつき指数":"0.68","標準化達成度":"91.5%","不一致案件数":156,"乖離パターン件数":23,"改善指摘事項数":38,"前月比精度向上率":"2.1%","集計ステータス":"確定","備考":"2024年1月度全社全体集計。前月比で精度が向上し、標準化達成度も目標値を達成。ただし相場乖離率が若干上昇傾向のため、2月度の重点監視対象。","作成日時":"2024-02-05 09:30:15","更新日時":"2024-02-05 14:45:22","作成者ID":"rec-user-佐藤花子"},{"月次集計結果ID":"rec-20240201-001","集計年月":"2024-01","査定員ID":"rec-assessor-0042","工種ID":null,"金額帯ID":null,"査定案件数":147,"平均判定精度":"94.2%","相場乖離率":"3.8%","判定ばらつき指数":"0.42","標準化達成度":"91.5%","不一致案件数":8,"乖離パターン件数":3,"改善指摘事項数":5,"前月比精度向上率":"2.1%","集計ステータス":"確定","備考":"査定員Aの1月度個別集計。前月比で精度が2.1%向上し、特に中古車査定における相場判定の精度が改善。乖離パターンは主に走行距離評価での判断差異。改善指摘事項は修復歴判定の基準統一に関するもの。","作成日時":"2024-02-05T14:32:18+09:00","更新日時":"2024-02-05T14:32:18+09:00","作成者ID":"rec-user-0015"},{"月次集計結果ID":"rec-001-2024-01-mokuzou-001","集計年月":"2024-01","査定員ID":null,"工種ID":"rec-001-kousyu-mokuzou","金額帯ID":null,"査定案件数":247,"平均判定精度":"87.3%","相場乖離率":"4.2%","判定ばらつき指数":"0.68","標準化達成度":"91.5%","不一致案件数":32,"乖離パターン件数":8,"改善指摘事項数":12,"前月比精度向上率":"2.1%","集計ステータス":"確定","備考":"木造住宅工種において前月比で精度が向上。築年数30年超の物件で相場乖離が若干大きい傾向。査定員研修の効果が見られる。","作成日時":"2024-02-05 09:30:15","更新日時":"2024-02-05 09:30:15","作成者ID":"rec-001-user-tanaka-taro"},{"月次集計結果ID":"rec-20240201-001","集計年月":"2024-01","査定員ID":null,"工種ID":null,"金額帯ID":"rec-pricezone-5000m","査定案件数":247,"平均判定精度":"87.3%","相場乖離率":"5.2%","判定ばらつき指数":"0.68","標準化達成度":"82.1%","不一致案件数":32,"乖離パターン件数":8,"改善指摘事項数":15,"前月比精度向上率":"2.1%","集計ステータス":"確定","備考":"高額物件での相場乖離は主に立地評価と建物状態評価の判定ばらつきが原因。特に都心部の築浅物件で過度な加点傾向を確認。査定員研修の強化を推奨。","作成日時":"2024-02-05 09:30:15","更新日時":"2024-02-05 14:22:48","作成者ID":"rec-user-nakamura"},{"月次集計結果ID":"rec-20240201-001","集計年月":"2024-01","査定員ID":"rec-assessor-B-042","工種ID":"rec-type-steel-frame-015","金額帯ID":null,"査定案件数":47,"平均判定精度":"82.3%","相場乖離率":"8.5%","判定ばらつき指数":"0.34","標準化達成度":"76.8%","不一致案件数":8,"乖離パターン件数":3,"改善指摘事項数":5,"前月比精度向上率":"-3.2%","集計ステータス":"再集計","備考":"2024年1月の査定員B（鉄骨造工種）の精度が前月比で低下傾向を示したため再集計を実施。主な原因は鉄骨造における耐震補強工事の判定基準の解釈の相違が判明。2月の研修実施予定。","作成日時":"2024-02-15 10:30:45","更新日時":"2024-02-16 14:22:18","作成者ID":"rec-user-supervisor-C-088"},{"月次集計結果ID":"rec-20240215-001","集計年月":"2024-02","査定員ID":null,"工種ID":null,"金額帯ID":null,"査定案件数":847,"平均判定精度":"87.3%","相場乖離率":"4.2%","判定ばらつき指数":"0.58","標準化達成度":"92.1%","不一致案件数":112,"乖離パターン件数":23,"改善指摘事項数":34,"前月比精度向上率":"2.8%","集計ステータス":"仮集計","備考":"月中暫定集計。2月15日時点の速報値。月末確定前の参考値として使用。査定案件の約78%が既に入力完了。金属工種で相場乖離が若干高めの傾向。","作成日時":"2024-02-15T14:30:00+09:00","更新日時":"2024-02-15T14:30:00+09:00","作成者ID":"rec-user-佐藤花子"},{"月次集計結果ID":"rec-20240201-001","集計年月":"2024-01","査定員ID":null,"工種ID":null,"金額帯ID":"rec-price-500w","査定案件数":847,"平均判定精度":"87.3%","相場乖離率":"12.8%","判定ばらつき指数":"0.68","標準化達成度":"81.5%","不一致案件数":124,"乖離パターン件数":23,"改善指摘事項数":18,"前月比精度向上率":"3.2%","集計ステータス":"確定","備考":"低額物件における相場乖離率が前月比で1.5ポイント上昇。築年数20年以上の物件で乖離が顕著。査定員研修実施予定。","作成日時":"2024-02-05T09:30:00","更新日時":"2024-02-05T14:15:00","作成者ID":"rec-user-yamada"},{"月次集計結果ID":"rec-20240201-001","集計年月":"2024-01","査定員ID":null,"工種ID":null,"金額帯ID":null,"査定案件数":287,"平均判定精度":"82.4%","相場乖離率":"5.8%","判定ばらつき指数":"0.34","標準化達成度":"78.6%","不一致案件数":51,"乖離パターン件数":12,"改善指摘事項数":18,"前月比精度向上率":"3.2%","集計ステータス":"確定","備考":"新人査定員C・D・Eの統合集計。C員の判定精度が81%と若干低めだが、月末に向けて改善傾向。D員は相場乖離率が高い（7.2%）ため追加研修予定。E員は全指標で良好。グループ全体として標準化達成度の向上が課題。","作成日時":"2024-02-05 10:30:00","更新日時":"2024-02-05 10:30:00","作成者ID":"rec-user-0847"},{"月次集計結果ID":"rec-20240201-001","集計年月":"2024-01","査定員ID":null,"工種ID":"rec-koushuu-rebuild","金額帯ID":null,"査定案件数":287,"平均判定精度":"87.3%","相場乖離率":"4.2%","判定ばらつき指数":"0.156","標準化達成度":"91.5%","不一致案件数":34,"乖離パターン件数":12,"改善指摘事項数":8,"前月比精度向上率":"2.1%","集計ステータス":"確定","備考":"改築工種における判定ばらつき指数は前月比で改善傾向。ただし部分改修案件での金額算定ロジックにおいて基準値との乖離が3件検出。査定員研修実施による効果が確認される。","作成日時":"2024-02-05 09:30:15","更新日時":"2024-02-05 09:30:15","作成者ID":"rec-user-yamada"}]};
+window.AIVIC_PAGE_SCREEN_ID = "scr-1783331200565";
+window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {}";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<nav style="display:flex;align-items:center;overflow-x:auto;background:var(--top-bar-bg,var(--bg-sidebar,#0e1a31));border-bottom:1px solid var(--top-bar-border,var(--border,#2a3a5d));padding:0 12px;height:40px;flex-shrink:0;"><span data-aivic-app-name style="padding:6px 14px;font-size:13px;font-weight:700;letter-spacing:0.02em;color:var(--text,#e8eefc);white-space:nowrap;">見積査定システム</span><a href="./scr-1783330941502.html" data-aivic-nav-system="itg-2" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:1;border-bottom:2px solid var(--primary,#2b66ff);font-weight:600;">査定品質管理・標準化システム</a><a href="./scr-1783331639867.html" data-aivic-nav-system="itg-3" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">月次変動対応・人員配置最適化システム</a><a href="./scr-1783331967202.html" data-aivic-nav-system="itg-4" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">組織拡張・横展開支援システム</a><a href="./scr-1783392980155.html" data-aivic-nav-system="itg-5" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">システム運用・継続改善管理システム</a><a href="./scr-1783393616747.html" data-aivic-nav-system="itg-6" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">見積査定結果説明・透明性確保ポータル</a><a href="./scr-1783394432685.html" data-aivic-nav-system="itg-7" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">経営ダッシュボード・効果測定システム</a><a href="./scr-1783330328733.html" data-aivic-nav-system="itg-1" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">見積査定自動化・判定システム</a></nav>
+
+<header>
+  <div class="header-left">
+    📊 査定品質管理・標準化システム
+  </div>
+  <div class="header-right">
+    <div class="user-avatar">U</div>
+    <div class="user-name">ユーザー</div>
+    <a href="./login.html" class="logout-link">ログアウト</a>
+  </div>
+</header>
+
+<div class="main-wrapper">
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">ダッシュボード</div>
+      <div class="sidebar-item aivic-active" data-aivic-nav="scr-1783330941502" onclick="window.showScreen('scr-1783330941502')">査定員別判定分析</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331106753" onclick="window.showScreen('scr-1783331106753')">品質管理ダッシュボード</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331017703" onclick="window.showScreen('scr-1783331017703')">査定員別精度・乖離分析</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331216605" onclick="window.showScreen('scr-1783331216605')">担当者別性能比較</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">分析・検索</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783330955923" onclick="window.showScreen('scr-1783330955923')">判定ばらつき・相場乖離</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783330970321" onclick="window.showScreen('scr-1783330970321')">判定ロジック適用履歴</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783330986886" onclick="window.showScreen('scr-1783330986886')">判定精度指標集計</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331002299" onclick="window.showScreen('scr-1783331002299')">判定ロジック・乖離パターン</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331075653" onclick="window.showScreen('scr-1783331075653')">参照データ検索</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331155921" onclick="window.showScreen('scr-1783331155921')">比較分析データ表示</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331345793" onclick="window.showScreen('scr-1783331345793')">判定精度測定・比較</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331395896" onclick="window.showScreen('scr-1783331395896')">乖離パターン分析</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">月次集計・レポート</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331032128" onclick="window.showScreen('scr-1783331032128')">月次集計結果確認</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331200565" onclick="window.showScreen('scr-1783331200565')">月次分析レポート表示</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331186300" onclick="window.showScreen('scr-1783331186300')">月次査定履歴・判定結果</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331298161" onclick="window.showScreen('scr-1783331298161')">月次実績データ入力</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">処理・実行</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331045994" onclick="window.showScreen('scr-1783331045994')">判定ロジック適用・品質チェック</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331060636" onclick="window.showScreen('scr-1783331060636')">月次分析レポート自動生成</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331313521" onclick="window.showScreen('scr-1783331313521')">品質指標集計・分析</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331329552" onclick="window.showScreen('scr-1783331329552')">OCR精度測定・レポート</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331282929" onclick="window.showScreen('scr-1783331282929')">精度検証・効果測定</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">記録・管理</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331091114" onclick="window.showScreen('scr-1783331091114')">根拠記録・保存処理</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331362929" onclick="window.showScreen('scr-1783331362929')">読取誤り報告入力</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331379328" onclick="window.showScreen('scr-1783331379328')">修正履歴・学習データ記録</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">設定・基準</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331123576" onclick="window.showScreen('scr-1783331123576')">判定基準管理</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331170889" onclick="window.showScreen('scr-1783331170889')">補正係数・パラメータ表示</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331139871" onclick="window.showScreen('scr-1783331139871')">データ管理規程文書作成</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">教育・改善</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331233280" onclick="window.showScreen('scr-1783331233280')">能力差分析・スキルギャップ</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331249292" onclick="window.showScreen('scr-1783331249292')">教育指導計画登録</div>
+      <div class="sidebar-item" data-aivic-nav="scr-1783331265760" onclick="window.showScreen('scr-1783331265760')">改善提案承認・優先度管理</div>
+    </div>
+  </nav>
+
+  <main class="content-area">
+    <div data-aivic-panel="scr-1783330941502" style="display:none"></div>
+    <div data-aivic-panel="scr-1783330955923" style="display:none"></div>
+    <div data-aivic-panel="scr-1783330970321" style="display:none"></div>
+    <div data-aivic-panel="scr-1783330986886" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331002299" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331017703" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331032128" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331045994" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331060636" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331075653" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331091114" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331106753" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331123576" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331139871" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331155921" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331170889" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331186300" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331200565" style="display:block"><div style="display: flex; flex-direction: column; height: 100%; background: var(--bg-main); color: var(--text);">
+  
+  <!-- フィルタバー -->
+  <div style="background: var(--bg-card); border-bottom: 1px solid var(--border); padding: 12px 16px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+    
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <label style="font-size: 12px; color: var(--text-muted); font-weight: 500;">対象月</label>
+      <select data-testid="month-select" name="targetMonth" style="padding: 6px 8px; border: 1px solid rgba(0,0,0,0.15); border-radius: 4px; background: var(--bg-card); color: var(--text); font-size: 13px;">
+        <option value="">選択してください</option>
+        <option value="2024-12">2024年12月</option>
+        <option value="2024-11">2024年11月</option>
+        <option value="2024-10">2024年10月</option>
+        <option value="2024-09">2024年9月</option>
+      </select>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <label style="font-size: 12px; color: var(--text-muted); font-weight: 500;">支店/部門</label>
+      <select data-testid="branch-select" name="branch" style="padding: 6px 8px; border: 1px solid rgba(0,0,0,0.15); border-radius: 4px; background: var(--bg-card); color: var(--text); font-size: 13px;">
+        <option value="">全支店</option>
+        <option value="tokyo">東京支店</option>
+        <option value="osaka">大阪支店</option>
+        <option value="nagoya">名古屋支店</option>
+      </select>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <label style="font-size: 12px; color: var(--text-muted); font-weight: 500;">査定員</label>
+      <select data-testid="assessor-select" name="assessor" style="padding: 6px 8px; border: 1px solid rgba(0,0,0,0.15); border-radius: 4px; background: var(--bg-card); color: var(--text); font-size: 13px;">
+        <option value="">全査定員</option>
+        <option value="A001">査定員A</option>
+        <option value="A002">査定員B</option>
+        <option value="A003">査定員C</option>
+      </select>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <label style="font-size: 12px; color: var(--text-muted); font-weight: 500;">工種</label>
+      <select data-testid="worktype-select" name="workType" style="padding: 6px 8px; border: 1px solid rgba(0,0,0,0.15); border-radius: 4px; background: var(--bg-card); color: var(--text); font-size: 13px;">
+        <option value="">全工種</option>
+        <option value="RC001">鉄筋コンクリート造</option>
+        <option value="W002">木造軸組工法</option>
+        <option value="S003">鋼構造</option>
+      </select>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <label style="font-size: 12px; color: var(--text-muted); font-weight: 500;">金額帯</label>
+      <select data-testid="pricerange-select" name="priceRange" style="padding: 6px 8px; border: 1px solid rgba(0,0,0,0.15); border-radius: 4px; background: var(--bg-card); color: var(--text); font-size: 13px;">
+        <option value="">全金額帯</option>
+        <option value="A001">100万円以下</option>
+        <option value="B002">100万～500万円</option>
+        <option value="C003">500万円以上</option>
+      </select>
+    </div>
+
+    <button data-testid="update-button" class="action-btn" style="margin-top: 20px; padding: 6px 14px; font-size: 13px;">更新</button>
+  </div>
+
+  <!-- メインコンテンツ（スクロール可能） -->
+  <div style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 16px;">
+
+    <!-- KPI サマリーカード群 -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+      
+      <div class="card" style="padding: 14px; border-left: 4px solid var(--primary);">
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">査定案件数</div>
+        <div data-testid="kpi-count" style="font-size: 24px; font-weight: 600; color: var(--text);">-</div>
+        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">当月集計</div>
+      </div>
+
+      <div class="card" style="padding: 14px; border-left: 4px solid #10b981;">
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">平均判定精度</div>
+        <div data-testid="kpi-accuracy" style="font-size: 24px; font-weight: 600; color: var(--text);">-</div>
+        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">前月比 <span data-testid="kpi-accuracy-diff" style="color: #10b981;">-</span></div>
+      </div>
+
+      <div class="card" style="padding: 14px; border-left: 4px solid #f59e0b;">
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">相場乖離率</div>
+        <div data-testid="kpi-deviation" style="font-size: 24px; font-weight: 600; color: var(--text);">-</div>
+        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">平均乖離</div>
+      </div>
+
+      <div class="card" style="padding: 14px; border-left: 4px solid #ef4444;">
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">判定ばらつき指数</div>
+        <div data-testid="kpi-variance" style="font-size: 24px; font-weight: 600; color: var(--text);">-</div>
+        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">標準化度</div>
+      </div>
+
+      <div class="card" style="padding: 14px; border-left: 4px solid #8b5cf6;">
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">標準化達成度</div>
+        <div data-testid="kpi-standardization" style="font-size: 24px; font-weight: 600; color: var(--text);">-</div>
+        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">目標達成率</div>
+      </div>
+    </div>
+
+    <!-- グラフ・テーブルグリッド -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+
+      <!-- 判定精度指標グラフ -->
+      <div class="card" style="padding: 14px; display: flex; flex-direction: column;">
+        <div style="font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 12px;">判定精度指標推移</div>
+        <canvas id="accuracy-chart" width="300" height="180" style="max-width: 100%; height: auto;"></canvas>
+      </div>
+
+      <!-- 相場乖離分析グラフ -->
+      <div class="card" style="padding: 14px; display: flex; flex-direction: column;">
+        <div style="font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 12px;">相場乖離分布</div>
+        <canvas id="deviation-chart" width="300" height="180" style="max-width: 100%; height: auto;"></canvas>
+      </div>
+    </div>
+
+    <!-- 判定ばらつき分析テーブル -->
+    <div class="card" style="padding: 14px;">
+      <div style="font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 12px;">判定ばらつき分析</div>
+      <div class="table-wrap" style="max-height: 280px; overflow-y: auto;">
+        <table data-testid="variance-table" style="width: 100%; font-size: 12px;">
+          <thead style="background: var(--bg-sidebar); position: sticky; top: 0;">
+            <tr>
+              <th style="padding: 8px; text-align: left; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--border);">査定員</th>
+              <th style="padding: 8px; text-align: center; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--border);">査定件数</th>
+              <th style="padding: 8px; text-align: center; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--border);">平均乖離率</th>
+              <th style="padding: 8px; text-align: center; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--border);">ばらつきレベル</th>
+              <th style="padding: 8px; text-align: center; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--border);">改善フラグ</th>
+            </tr>
+          </thead>
+          <tbody id="variance-tbody">
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td colspan="5" style="padding: 12px; text-align: center; color: var(--text-muted);">データ読込中...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 乖離パターン履歴テーブル -->
+    <div class="card" style="padding: 14px;">
+      <div style="font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 12px;">乖離パターン履歴</div>
+      <div class="table-wrap" style="max-height: 280px; overflow-y: auto;">
+        <table data-testid="deviation-history-table" style="width: 100%; font-size: 12px;">
+          <thead style="background: var(--bg-sidebar); position: sticky; top: 0;">
+            <tr>
+              <th style="padding: 8px; text-align: left; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--border);">検出日時</th>
+              <th style="padding: 8px; text-align: left; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--border);">乖離パターン</th>
+              <th style="padding: 8px; text-align: center; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--border);">乖離率</th>
+              <th style="padding: 8px; text-align: center; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--border);">乖離方向</th>
+              <th style="padding: 8px; text-align: left; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--border);">要因</th>
+            </tr>
+          </thead>
+          <tbody id="deviation-history-tbody">
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td colspan="5" style="padding: 12px; text-align: center; color: var(--text-muted);">データ読込中...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 査定員別成績ランキング -->
+    <div class="card" style="padding: 14px;">
+      <div style="font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 12px;">査定員別成績ランキング</div>
+      <div class="table-wrap" style="max-height: 280px; overflow-y: auto;">
+        <table data-testid="ranking-table" style="width: 100%; font-size: 12px;">
+          <thead style="background: var(--bg-sidebar); position: sticky; top: 0;">
+            <tr>
+              <th style="padding: 8px; text-align: center; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--border);">順位</th>
+              <th style="padding: 8px; text-align: left; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--border);">査定員名</th>
+              <th style="padding: 8px; text-align: center; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--border);">判定精度</th>
+              <th style="padding: 8px; text-align: center; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--border);">査定件数</th>
+              <th style="padding: 8px; text-align: center; color: var(--text); font-weight: 600; border-bottom: 1px solid var(--border);">品質スコア</th>
+            </tr>
+          </thead>
+          <tbody id="ranking-tbody">
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td colspan="5" style="padding: 12px; text-align: center; color: var(--text-muted);">データ読込中...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div></div>
+    <div data-aivic-panel="scr-1783331216605" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331233280" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331249292" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331265760" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331282929" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331298161" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331313521" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331329552" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331345793" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331362929" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331379328" style="display:none"></div>
+    <div data-aivic-panel="scr-1783331395896" style="display:none"></div>
+  </main>
+</div>
+
+
+<script>
+(function() {
+  var TABLE_DEFS = window.AIVIC_TABLES || [];
+  var PRESET_SEED = window.AIVIC_PRESET_SEED || {};
+  var SYSTEM_NAME = window.AIVIC_SYSTEM_NAME || "";
+  var APP_ID = window.AIVIC_APP_ID || "";
+  var API_URL = (window.AIVIC_API_URL && window.AIVIC_API_URL !== "REPLACE_WITH_API_URL")
+    ? window.AIVIC_API_URL : window.location.origin;
+
+  // 通知 helper ( SPA 版と同じ )
+  window.aivicNotify = (function() {
+    function ensureContainer() {
+      var c = document.getElementById("aivic-toast-container");
+      if (c) return c;
+      c = document.createElement("div");
+      c.id = "aivic-toast-container";
+      c.style.cssText = "position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;max-width:360px;";
+      document.body.appendChild(c);
+      return c;
+    }
+    function show(msg, type) {
+      var c = ensureContainer();
+      var el = document.createElement("div");
+      el.textContent = msg;
+      el.style.cssText = "padding:10px 16px;border-radius:8px;font-size:13px;line-height:1.4;pointer-events:auto;color:#fff;background:" + (type === "error" ? "#dc2626" : "#d97706");
+      c.appendChild(el);
+      setTimeout(function() {
+        el.style.transition = "opacity .3s";
+        el.style.opacity = "0";
+        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 320);
+      }, type === "error" ? 6000 : 4500);
+    }
+    return {
+      error: function(msg) { show("❌ " + msg, "error"); },
+      warn:  function(msg) { show("⚠️ " + msg, "warn"); },
+    };
+  })();
+
+  // CRUD API ( SPA 版と同じ )
+  window.aivicApi = (function() {
+    function dbErr(op) { window.aivicNotify.error("データベースエラー ( " + op + " ): APIサーバーに接続できません。"); }
+    function newId() { return typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : "id-" + Date.now() + "-" + Math.random().toString(36).slice(2); }
+    function q(i) {
+      var t = TABLE_DEFS[i];
+      var dbP = (window.AIVIC_DB_TYPE && window.AIVIC_DB_TYPE !== "dynamodb") ? "&db=" + encodeURIComponent(window.AIVIC_DB_TYPE) : "";
+      return "?app=" + encodeURIComponent(APP_ID) + "&system=" + encodeURIComponent(SYSTEM_NAME) + "&table=" + encodeURIComponent(t ? t.tableName : "table" + i) + dbP;
+    }
+    return {
+      list: async function(tableIndex) {
+        if (!API_URL) return [];
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + q(tableIndex)); var d = await r.json(); return Array.isArray(d) ? d : (d.items || []); }
+        catch(e) { dbErr("データ取得"); return []; }
+      },
+      save: async function(tableIndex, item) {
+        if (!API_URL) { dbErr("保存"); return null; }
+        var now = new Date().toISOString();
+        var rec = Object.assign({}, item, { id: item.id || newId(), createdAt: item.createdAt || now, updatedAt: now });
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + q(tableIndex), { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(rec) }); return await r.json(); }
+        catch(e) { dbErr("保存"); return null; }
+      },
+      update: async function(tableIndex, id, changes) {
+        if (!API_URL) { dbErr("更新"); return null; }
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + "/" + id + q(tableIndex), { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(Object.assign({}, changes, {updatedAt: new Date().toISOString()})) }); return await r.json(); }
+        catch(e) { dbErr("更新"); return null; }
+      },
+      delete: async function(tableIndex, id) {
+        if (!API_URL) { dbErr("削除"); return {deleted:false}; }
+        try { await fetch(API_URL + "/api/" + tableIndex + "/" + id + q(tableIndex), {method:"DELETE"}); return {deleted:true}; }
+        catch(e) { dbErr("削除"); return {deleted:false}; }
+      },
+    };
+  })();
+
+  // showScreen はマルチページ構成ではページ遷移として動く。
+  var _aivicNavLastTime = 0;
+  var _aivicNavLastTarget = "";
+  var _aivicReady = false;
+  window.showScreen = function(screenId) {
+    if (!screenId) return;
+    if (screenId === window.AIVIC_PAGE_SCREEN_ID) return;
+    var targetPath = './' + encodeURIComponent(screenId) + '.html';
+    var currentName = (window.location.pathname.split('/').pop() || '');
+    if (currentName === (encodeURIComponent(screenId) + '.html') ||
+        currentName === (screenId + '.html')) {
+      return;
+    }
+    var now = Date.now();
+    if (_aivicNavLastTarget === targetPath && (now - _aivicNavLastTime) < 100) {
+      console.warn('[aivic] showScreen 連続呼び出し検知。 無限ループ防止のため抑制:', screenId);
+      return;
+    }
+    if (!_aivicReady) {
+      console.warn('[aivic] DOMContentLoaded 前の showScreen 呼び出し。 抑制:', screenId);
+      return;
+    }
+    _aivicNavLastTime = now;
+    _aivicNavLastTarget = targetPath;
+    window.location.href = targetPath;
+  };
+
+  function seedAllIfEmpty() {
+    if (!API_URL) return Promise.resolve();
+    return Promise.all(TABLE_DEFS.map(function(t, i) {
+      var preset = PRESET_SEED[t.tableName];
+      if (!Array.isArray(preset) || preset.length === 0) return Promise.resolve();
+      return window.aivicApi.list(i).then(function(existing) {
+        if (existing && existing.length > 0) return;
+        return Promise.all(preset.map(function(row) { return window.aivicApi.save(i, row); }));
+      }).catch(function() {});
+    }));
+  }
+
+  // ── 初期表示: このページ専用の panel に initFn を実行 ──
+  document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function() { _aivicReady = true; }, 1500);
+    var pageScreenId = window.AIVIC_PAGE_SCREEN_ID;
+    if (!pageScreenId) return;
+
+    document.querySelectorAll('[data-aivic-nav]').forEach(function(btn) {
+      var isActive = btn.getAttribute("data-aivic-nav") === pageScreenId;
+      btn.classList.toggle("aivic-active", isActive);
+      btn.setAttribute("aria-current", isActive ? "page" : "false");
+    });
+
+    var container = document.querySelector('[data-aivic-panel="' + pageScreenId + '"]');
+    if (!container) return;
+
+    // content 要素の hidden 強制除去 ( 2026-05-24 Playwright 大量 fail 対応 )
+    var isModalLike = function(el) {
+      if (!el || !el.classList) return false;
+      var cn = String(el.className || "");
+      if (/\bmodal\b|\bdialog\b|\boverlay\b|\bpopup\b|\bdropdown\b|\btooltip\b/i.test(cn)) return true;
+      var role = el.getAttribute && el.getAttribute("role");
+      if (role === "dialog" || role === "alertdialog" || role === "tooltip" || role === "menu") return true;
+      if (el.hasAttribute && (el.hasAttribute("data-modal") || el.hasAttribute("data-dropdown") || el.hasAttribute("data-popup") || el.hasAttribute("data-aivic-overlay"))) return true;
+      // 【2026-06-25】 class/role が無くても inline で画面を覆う overlay ( position:fixed ) は modal 扱いにして、
+      //  content 強制可視化が誤ってダイアログをロード時に表示してしまわないようにする。
+      if (el.style && el.style.position === "fixed") return true;
+      return false;
+    };
+    var unhideContentElements = function(root) {
+      var all = root.querySelectorAll('.hidden, [hidden], [style*="display:none"], [style*="display: none"]');
+      for (var k = 0; k < all.length; k++) {
+        var el = all[k];
+        if (isModalLike(el)) continue;
+        var p = el.parentElement;
+        var insideModal = false;
+        while (p && p !== root) {
+          if (isModalLike(p)) { insideModal = true; break; }
+          p = p.parentElement;
+        }
+        if (insideModal) continue;
+        el.classList.remove('hidden');
+        el.removeAttribute('hidden');
+        if (el.style && el.style.display === 'none') el.style.display = '';
+      }
+    };
+    try { unhideContentElements(container); } catch (e) { console.warn('[aivic] unhideContent failed:', e); }
+
+    var initJsSource = window.AIVIC_PAGE_INIT_JS;
+    if (!initJsSource) {
+      seedAllIfEmpty();
+      return;
+    }
+    var initFn = null;
+    try {
+      initFn = (new Function("return (" + initJsSource + ")"))();
+    } catch (e) {
+      console.error("[aivic] initJs compile error:", pageScreenId, e);
+      return;
+    }
+    if (typeof initFn !== "function") return;
+
+    seedAllIfEmpty().then(function() {
+      return Promise.all(TABLE_DEFS.map(function(t, i) {
+        return window.aivicApi.list(i)
+          .then(function(records) { return Object.assign({}, t, { records: records }); })
+          .catch(function() { return Object.assign({}, t, { records: [] }); });
+      }));
+    }).then(function(tables) {
+      try { initFn(container, API_URL, tables); } catch (e) { console.error("[aivic] initFn error:", pageScreenId, e); }
+      _aivicReady = true;
+    });
+  });
+
+  // 【2026-06-27 強化・必ず閉じられる保証】 モーダル/ダイアログを確実に閉じる安全網。
+  //  旧版は Esc のみ + セレクタ .overlay が class="modal-overlay" にマッチせず ( クラストークンが別 )
+  //  閉じられなかった ( ユーザー報告 2026-06-27: ダイアログが閉じない ) 。 ① Esc ② オーバーレイ背景クリック
+  //  ③ 閉じる系ボタン の 3 経路で閉じる。 セレクタは複合クラスも拾うよう [class*="overlay"] を含む。
+  //  閉じ方は「開クラス ( active/open/show 等 ) があれば外す ( 再オープン可 ) 、 無ければ inline display:none」。
+  //  modal-header 等の sub-part を誤って隠さないため [class*="modal"] は使わない。
+  var AIVIC_OVERLAY_SELECTOR = '[class*="overlay"],[data-aivic-overlay],[data-modal],[role="dialog"],[role="alertdialog"]';
+  var aivicCloseOverlay = function(el) {
+    if (!el || !el.classList) return;
+    var openClasses = ["active", "open", "show", "visible", "is-open", "is-active", "show-modal"];
+    var removed = false;
+    for (var c = 0; c < openClasses.length; c++) {
+      if (el.classList.contains(openClasses[c])) { el.classList.remove(openClasses[c]); removed = true; }
+    }
+    if (!removed && el.style) el.style.display = "none";
+  };
+  document.addEventListener("keydown", function(e) {
+    if (e.key !== "Escape" && e.keyCode !== 27) return;
+    var ov = document.querySelectorAll(AIVIC_OVERLAY_SELECTOR);
+    for (var i = 0; i < ov.length; i++) aivicCloseOverlay(ov[i]);
+  });
+  document.addEventListener("click", function(e) {
+    var t = e.target;
+    if (!t) return;
+    if (t.closest) {
+      var closer = t.closest('.modal-close,[data-modal-close],[data-close],[data-dismiss]');
+      if (closer) {
+        var oc = closer.closest(AIVIC_OVERLAY_SELECTOR);
+        if (oc) { aivicCloseOverlay(oc); return; }
+      }
+    }
+    // 背景 ( オーバーレイ要素そのもの ) を直接クリックした時のみ閉じる ( モーダル本体クリックでは閉じない ) 。
+    if (t.matches && t.matches(AIVIC_OVERLAY_SELECTOR) && t === e.target) {
+      aivicCloseOverlay(t);
+    }
+  });
+  // 【2026-06-28 強化・ロード時に必ず閉じる】 生成 AI が overlay を初期 display:none にし忘れた場合でも、
+  //  ロード直後にダイアログが画面を覆って操作不能になる事故 ( ユーザー報告 2026-06-28: ダイアログが常に表示され
+  //  閉じられない ) を防ぐ。 認識可能な overlay/dialog セレクタに該当する要素はロード時に必ず閉じる
+  //  ( 開クラス除去 or display:none ) 。 真にロード時表示すべき業務コンテンツは overlay セレクタに該当しないため
+  //  影響しない ( パネルコンテナは data-aivic-panel で別管理 ) 。
+  var aivicHideOverlaysOnLoad = function() {
+    var ov = document.querySelectorAll(AIVIC_OVERLAY_SELECTOR);
+    for (var i = 0; i < ov.length; i++) aivicCloseOverlay(ov[i]);
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", aivicHideOverlaysOnLoad);
+  } else {
+    aivicHideOverlaysOnLoad();
+  }
+})();
+
+</script>
+</body>
+</html>

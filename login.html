@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>見積査定システム - ログイン画面</title>
+  <style>
+    :root {
+      --primary: #4a5568;
+      --primary-hover: #2d3748;
+      --bg-main: #f8f7f5;
+      --bg-card: #efefeb;
+      --bg-sidebar: #e8e6e2;
+      --border: #d0ccc5;
+      --text: #2b2520;
+      --text-muted: #6b6560;
+      --top-bar-bg: #efefeb;
+      --top-bar-border: #d0ccc5;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 40px 32px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .login-header {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .login-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .login-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group:last-of-type {
+      margin-bottom: 28px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background-color: #ffffff;
+      color: var(--text);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-family: inherit;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(74, 85, 104, 0.1);
+    }
+
+    .submit-button {
+      width: 100%;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+      background-color: var(--primary);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      font-family: inherit;
+    }
+
+    .submit-button:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .submit-button:active {
+      transform: scale(0.98);
+    }
+
+    .login-footer {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <h1 class="login-title" data-testid="login-title">見積査定システム</h1>
+        <p class="login-subtitle">ログイン</p>
+      </div>
+
+      <form data-testid="login-form" novalidate>
+        <div class="form-group">
+          <label for="username">ユーザー名</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            data-testid="username"
+            placeholder="ユーザー名を入力"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="password">パスワード</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            data-testid="password"
+            placeholder="パスワードを入力"
+          >
+        </div>
+
+        <button type="submit" class="submit-button" data-testid="login-button">
+          ログイン
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <p>※ サンプル実装ではどの入力でもログインできます</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelector('[data-testid="login-form"]').addEventListener('submit', function(e) {
+      e.preventDefault();
+      window.location.href = './index.html';
+    });
+  </script>
+</body>
+</html>
