@@ -6,16 +6,16 @@
   <title>月次変動対応・人員配置最適化システム</title>
   <style>
 :root {
-  --primary: #2c3e50;
-  --primary-hover: #1a252f;
-  --bg-main: #eceff1;
-  --bg-card: #e0e6ed;
-  --bg-sidebar: #d9dfe6;
-  --border: #b0bec5;
-  --text: #1a1a1a;
-  --text-muted: #546e7a;
-  --top-bar-bg: #dce4eb;
-  --top-bar-border: #b0bec5;
+  --primary: #4a5568;
+  --primary-hover: #2d3748;
+  --bg-main: #f8f9fa;
+  --bg-card: #ffffff;
+  --bg-sidebar: #f0f1f3;
+  --border: #e2e8f0;
+  --text: #1a202c;
+  --text-muted: #718096;
+  --top-bar-bg: #ffffff;
+  --top-bar-border: #e2e8f0;
 }
 
 * {
@@ -26,45 +26,46 @@
 
 html, body {
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   font-size: 13px;
-  line-height: 1.4;
+  line-height: 1.5;
   color: var(--text);
   background: var(--bg-main);
 }
 
-body {
+.shell-container {
   display: flex;
   flex-direction: column;
+  height: 100vh;
 }
 
-header {
+header.top-bar {
   background: var(--top-bar-bg);
   border-bottom: 1px solid var(--top-bar-border);
   padding: 0 20px;
-  height: 48px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
 }
 
-.header-logo {
+.logo {
   font-size: 14px;
   font-weight: 600;
   color: var(--primary);
-  letter-spacing: 0.5px;
+  letter-spacing: -0.3px;
 }
 
-.header-user {
+.user-area {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
-.user-avatar {
-  width: 28px;
-  height: 28px;
+.avatar {
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: var(--primary);
   display: flex;
@@ -76,32 +77,30 @@ header {
 }
 
 .user-name {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text);
 }
 
-.user-logout {
+.logout-link {
   font-size: 12px;
-  color: var(--primary);
+  color: var(--text-muted);
   text-decoration: none;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 2px;
-  transition: background 0.15s;
+  border-left: 1px solid var(--border);
+  padding-left: 12px;
 }
 
-.user-logout:hover {
-  background: rgba(44, 62, 80, 0.1);
+.logout-link:hover {
+  color: var(--primary);
 }
 
-.container {
+.main-wrapper {
   display: flex;
   flex: 1;
   overflow: hidden;
 }
 
-aside {
-  width: 200px;
+aside.sidebar {
+  width: 240px;
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border);
   overflow-y: auto;
@@ -109,139 +108,137 @@ aside {
 }
 
 .nav-section {
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
 }
 
-.nav-section:first-child {
-  padding-top: 8px;
-}
-
-.nav-label {
+.nav-section-title {
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   color: var(--text-muted);
-  padding: 0 12px 6px;
-  letter-spacing: 0.4px;
+  padding: 0 16px 8px;
+  letter-spacing: 0.5px;
 }
 
 .nav-item {
   display: block;
-  padding: 8px 12px;
+  padding: 10px 16px;
   color: var(--text);
   text-decoration: none;
+  font-size: 13px;
   cursor: pointer;
-  font-size: 12px;
-  transition: background 0.1s, color 0.1s;
-  border-left: 2px solid transparent;
+  border-left: 3px solid transparent;
+  transition: all 0.15s ease;
 }
 
 .nav-item:hover {
-  background: rgba(44, 62, 80, 0.08);
+  background: rgba(74, 85, 104, 0.08);
+  color: var(--primary);
 }
 
 .nav-item.aivic-active {
-  background: rgba(44, 62, 80, 0.15);
-  color: var(--primary);
+  background: rgba(74, 85, 104, 0.12);
   border-left-color: var(--primary);
+  color: var(--primary);
   font-weight: 500;
 }
 
-main {
+main.content-area {
   flex: 1;
   overflow-y: auto;
   background: var(--bg-main);
 }
 
 [data-aivic-panel] {
-  width: 100%;
-  height: 100%;
-  padding: 16px 20px;
+  min-height: 100%;
+  padding: 24px;
 }
 
-.toast {
-  position: fixed;
-  bottom: 16px;
-  right: 16px;
-  padding: 12px 16px;
-  border-radius: 3px;
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.page-subtitle {
   font-size: 12px;
-  z-index: 9999;
-  animation: slideIn 0.2s ease-out;
-}
-
-.toast.error {
-  background: #c62828;
-  color: white;
-}
-
-.toast.warn {
-  background: #f57c00;
-  color: white;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(400px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  color: var(--text-muted);
 }
 
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .kpi-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  padding: 12px;
-  border-radius: 3px;
+  border-radius: 4px;
+  padding: 16px;
 }
 
 .kpi-label {
   font-size: 11px;
   font-weight: 600;
-  color: var(--text-muted);
   text-transform: uppercase;
-  margin-bottom: 6px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
   letter-spacing: 0.3px;
 }
 
 .kpi-value {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 600;
   color: var(--primary);
+  margin-bottom: 4px;
 }
 
 .kpi-delta {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
-  margin-top: 4px;
+}
+
+.chart-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 16px;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.table-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 16px;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
 }
 
 thead {
-  background: rgba(44, 62, 80, 0.08);
+  background: var(--bg-main);
   border-bottom: 1px solid var(--border);
 }
 
 th {
-  padding: 8px 10px;
+  padding: 10px 12px;
   text-align: left;
   font-weight: 600;
   color: var(--text);
@@ -251,88 +248,97 @@ th {
 }
 
 td {
-  padding: 8px 10px;
+  padding: 10px 12px;
   border-bottom: 1px solid var(--border);
+  color: var(--text);
 }
 
 tbody tr:hover {
-  background: rgba(44, 62, 80, 0.04);
+  background: rgba(74, 85, 104, 0.04);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .btn {
-  padding: 6px 12px;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text);
-  border-radius: 3px;
-  cursor: pointer;
+  display: inline-block;
+  padding: 8px 16px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
-  transition: all 0.15s;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
 }
 
 .btn:hover {
-  background: rgba(44, 62, 80, 0.1);
-}
-
-.btn-primary {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
-}
-
-.btn-primary:hover {
   background: var(--primary-hover);
-  border-color: var(--primary-hover);
 }
 
-.form-group {
-  margin-bottom: 12px;
-}
-
-.form-label {
-  display: block;
-  font-size: 11px;
-  font-weight: 600;
-  margin-bottom: 4px;
+.btn-secondary {
+  background: var(--bg-card);
   color: var(--text);
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-.form-input, .form-select {
-  width: 100%;
-  padding: 6px 8px;
   border: 1px solid var(--border);
-  background: white;
-  color: var(--text);
-  font-size: 12px;
-  border-radius: 3px;
 }
 
-.form-input:focus, .form-select:focus {
+.btn-secondary:hover {
+  background: var(--bg-main);
+}
+
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.filter-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.filter-input, .filter-select {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 12px;
+  background: var(--bg-card);
+  color: var(--text);
+}
+
+.filter-input:focus, .filter-select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.1);
+  box-shadow: 0 0 0 2px rgba(74, 85, 104, 0.1);
 }
 
 .tabs {
   display: flex;
-  gap: 0;
   border-bottom: 1px solid var(--border);
   margin-bottom: 16px;
+  gap: 0;
 }
 
 .tab {
-  padding: 10px 16px;
-  border: none;
-  background: transparent;
+  padding: 12px 16px;
+  font-size: 13px;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
   border-bottom: 2px solid transparent;
-  transition: all 0.15s;
+  transition: all 0.15s ease;
+  background: transparent;
+  border: none;
 }
 
 .tab:hover {
@@ -342,15 +348,49 @@ tbody tr:hover {
 .tab.active {
   color: var(--primary);
   border-bottom-color: var(--primary);
+  font-weight: 500;
 }
 
-.chart-container {
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.scenario-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  padding: 12px;
-  border-radius: 3px;
+  border-radius: 4px;
+  padding: 16px;
+}
+
+.scenario-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
   margin-bottom: 12px;
-  height: 240px;
+}
+
+.scenario-metric {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.scenario-metric:last-child {
+  border-bottom: none;
+}
+
+.metric-label {
+  color: var(--text-muted);
+}
+
+.metric-value {
+  font-weight: 600;
+  color: var(--text);
 }
 
 .split-layout {
@@ -359,191 +399,104 @@ tbody tr:hover {
   gap: 16px;
 }
 
-.panel-box {
+.panel {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  padding: 12px;
-  border-radius: 3px;
+  border-radius: 4px;
+  padding: 16px;
 }
 
 .panel-title {
   font-size: 13px;
   font-weight: 600;
+  color: var(--text);
   margin-bottom: 12px;
-  color: var(--primary);
-}
-
-.stepper {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  position: relative;
-}
-
-.stepper::before {
-  content: '';
-  position: absolute;
-  top: 16px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--border);
-  z-index: 0;
-}
-
-.step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  z-index: 1;
-  flex: 1;
-}
-
-.step-circle {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--bg-card);
-  border: 2px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
-
-.step.active .step-circle {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
-}
-
-.step.completed .step-circle {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
-}
-
-.step-label {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text-muted);
-  text-align: center;
-}
-
-.step.active .step-label {
-  color: var(--primary);
-  font-weight: 600;
-}
-
-.kanban-board {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
   padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
 }
 
-.kanban-column {
-  flex: 0 0 280px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  display: flex;
-  flex-direction: column;
-}
-
-.kanban-header {
-  padding: 10px 12px;
+.list-item {
+  padding: 10px 0;
   border-bottom: 1px solid var(--border);
   font-size: 12px;
-  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.list-item:hover {
+  background: rgba(74, 85, 104, 0.04);
+  padding-left: 4px;
+}
+
+.list-item.selected {
+  background: rgba(74, 85, 104, 0.08);
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 12px;
+  background: var(--bg-card);
   color: var(--text);
 }
 
-.kanban-cards {
-  flex: 1;
-  padding: 8px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.kanban-card {
-  background: white;
-  border: 1px solid var(--border);
-  padding: 8px;
-  border-radius: 3px;
-  font-size: 11px;
-  cursor: move;
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(74, 85, 104, 0.1);
 }
 
 .badge {
   display: inline-block;
-  padding: 2px 6px;
-  border-radius: 2px;
-  font-size: 10px;
-  font-weight: 600;
-  background: rgba(44, 62, 80, 0.1);
+  padding: 3px 8px;
+  background: rgba(74, 85, 104, 0.1);
   color: var(--primary);
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 500;
 }
 
 .badge.success {
-  background: rgba(76, 175, 80, 0.15);
-  color: #2e7d32;
+  background: rgba(72, 187, 120, 0.1);
+  color: #22863a;
 }
 
 .badge.warning {
-  background: rgba(255, 152, 0, 0.15);
-  color: #e65100;
+  background: rgba(237, 137, 54, 0.1);
+  color: #b08500;
 }
 
 .badge.danger {
-  background: rgba(244, 67, 54, 0.15);
-  color: #c62828;
-}
-
-.page-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 4px;
-  color: var(--primary);
-}
-
-.page-subtitle {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-
-.filter-bar {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-
-.filter-item {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-}
-
-.filter-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
+  background: rgba(245, 101, 101, 0.1);
+  color: #cb2431;
 }
 
 .stat-row {
   display: flex;
   justify-content: space-between;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--border);
+  padding: 8px 0;
   font-size: 12px;
+  border-bottom: 1px solid var(--border);
 }
 
 .stat-row:last-child {
@@ -558,6 +511,17 @@ tbody tr:hover {
   font-weight: 600;
   color: var(--text);
 }
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.action-buttons .btn {
+  flex: 1;
+}
+
   </style>
   
 <script>
@@ -566,7 +530,7 @@ window.AIVIC_APP_ID = "session-1783318203332";
 window.AIVIC_APPLICATION_NAME = "見積査定システム";
 window.AIVIC_SYSTEM_NAME = "月次変動対応・人員配置最適化システム";
 window.AIVIC_TABLES = [{"tableName":"見積書","purpose":"見積査定自動化・判定システムにおける見積書の管理と査定履歴の記録","columns":[{"name":"見積書ID","type":"uuid","required":true,"description":"見積書の一意識別子"},{"name":"ユーザーID","type":"uuid","required":true,"description":"見積書を作成したユーザーの外部キー"},{"name":"見積書番号","type":"varchar(100)","required":true,"description":"見積書の管理番号（一意）"},{"name":"見積日","type":"timestamp","required":true,"description":"見積書の発行日"},{"name":"有効期限","type":"timestamp","required":false,"description":"見積書の有効期限"},{"name":"顧客名","type":"varchar(100)","required":true,"description":"見積対象の顧客名"},{"name":"見積金額","type":"integer","required":true,"description":"見積総額（単位：円）"},{"name":"査定ステータス","type":"varchar(100)","required":true,"description":"査定状態（未査定/査定中/承認/却下）"},{"name":"自動判定結果","type":"varchar(100)","required":false,"description":"自動査定システムの判定結果"},{"name":"判定理由","type":"text","required":false,"description":"自動判定の理由・根拠"},{"name":"備考","type":"text","required":false,"description":"見積書に関する備考"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"レコード作成者のユーザーID"}]},{"tableName":"査定員","purpose":"査定品質管理・標準化システムにおける査定員の基本情報と資格・権限を管理するマスタテーブル","columns":[{"name":"査定員ID","type":"uuid","required":true,"description":"査定員の一意識別子"},{"name":"ユーザーID","type":"uuid","required":true,"description":"ユーザーテーブルへの外部キー"},{"name":"査定員コード","type":"varchar(100)","required":true,"description":"査定員の業務用コード（一意）"},{"name":"査定員名","type":"varchar(100)","required":true,"description":"査定員の氏名"},{"name":"部門","type":"varchar(100)","required":false,"description":"所属部門"},{"name":"資格レベル","type":"varchar(100)","required":true,"description":"査定資格レベル（初級/中級/上級等）"},{"name":"査定対象カテゴリ","type":"varchar(100)","required":false,"description":"査定可能な商品カテゴリ"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"査定員ステータス（稼働中/休止中/退職等）"},{"name":"品質スコア","type":"integer","required":false,"description":"査定品質スコア（0-100）"},{"name":"査定件数","type":"integer","required":false,"description":"累計査定件数"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード更新日時"},{"name":"作成者ID","type":"uuid","required":false,"description":"レコード作成者のユーザーID"},{"name":"更新者ID","type":"uuid","required":false,"description":"レコード更新者のユーザーID"}]},{"tableName":"見積書明細","purpose":"見積書の明細行を管理し、各行の作業内容、数量、単価、金額、人員配置要件を記録する","columns":[{"name":"明細ID","type":"uuid","required":true,"description":"見積書明細の一意識別子"},{"name":"見積書ID","type":"uuid","required":true,"description":"親見積書への外部キー"},{"name":"行番号","type":"integer","required":true,"description":"見積書内での明細の順序"},{"name":"作業内容","type":"varchar(100)","required":true,"description":"実施する作業の名称"},{"name":"作業説明","type":"text","required":false,"description":"作業の詳細説明"},{"name":"数量","type":"integer","required":true,"description":"作業の数量"},{"name":"単位","type":"varchar(100)","required":true,"description":"数量の単位（人日、件、時間等）"},{"name":"単価","type":"integer","required":true,"description":"1単位あたりの価格"},{"name":"金額","type":"integer","required":true,"description":"数量×単価の合計金額"},{"name":"必要人員数","type":"integer","required":true,"description":"この作業に必要な人員数"},{"name":"必要スキル","type":"varchar(100)","required":false,"description":"必要な職種またはスキル要件"},{"name":"実施予定月","type":"varchar(100)","required":false,"description":"作業実施予定の月（人員配置最適化用）"},{"name":"備考","type":"text","required":false,"description":"その他特記事項"},{"name":"作成日時","type":"timestamp","required":true,"description":"明細の作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"明細の最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"明細を作成したユーザー"}]},{"tableName":"日次実績","purpose":"月次変動対応・人員配置最適化システムにおいて、査定員の日次業務実績を記録し、月次の変動対応と人員配置の最適化を支援するトランザクションテーブル","columns":[{"name":"日次実績ID","type":"uuid","required":true,"description":"日次実績の一意識別子"},{"name":"査定員ID","type":"uuid","required":true,"description":"査定員マスタへの外部キー"},{"name":"実績日","type":"timestamp","required":true,"description":"実績を記録した日付"},{"name":"見積書ID","type":"uuid","required":true,"description":"見積書マスタへの外部キー"},{"name":"完了件数","type":"integer","required":true,"description":"当日に完了した見積件数"},{"name":"売上金額","type":"integer","required":true,"description":"当日の売上合計金額"},{"name":"稼働時間","type":"integer","required":true,"description":"当日の稼働時間（分単位）"},{"name":"移動時間","type":"integer","required":false,"description":"当日の移動時間（分単位）"},{"name":"訪問件数","type":"integer","required":true,"description":"当日の訪問件数"},{"name":"成約件数","type":"integer","required":true,"description":"当日の成約件数"},{"name":"備考","type":"text","required":false,"description":"当日の特記事項や状況説明"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"レコード作成者のユーザーID"}]},{"tableName":"査定員生産性","purpose":"査定員の月次生産性指標を記録・管理し、人員配置最適化の意思決定を支援するマスタテーブル","columns":[{"name":"査定員生産性ID","type":"uuid","required":true,"description":"査定員生産性レコードの一意識別子"},{"name":"査定員ID","type":"uuid","required":true,"description":"査定員テーブルへの外部キー"},{"name":"対象年月","type":"varchar(7)","required":true,"description":"生産性集計対象の年月（YYYY-MM形式）"},{"name":"見積件数","type":"integer","required":true,"description":"当月の見積書作成件数"},{"name":"見積金額合計","type":"integer","required":true,"description":"当月の見積金額合計（円）"},{"name":"平均見積金額","type":"integer","required":false,"description":"当月の平均見積金額（円）"},{"name":"稼働日数","type":"integer","required":true,"description":"当月の実稼働日数"},{"name":"日次平均件数","type":"integer","required":false,"description":"稼働日数あたりの平均見積件数"},{"name":"生産性スコア","type":"integer","required":false,"description":"月次生産性の相対評価スコア（0-100）"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":false,"description":"レコード作成者のユーザーID"}]},{"tableName":"月次査定件数","purpose":"月次の査定件数を集計・管理し、人員配置最適化と変動対応の基礎データとなる月単位の査定実績を記録","columns":[{"name":"月次査定件数ID","type":"uuid","required":true,"description":"月次査定件数レコードの一意識別子"},{"name":"対象年月","type":"varchar(7)","required":true,"description":"集計対象の年月（YYYY-MM形式）"},{"name":"査定員ID","type":"uuid","required":true,"description":"査定員マスタへの外部キー"},{"name":"査定件数","type":"integer","required":true,"description":"当月の査定完了件数"},{"name":"目標件数","type":"integer","required":false,"description":"当月の査定件数目標値"},{"name":"達成率","type":"varchar(10)","required":false,"description":"目標に対する達成率（パーセンテージ）"},{"name":"平均査定時間分","type":"integer","required":false,"description":"1件あたりの平均査定時間（分）"},{"name":"生産性スコア","type":"varchar(10)","required":false,"description":"査定員生産性テーブルから参照される生産性評価値"},{"name":"備考","type":"text","required":false,"description":"月次査定件数に関する特記事項"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"レコード作成者のユーザーID"}]},{"tableName":"変動パターン","purpose":"月次の査定件数変動パターンを定義・管理し、人員配置最適化の基礎データとなる季節性・周期性を記録","columns":[{"name":"変動パターンID","type":"uuid","required":true,"description":"変動パターンの一意識別子"},{"name":"パターン名","type":"varchar(100)","required":true,"description":"変動パターンの名称（例：『春季繁忙』『夏季閑散』）"},{"name":"説明","type":"text","required":false,"description":"パターンの詳細説明"},{"name":"開始月","type":"integer","required":true,"description":"パターン適用開始月（1-12）"},{"name":"終了月","type":"integer","required":true,"description":"パターン適用終了月（1-12）"},{"name":"変動係数","type":"varchar(100)","required":true,"description":"月次査定件数の変動係数（例：1.2 = 20%増）"},{"name":"推奨人員数","type":"integer","required":true,"description":"このパターン期間中の推奨査定員配置数"},{"name":"是否","type":"boolean","required":true,"description":"パターンが有効か否か"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"レコード作成者ID"},{"name":"更新者","type":"varchar(100)","required":false,"description":"レコード最終更新者ID"}]},{"tableName":"人員配置計画","purpose":"月次の変動需要に対応した査定員の最適な人員配置計画を管理し、生産性目標と実績のギャップを追跡するマスタテーブル","columns":[{"name":"人員配置計画ID","type":"uuid","required":true,"description":"人員配置計画の一意識別子"},{"name":"計画年月","type":"varchar(7)","required":true,"description":"計画対象の年月（YYYY-MM形式）"},{"name":"配置部門","type":"varchar(100)","required":true,"description":"査定員が配置される部門・支店コード"},{"name":"計画査定員数","type":"integer","required":true,"description":"当月の配置予定査定員数"},{"name":"予想月次査定件数","type":"integer","required":true,"description":"変動パターン分析に基づく予想査定件数"},{"name":"目標生産性","type":"integer","required":true,"description":"1人当たりの目標査定件数"},{"name":"変動パターンID","type":"uuid","required":true,"description":"適用する変動パターンへの外部キー"},{"name":"配置戦略","type":"varchar(100)","required":true,"description":"配置戦略の種別（通常配置/繁忙期強化/閑散期調整等）"},{"name":"実績査定員数","type":"integer","required":false,"description":"月末時点の実際配置査定員数"},{"name":"実績月次査定件数","type":"integer","required":false,"description":"月末時点の実績査定件数"},{"name":"実績生産性","type":"integer","required":false,"description":"実績に基づく1人当たり査定件数"},{"name":"ステータス","type":"varchar(50)","required":true,"description":"計画ステータス（計画中/実行中/完了/見直し）"},{"name":"備考","type":"text","required":false,"description":"配置計画に関する特記事項"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"計画作成者のユーザーID"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"更新者","type":"varchar(100)","required":true,"description":"最終更新者のユーザーID"}]},{"tableName":"人員配置シナリオ","purpose":"月次の変動パターンに基づいて複数の人員配置案を作成・比較し、最適な配置計画を検討するためのシナリオ管理テーブル","columns":[{"name":"シナリオID","type":"uuid","required":true,"description":"シナリオの一意識別子"},{"name":"シナリオ名","type":"varchar(100)","required":true,"description":"シナリオの名称（例：『繁忙期対応案A』）"},{"name":"対象年月","type":"varchar(7)","required":true,"description":"このシナリオが適用される対象月（YYYY-MM形式）"},{"name":"変動パターンID","type":"uuid","required":true,"description":"参照する変動パターンのID"},{"name":"配置予定人数","type":"integer","required":true,"description":"このシナリオで配置する査定員の総人数"},{"name":"予想生産性","type":"integer","required":false,"description":"このシナリオでの予想平均生産性（件数/人/月）"},{"name":"予想総査定件数","type":"integer","required":false,"description":"このシナリオで対応可能な予想総査定件数"},{"name":"コスト見積額","type":"integer","required":false,"description":"このシナリオの人件費等コスト見積額"},{"name":"シナリオ説明","type":"text","required":false,"description":"シナリオの詳細説明・前提条件等"},{"name":"ステータス","type":"varchar(20)","required":true,"description":"シナリオの状態（案, 承認待ち, 承認済み, 実行中, 完了）"},{"name":"作成日時","type":"timestamp","required":true,"description":"シナリオ作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"シナリオ最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"シナリオ作成者のユーザーID"},{"name":"備考","type":"text","required":false,"description":"その他の備考"}]},{"tableName":"配置実績","purpose":"月次の人員配置計画に対する実績を記録し、配置の妥当性検証と次月計画の最適化に用いる","columns":[{"name":"配置実績ID","type":"uuid","required":true,"description":"配置実績の一意識別子"},{"name":"人員配置計画ID","type":"uuid","required":true,"description":"対応する人員配置計画への外部キー"},{"name":"査定員ID","type":"uuid","required":true,"description":"配置された査定員への外部キー"},{"name":"配置年月","type":"varchar(7)","required":true,"description":"配置対象の年月（YYYY-MM形式）"},{"name":"配置開始日","type":"timestamp","required":true,"description":"実際の配置開始日時"},{"name":"配置終了日","type":"timestamp","required":false,"description":"実際の配置終了日時（配置中の場合はNULL）"},{"name":"配置部門","type":"varchar(100)","required":true,"description":"配置先の部門・支店コード"},{"name":"配置役割","type":"varchar(100)","required":true,"description":"配置時の役割（査定、品質管理、リーダー等）"},{"name":"計画稼働日数","type":"integer","required":true,"description":"計画時の月間稼働日数"},{"name":"実績稼働日数","type":"integer","required":true,"description":"実際の月間稼働日数"},{"name":"計画査定件数","type":"integer","required":true,"description":"計画時の月間査定件数"},{"name":"実績査定件数","type":"integer","required":true,"description":"実際の月間査定件数"},{"name":"計画生産性","type":"integer","required":true,"description":"計画時の日次生産性（件/日）"},{"name":"実績生産性","type":"integer","required":true,"description":"実際の日次生産性（件/日）"},{"name":"配置妥当性評価","type":"varchar(50)","required":false,"description":"配置の妥当性評価（適切、過剰、不足等）"},{"name":"備考","type":"text","required":false,"description":"配置実績に関する特記事項"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"レコード作成者のユーザーID"},{"name":"更新者","type":"varchar(100)","required":true,"description":"レコード最終更新者のユーザーID"}]},{"tableName":"乖離分析","purpose":"見積書の予測値と日次実績の乖離を分析し、査定員の生産性変動パターンを把握するための分析テーブル","columns":[{"name":"乖離分析ID","type":"uuid","required":true,"description":"乖離分析レコードの一意識別子"},{"name":"分析年月","type":"varchar(7)","required":true,"description":"分析対象の年月（YYYY-MM形式）"},{"name":"査定員ID","type":"uuid","required":true,"description":"査定員マスタへの外部キー"},{"name":"見積書ID","type":"uuid","required":false,"description":"見積書マスタへの外部キー（個別分析時）"},{"name":"予測件数","type":"integer","required":true,"description":"見積書から予測された月次査定件数"},{"name":"実績件数","type":"integer","required":true,"description":"日次実績から集計された実際の査定件数"},{"name":"件数乖離","type":"integer","required":true,"description":"実績件数 - 予測件数"},{"name":"件数乖離率","type":"varchar(10)","required":true,"description":"乖離率（パーセンテージ、例：+15.5%）"},{"name":"予測生産性","type":"varchar(10)","required":true,"description":"見積書から予測された生産性（件数/日）"},{"name":"実績生産性","type":"varchar(10)","required":true,"description":"日次実績から計算された実際の生産性（件数/日）"},{"name":"生産性乖離","type":"varchar(10)","required":true,"description":"実績生産性 - 予測生産性"},{"name":"変動パターンID","type":"uuid","required":false,"description":"変動パターンマスタへの外部キー（パターン判定結果）"},{"name":"乖離要因","type":"text","required":false,"description":"乖離の主要因の分類・説明"},{"name":"対応フラグ","type":"boolean","required":true,"description":"人員配置調整が必要かどうか"},{"name":"対応内容","type":"text","required":false,"description":"実施した対応内容の記録"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"分析実施者のユーザーID"}]},{"tableName":"ログインユーザー","purpose":"システムユーザーの認証・認可管理及びユーザー属性の一元管理","columns":[{"name":"ユーザーID","type":"uuid","required":true,"description":"ユーザーの一意識別子"},{"name":"ログインID","type":"varchar(100)","required":true,"description":"ログイン時に使用するID（一意）"},{"name":"パスワードハッシュ","type":"varchar(255)","required":true,"description":"ハッシュ化されたパスワード"},{"name":"ユーザー名","type":"varchar(100)","required":true,"description":"ユーザーの表示名"},{"name":"メールアドレス","type":"varchar(100)","required":true,"description":"ユーザーのメールアドレス"},{"name":"ロール","type":"varchar(50)","required":true,"description":"ユーザーの役割（管理者/マネージャー/査定員等）"},{"name":"部門","type":"varchar(100)","required":false,"description":"ユーザーが属する部門"},{"name":"ステータス","type":"varchar(20)","required":true,"description":"ユーザーステータス（有効/無効/休止）"},{"name":"最終ログイン日時","type":"timestamp","required":false,"description":"最後にログインした日時"},{"name":"作成日時","type":"timestamp","required":true,"description":"ユーザー作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"ユーザー情報最終更新日時"},{"name":"作成者","type":"uuid","required":true,"description":"ユーザーを作成したユーザーID"}]}];
-window.AIVIC_PRESET_SEED = {"見積書":[{"見積書ID":"rec-001","ユーザーID":"rec-u-0847","見積書番号":"EST-2025-001234","見積日":"2025-01-15T09:30:00Z","有効期限":"2025-02-15T23:59:59Z","顧客名":"株式会社ソリューション企画","見積金額":2850000,"査定ステータス":"承認","自動判定結果":"承認","判定理由":"大口顧客の定期見積。過去12ヶ月の取引実績あり。支払い履歴良好。見積金額は予算範囲内。","備考":"2025年1月分の月次定期見積。前月比3%増。営業担当者：山田花子。納期：2025年2月末日。","作成日時":"2025-01-15T09:30:00Z","更新日時":"2025-01-16T14:22:30Z","作成者":"rec-u-0847"},{"見積書ID":"rec-001","ユーザーID":"rec-u0042","見積書番号":"EST-2024-0001","見積日":"2024-11-15T09:30:00Z","有効期限":"2024-12-15T23:59:59Z","顧客名":"株式会社フューチャーテック","見積金額":2850000,"査定ステータス":"未査定","自動判定結果":"判定待機中","判定理由":"新規取引先のため手動査定が必要です。","備考":"営業担当者：山田太郎。初回取引のため信用調査を推奨します。納期は2025年1月末を予定。","作成日時":"2024-11-15T09:30:00Z","更新日時":"2024-11-15T09:30:00Z","作成者":"rec-u0042"},{"見積書ID":"rec-001","ユーザーID":"rec-u-0047","見積書番号":"EST-2024-11-0892","見積日":"2024-11-15T09:30:00Z","有効期限":"2024-12-15T23:59:59Z","顧客名":"株式会社ハイテック製造","見積金額":8500000,"査定ステータス":"却下","自動判定結果":"却下","判定理由":"見積金額8,500,000円が予算上限7,000,000円を1,500,000円超過しています。自動査定ルールにより却下判定となりました。","備考":"顧客より追加機能の実装要望があり金額が増加。予算内での実装内容の見直しを提案予定。","作成日時":"2024-11-15T09:35:22Z","更新日時":"2024-11-15T14:20:45Z","作成者":"rec-u-0047"},{"見積書ID":"rec-001-20250115-est","ユーザーID":"rec-user-0042","見積書番号":"EST-2025-00847","見積日":"2025-01-15T09:30:00+09:00","有効期限":"2025-02-15T23:59:59+09:00","顧客名":"株式会社ソリューションシステムズ","見積金額":2850000,"査定ステータス":"査定中","自動判定結果":"要確認","判定理由":"緊急対応案件のため通常の査定基準では判定困難。金額規模が大きく、人員配置期間が短期間のため、契約条件の詳細確認が必要。","備考":"システム障害対応による緊急人員配置。配置期間：2025年1月20日〜2月28日（約6週間）。技術者3名、PM1名の配置を予定。顧客との契約は既に口頭合意済み。","作成日時":"2025-01-15T09:32:15+09:00","更新日時":"2025-01-15T14:20:47+09:00","作成者":"rec-user-0042"},{"見積書ID":"rec-001","ユーザーID":"user-047","見積書番号":"EST-2024-12-0847","見積日":"2024-11-15T09:30:00Z","有効期限":"2024-12-15T23:59:59Z","顧客名":"株式会社サンライズロジスティクス","見積金額":2850000,"査定ステータス":"承認","自動判定結果":"自動承認","判定理由":"繁忙期（11月～12月）の季節変動対応見積として、過去3年間の同時期平均見積金額2,650,000円に対し108%の増加率。業界標準範囲内（105%～115%）であり、顧客の信用スコア9.2/10、過去取引実績12件すべて期日内決済。自動承認基準を満たす。","備考":"年末年始の配送需要増加に対応した運送サービス追加見積。冷蔵輸送車両3台の追加手配を含む。契約予定期間：2024年12月1日～2025年1月31日。","作成日時":"2024-11-15T09:32:15Z","更新日時":"2024-11-15T10:05:42Z","作成者":"user-047"},{"見積書ID":"rec-001","ユーザーID":"rec-002","見積書番号":"EST-2024-0847","見積日":"2024-11-15T09:30:00Z","有効期限":"2025-01-15T23:59:59Z","顧客名":"株式会社ソリューション田中","見積金額":2850000,"査定ステータス":"未査定","自動判定結果":"保留","判定理由":"既存顧客による追加サービス見積のため、営業担当者による確認が必要です。顧客の過去取引実績は良好ですが、新規サービス内容の詳細確認が必要な状態です。","備考":"既存顧客からの追加サービス見積です。前回契約（EST-2024-0521）の実績を踏まえた拡張内容となります。営業の山田太郎が対応予定。","作成日時":"2024-11-15T09:35:22Z","更新日時":"2024-11-15T09:35:22Z","作成者":"rec-002"},{"見積書ID":"rec-20250115-0847","ユーザーID":"user-5f3d2c1a","見積書番号":"EST-2025-00156","見積日":"2025-01-15T09:30:00Z","有効期限":"2025-04-15T23:59:59Z","顧客名":"株式会社フロンティア建設","見積金額":2850000,"査定ステータス":"未査定","自動判定結果":"保留中","判定理由":"前回見積（EST-2024-00089）の有効期限切れ間近による再見積。金額変動なし、条件確認待ち。","備考":"前回見積有効期限：2025年1月14日。顧客より継続希望の連絡あり。材料費の値動き確認済み、価格据え置きで対応。営業担当：鈴木健一","作成日時":"2025-01-15T09:32:15Z","更新日時":"2025-01-15T09:32:15Z","作成者":"user-5f3d2c1a"},{"見積書ID":"rec-20250147","ユーザーID":"rec-00892","見積書番号":"EST-2025-00847","見積日":"2025-01-15T09:30:00Z","有効期限":"2025-03-15T23:59:59Z","顧客名":"株式会社グローバルテック","見積金額":87500000,"査定ステータス":"査定中","自動判定結果":"要経営層承認","判定理由":"見積金額が8,750万円で社内承認基準の5,000万円を超過。複数部門（営業部・技術部・企画部）の連携が必要な大型案件のため、経営層による最終承認が必須。","備考":"営業部からの依頼案件。納期は2025年9月末。システム構築・保守運用を含む3年契約。佐藤部長より事前協議済み。","作成日時":"2025-01-15T10:45:22Z","更新日時":"2025-01-16T14:20:15Z","作成者":"rec-00892"},{"見積書ID":"rec-001","ユーザーID":"rec-u-0847","見積書番号":"QT-2024-001523","見積日":"2024-11-15T10:30:00Z","有効期限":"2024-12-15T23:59:59Z","顧客名":"株式会社サンテック","見積金額":48000,"査定ステータス":"承認","自動判定結果":"自動承認","判定理由":"見積金額が低額案件自動承認基準（50,000円以下）を満たしており、顧客信用スコアも良好なため自動承認対象","備考":"オフィス用複合機リース契約の初期設定費用。顧客は既存取引先（3年取引実績）","作成日時":"2024-11-15T10:35:22Z","更新日時":"2024-11-15T10:45:18Z","作成者":"rec-u-0847"},{"見積書ID":"rec-001","ユーザーID":"rec-user-042","見積書番号":"QT-2025-00847-02","見積日":"2025-01-15T10:30:00Z","有効期限":"2025-02-15T23:59:59Z","顧客名":"株式会社ハイテック工業","見積金額":2850000,"査定ステータス":"査定中","自動判定結果":"保留","判定理由":"前回見積（QT-2025-00847-01）から15%の値下げ要求。原価率が78%に上昇し、利益率が基準値を下回る。営業判断による再査定が必要。","備考":"顧客との値下げ交渉後の修正見積。営業担当の鈴木より、納入数量を500個から600個に増加させることで値下げに応じることを提案。前回見積金額は3,360,000円。","作成日時":"2025-01-15T10:30:00Z","更新日時":"2025-01-15T10:30:00Z","作成者":"rec-user-042"}],"査定員":[{"査定員ID":"rec-001","ユーザーID":"rec-usr-0847","査定員コード":"AP-2019-0156","査定員名":"山田健一","部門":"品質査定部門","資格レベル":"上級","査定対象カテゴリ":"全カテゴリ対応","ステータス":"稼働中","品質スコア":94,"査定件数":8742,"作成日時":"2019-06-15 09:30:00","更新日時":"2025-01-22 14:15:00","作成者ID":"rec-usr-0001","更新者ID":"rec-usr-0847"},{"査定員ID":"rec-001","ユーザーID":"usr-0847","査定員コード":"APP-2024-0156","査定員名":"山田健一","部門":"査定部第2課","資格レベル":"中級","査定対象カテゴリ":"電子機器","ステータス":"稼働中","品質スコア":82,"査定件数":1247,"作成日時":"2024-04-15 09:30:00","更新日時":"2025-01-20 14:22:00","作成者ID":"usr-0001","更新者ID":"usr-0002"},{"査定員ID":"rec-001-a7f2-4c8e-9b1d","ユーザーID":"rec-user-2024-0847","査定員コード":"ASS20250115001","査定員名":"佐藤健太","部門":"品質管理部 査定課","資格レベル":"初級","査定対象カテゴリ":"衣類","ステータス":"稼働中","品質スコア":72,"査定件数":23,"作成日時":"2025-01-15 09:30:00","更新日時":"2025-01-20 14:15:00","作成者ID":"rec-user-2024-0001","更新者ID":"rec-user-2024-0001"},{"査定員ID":"rec-001","ユーザーID":"rec-usr-042","査定員コード":"ASS-2019-0847","査定員名":"山田健一","部門":"査定部門第2課","資格レベル":"上級","査定対象カテゴリ":"時計/ジュエリー/ブランド品","ステータス":"稼働中","品質スコア":62,"査定件数":3847,"作成日時":"2019-04-15T09:30:00+09:00","更新日時":"2025-01-22T14:45:00+09:00","作成者ID":"rec-usr-001","更新者ID":"rec-usr-015"},{"査定員ID":"rec-001","ユーザーID":"rec-user-047","査定員コード":"AS-2024-0847","査定員名":"鈴木美咲","部門":"宝飾品査定部","資格レベル":"中級","査定対象カテゴリ":"ジュエリー・時計","ステータス":"休止中","品質スコア":87,"査定件数":1243,"作成日時":"2023-06-15T09:30:00","更新日時":"2025-01-10T14:22:00","作成者ID":"rec-user-001","更新者ID":"rec-user-003"},{"査定員ID":"rec-001","ユーザーID":"rec-user-047","査定員コード":"AP-2024-0847","査定員名":"佐藤健一","部門":"鑑定部門第2課","資格レベル":"中級","査定対象カテゴリ":"時計・ジュエリー","ステータス":"稼働中","品質スコア":82,"査定件数":1247,"作成日時":"2024-03-15 09:30:00","更新日時":"2025-01-22 16:45:00","作成者ID":"rec-user-admin-001","更新者ID":"rec-user-manager-012"},{"査定員ID":"rec-001-a7f2-4c9e-b1d3-2e5f8a9c","ユーザーID":"rec-002-b8g3-5d0f-c2e4-3f6g9b0d","査定員コード":"SA-2024-0847","査定員名":"山田健一","部門":"鑑定評価部","資格レベル":"上級","査定対象カテゴリ":"時計・ジュエリー・美術品","ステータス":"稼働中","品質スコア":94,"査定件数":3847,"作成日時":"2022-06-15T09:30:00Z","更新日時":"2025-01-18T14:22:00Z","作成者ID":"rec-003-c9h4-6e1g-d3f5-4g7h0c1e","更新者ID":"rec-004-d0i5-7f2h-e4g6-5h8i1d2f"},{"査定員ID":"rec-001","ユーザーID":"rec-user-0847","査定員コード":"AP-2024-0156","査定員名":"鈴木健太","部門":"査定部第2課","資格レベル":"中級","査定対象カテゴリ":"ブランド品,時計,ジュエリー,カメラ機材","ステータス":"稼働中","品質スコア":78,"査定件数":1247,"作成日時":"2024-03-15T09:30:00","更新日時":"2025-01-22T14:15:00","作成者ID":"rec-admin-0001","更新者ID":"rec-manager-0023"},{"査定員ID":"rec-001","ユーザーID":"rec-002","査定員コード":"AP-20230415","査定員名":"山田花子","部門":"品質管理部","資格レベル":"上級","査定対象カテゴリ":"時計・宝飾品","ステータス":"退職","品質スコア":92,"査定件数":3847,"作成日時":"2023-04-15T09:30:00","更新日時":"2025-01-31T16:45:00","作成者ID":"rec-003","更新者ID":"rec-004"},{"査定員ID":"rec-001-a7f2e9d3","ユーザーID":"rec-user-b4c1f8e2","査定員コード":"AP-JWL-0847","査定員名":"佐藤美咲","部門":"高級品査定部","資格レベル":"上級","査定対象カテゴリ":"ジュエリー・時計・宝石","ステータス":"稼働中","品質スコア":96,"査定件数":1847,"作成日時":"2024-01-15T09:30:00+09:00","更新日時":"2025-01-08T14:22:00+09:00","作成者ID":"rec-user-admin-001","更新者ID":"rec-user-admin-002"}],"見積書明細":[{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":3,"作業内容":"バックエンド API 開発","作業説明":"顧客管理システムのRESTful API開発。ユーザー認証、顧客情報管理、注文管理の各エンドポイント実装。データベース設計及び最適化を含む。","数量":120,"単位":"人日","単価":85000,"金額":10200000,"必要人員数":3,"必要スキル":"Java/Spring Boot、PostgreSQL、REST API設計","実施予定月":"2024年11月〜2025年1月","備考":"既存レガシーシステムとの連携が必要。詳細設計は別途契約。テスト環境構築費用は別途見積。","作成日時":"2024-09-15T10:30:00","更新日時":"2024-09-20T14:15:00","作成者":"佐藤花子"},{"明細ID":"rec-001","見積書ID":"est-2024-1201","行番号":1,"作業内容":"年末年始臨時スタッフ配置","作業説明":"顧客サポートセンターの繁忙期における電話対応・メール対応・チャットサポート業務を行う臨時スタッフの配置。12月20日から1月10日までの22日間、平日8時間、土日祝日6時間の勤務体制。","数量":22,"単位":"人日","単価":12000,"金額":264000,"必要人員数":8,"必要スキル":"カスタマーサポート経験者、電話対応スキル、基本的なPC操作","実施予定月":"2024年12月〜2025年1月","備考":"時給1500円相当。研修は12月19日に実施。配置先は東京オフィス。シフト管理は別途調整。","作成日時":"2024-10-15 14:30:00","更新日時":"2024-10-15 14:30:00","作成者":"山田花子"},{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":2,"作業内容":"データベース設計・最適化","作業説明":"既存システムのデータベース構造を分析し、移行対象データベースの物理設計を実施。テーブル定義、インデックス戦略、パーティショニング設計を含む。","数量":15,"単位":"人日","単価":85000,"金額":1275000,"必要人員数":2,"必要スキル":"データベースアーキテクト、Oracle/PostgreSQL経験者","実施予定月":"2025年2月〜3月","備考":"クライアント側のDBA1名との協働を想定。既存DB環境（Oracle 19c）の詳細ドキュメント提供が前提。","作成日時":"2024-12-15T10:30:00","更新日時":"2024-12-18T14:20:00","作成者":"佐藤美咲"},{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":1,"作業内容":"サーバー定期保守（月次）","作業説明":"本社データセンター内の仮想サーバー群に対する月次定期保守業務。ログファイル確認、パッチ適用、ディスク容量監視、バックアップ検証を実施します。","数量":12,"単位":"人日","単価":85000,"金額":1020000,"必要人員数":2,"必要スキル":"Linux/Windows管理者、仮想化技術","実施予定月":"2024年4月～2025年3月（毎月第2火曜日）","備考":"緊急対応が必要な場合は別途協議。作業時間は原則22:00～06:00の夜間帯。","作成日時":"2024-03-15 10:30:45","更新日時":"2024-03-22 14:15:20","作成者":"山田花子"},{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":1,"作業内容":"新製品ローンチ用プレゼンテーション資料作成","作業説明":"新製品の機能・特徴・市場ポジショニングを含むA4サイズ20ページ程度のプレゼンテーション資料を企画・構成・デザイン・印刷対応まで一括作成","数量":1,"単位":"式","単価":450000,"金額":450000,"必要人員数":2,"必要スキル":"グラフィックデザイナー、マーケティング企画","実施予定月":"2024年12月〜2025年1月","備考":"修正対応は3回まで無料。最終納品はPDF・PowerPoint両形式での納品を予定。打ち合わせは計3回実施予定。","作成日時":"2024-10-15T09:30:00","更新日時":"2024-10-22T14:15:00","作成者":"佐藤美咲"},{"明細ID":"rec-001","見積書ID":"est-2024-12-0847","行番号":3,"作業内容":"決算期経理業務サポート（派遣社員配置）","作業説明":"12月決算期における経理部門の繁忙業務に対応するため、派遣社員を配置して仕訳入力、請求書照合、決算書類作成補助等を実施","数量":2,"単位":"人日","単価":12000,"金額":24000,"必要人員数":2,"必要スキル":"簿記知識、会計ソフト操作経験（弥生会計またはPCA推奨）","実施予定月":"2024年12月","備考":"派遣期間は12月1日～12月31日の30日間。勤務時間は9:00～17:30（休憩1時間）。配置先は本社経理課。既存スタッフとの調整済み。","作成日時":"2024-10-15T10:30:00","更新日時":"2024-10-22T14:15:00","作成者":"山田花子"},{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":3,"作業内容":"オフィス移転に伴う事務作業サポート","作業説明":"旧オフィスの書類整理・仕分け、転居先への書類搬入・整理、オフィス機器の配置支援、住所変更手続き書類の作成補助等を実施","数量":15,"単位":"人日","単価":12000,"金額":180000,"必要人員数":3,"必要スキル":"事務作業経験者","実施予定月":"2025年3月","備考":"移転期間は2025年3月15日～3月31日を予定。土日祝日を除く営業日ベースでの計画。既存オフィスの片付け作業は2025年3月10日～14日の事前準備期間で実施予定","作成日時":"2024-12-15T10:30:00","更新日時":"2024-12-15T10:30:00","作成者":"山田花子"},{"明細ID":"rec-001","見積書ID":"est-20250115-001","行番号":1,"作業内容":"Webアプリケーション脆弱性診断","作業説明":"クライアント企業のWebアプリケーションに対して、OWASP Top 10を中心とした包括的な脆弱性診断を実施。ペネトレーションテスト、ソースコード静的解析、動的解析を含む。診断結果報告書及び改善提案書を納品。","数量":15,"単位":"人日","単価":85000,"金額":1275000,"必要人員数":2,"必要スキル":"セキュリティエンジニア、ペネトレーションテスター","実施予定月":"2025年2月","備考":"診断対象システムの事前ヒアリング及び環境構築に3日間を要する見込み。本番環境での実施のため夜間作業を予定。","作成日時":"2025-01-15T10:30:00","更新日時":"2025-01-15T10:30:00","作成者":"鈴木美咲"},{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":2,"作業内容":"コールセンター運営スタッフ（11月～1月増員）","作業説明":"年末年始の繁忙期に対応するため、既存スタッフ20名に加えて段階的に人員を増員。11月は+5名、12月は+10名、1月は+8名の臨時スタッフを配置し、顧客対応品質を維持しながら対応時間短縮を実現する。","数量":23,"単位":"人日","単価":8500,"金額":195500,"必要人員数":23,"必要スキル":"コールセンター運営経験者、顧客対応スキル","実施予定月":"2024年11月～2025年1月","備考":"既存スタッフによる研修期間3日間を含む。時給1,700円×8時間で計算。11月5日から段階的に配置開始。","作成日時":"2024-09-15 10:30:00","更新日時":"2024-09-22 14:15:00","作成者":"佐藤美咲"},{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":1,"作業内容":"月次巡回点検業務","作業説明":"既存システムの稼働状況確認、ログ監視、ディスク容量チェック、バックアップ動作確認、セキュリティパッチ適用状況の確認を実施します。","数量":12,"単位":"人日","単価":65000,"金額":780000,"必要人員数":1,"必要スキル":"インフラエンジニア","実施予定月":"2025年1月～12月（毎月第2火曜日）","備考":"営業時間内の実施。緊急時は24時間対応可能。報告書は毎月末までに提出。","作成日時":"2024-12-15 09:30:00","更新日時":"2024-12-15 09:30:00","作成者":"山田花子"}],"日次実績":[{"日次実績ID":"rec-20250115-001","査定員ID":"rec-emp-0847","実績日":"2025-01-15T00:00:00Z","見積書ID":"rec-est-2025-0342","完了件数":4,"売上金額":285000,"稼働時間":420,"移動時間":85,"訪問件数":6,"成約件数":4,"備考":"午前中に市内3件、午後に郊外3件を訪問。成約率は高く、特に午後の大型案件2件が決定。移動時間は渋滞の影響で若干増加。顧客満足度も良好。","作成日時":"2025-01-15T18:30:00Z","更新日時":"2025-01-15T18:30:00Z","作成者":"鈴木健太"},{"日次実績ID":"rec-20250117-001","査定員ID":"rec-emp-0847","実績日":"2025-01-17T00:00:00Z","見積書ID":"rec-est-5234","完了件数":3,"売上金額":185000,"稼働時間":480,"移動時間":210,"訪問件数":4,"成約件数":2,"備考":"大雪の影響で移動時間が大幅に増加。予定していた訪問先2件はキャンセル対応となった。路面凍結による安全運転のため、移動ルートを変更。成約率は良好だったが、訪問件数の減少により売上は平均より低め。","作成日時":"2025-01-17T18:30:00Z","更新日時":"2025-01-17T18:30:00Z","作成者":"鈴木花子"},{"日次実績ID":"rec-20250215-001","査定員ID":"rec-assessor-0847","実績日":"2025-02-15T00:00:00Z","見積書ID":"rec-estimate-5234","完了件数":3,"売上金額":2850000,"稼働時間":480,"移動時間":120,"訪問件数":4,"成約件数":1,"備考":"大型商業施設の内装工事案件で成約。顧客との打ち合わせが長時間となったが、追加オプション工事も含めた契約に至った。契約金額2,850,000円。次回現地調査は2月22日予定。","作成日時":"2025-02-15T18:30:00Z","更新日時":"2025-02-15T18:30:00Z","作成者":"yamada_taro"},{"日次実績ID":"rec-20250102-001","査定員ID":"rec-assessor-0847","実績日":"2025-01-02T00:00:00Z","見積書ID":"rec-quote-2501-0156","完了件数":3,"売上金額":180000,"稼働時間":480,"移動時間":145,"訪問件数":12,"成約件数":2,"備考":"月初のため新規顧客への営業活動を重点実施。訪問件数は多かったが、年始のため多くの企業が休業中または意思決定権者不在で、成約に至らなかったケースが多数。成約率は16.7%に留まった。次週の追跡営業で改善見込み。","作成日時":"2025-01-02T18:30:00Z","更新日時":"2025-01-02T18:30:00Z","作成者":"suzuki-yuki"},{"日次実績ID":"rec-20250115-001","査定員ID":"rec-emp-0847","実績日":"2025-01-15T00:00:00Z","見積書ID":"rec-est-2401","完了件数":8,"売上金額":2840000,"稼働時間":480,"移動時間":95,"訪問件数":9,"成約件数":8,"備考":"既存顧客A社、B社、C社への定期フォローアップ訪問。前月提案の追加工事について成約率が高く、既存案件の拡大受注が3件。顧客満足度が高く、紹介案件の打診も受けた。","作成日時":"2025-01-15T18:30:00Z","更新日時":"2025-01-15T18:30:00Z","作成者":"佐藤花子"},{"日次実績ID":"rec-20250115-001","査定員ID":"rec-emp-0847","実績日":"2025-01-15T00:00:00Z","見積書ID":"rec-est-2025-0342","完了件数":3,"売上金額":180000,"稼働時間":240,"移動時間":85,"訪問件数":5,"成約件数":2,"備考":"午前9時30分から正午までシステム障害により見積システムが利用不可。その間は手書き対応で対応。午後から復旧後は通常業務に戻ったが、午前の遅れを取り戻せず。予定していた7件のうち5件のみ訪問完了。","作成日時":"2025-01-15T18:30:00Z","更新日時":"2025-01-15T18:30:00Z","作成者":"鈴木花子"},{"日次実績ID":"rec-20250115-001","査定員ID":"rec-emp-0847","実績日":"2025-01-15T00:00:00Z","見積書ID":"rec-est-2401","完了件数":2,"売上金額":85000,"稼働時間":480,"移動時間":120,"訪問件数":3,"成約件数":1,"備考":"初日実績。移動ルート確認に時間を要した。顧客対応は丁寧だが、見積作成に時間がかかった。先輩査定員と同行し、営業フロー全体を学習。夕方に疲労が見られたため、明日以降のペース調整を検討。","作成日時":"2025-01-15T18:30:00Z","更新日時":"2025-01-15T18:30:00Z","作成者":"佐藤次郎"},{"日次実績ID":"rec-20250131-001","査定員ID":"rec-assessor-0847","実績日":"2025-01-31T23:59:59","見積書ID":"rec-estimate-5234","完了件数":12,"売上金額":2850000,"稼働時間":480,"移動時間":145,"訪問件数":15,"成約件数":9,"備考":"月末追い込みにより成約件数が大幅増加。顧客の決定が集中し、夜間対応も実施。キャンペーン期間中の割引適用案件が多数含まれる。疲労度は高いが目標達成。","作成日時":"2025-02-01T08:15:32","更新日時":"2025-02-01T08:15:32","作成者":"佐藤花子"},{"日次実績ID":"rec-20250115-001","査定員ID":"rec-assessor-047","実績日":"2025-01-15T00:00:00Z","見積書ID":"rec-estimate-0284","完了件数":2,"売上金額":185000,"稼働時間":240,"移動時間":480,"訪問件数":3,"成約件数":2,"備考":"長野県北部エリア担当。山越え経由での移動のため片道90分以上要した。朝5時出発で夜間帰社。訪問3件中2件成約。最終訪問地は天候悪化のため翌日対応に変更。","作成日時":"2025-01-15T18:45:32Z","更新日時":"2025-01-15T18:45:32Z","作成者":"suzuki_hanako"},{"日次実績ID":"rec-20250110-001","査定員ID":"rec-assessor-0847","実績日":"2025-01-10T00:00:00Z","見積書ID":"rec-quote-2156","完了件数":1,"売上金額":15000,"稼働時間":180,"移動時間":120,"訪問件数":2,"成約件数":0,"備考":"正月休場明けの営業再開。午前中は事務処理に時間を要し、午後から2件の訪問を実施。天候不良により移動時間が増加。顧客の新年対応により予定変更あり。","作成日時":"2025-01-10T18:30:00Z","更新日時":"2025-01-10T18:30:00Z","作成者":"佐藤花子"}],"査定員生産性":[{"査定員生産性ID":"rec-001","査定員ID":"rec-emp-0847","対象年月":"2024-11","見積件数":18,"見積金額合計":87500000,"平均見積金額":4861111,"稼働日数":19,"日次平均件数":0.95,"生産性スコア":92,"作成日時":"2024-12-01T09:15:30+09:00","更新日時":"2024-12-01T09:15:30+09:00","作成者":"system_admin"},{"査定員生産性ID":"rec-001","査定員ID":"rec-emp-0047","対象年月":"2025-01","見積件数":8,"見積金額合計":1240000,"平均見積金額":155000,"稼働日数":15,"日次平均件数":0.53,"生産性スコア":18,"作成日時":"2025-02-03 09:30:00","更新日時":"2025-02-03 09:30:00","作成者":"山田花子"},{"査定員生産性ID":"rec-20250145","査定員ID":"rec-20250089","対象年月":"2025-01","見積件数":42,"見積金額合計":18750000,"平均見積金額":446428,"稼働日数":20,"日次平均件数":2.1,"生産性スコア":78,"作成日時":"2025-02-03T09:30:00+09:00","更新日時":"2025-02-03T09:30:00+09:00","作成者":"鈴木花子"},{"査定員生産性ID":"rec-20240815-001","査定員ID":"rec-emp-00847","対象年月":"2024-08","見積件数":18,"見積金額合計":8450000,"平均見積金額":469444,"稼働日数":16,"日次平均件数":1.13,"生産性スコア":62,"作成日時":"2024-09-01 09:30:15","更新日時":"2024-09-01 09:30:15","作成者":"佐藤花子"},{"査定員生産性ID":"rec-20250045","査定員ID":"rec-00128","対象年月":"2025-01","見積件数":47,"見積金額合計":18750000,"平均見積金額":399148,"稼働日数":19,"日次平均件数":2.5,"生産性スコア":87,"作成日時":"2025-02-03 09:15:00","更新日時":"2025-02-03 09:15:00","作成者":"佐藤花子"},{"査定員生産性ID":"rec-20250147","査定員ID":"rec-20250089","対象年月":"2025-01","見積件数":18,"見積金額合計":4320000,"平均見積金額":240000,"稼働日数":19,"日次平均件数":0.95,"生産性スコア":32,"作成日時":"2025-02-03T10:15:00","更新日時":"2025-02-03T10:15:00","作成者":"佐藤花子"},{"査定員生産性ID":"rec-20250142","査定員ID":"rec-emp-0847","対象年月":"2025-01","見積件数":12,"見積金額合計":4850000,"平均見積金額":404167,"稼働日数":18,"日次平均件数":0.67,"生産性スコア":28,"作成日時":"2025-02-03T09:15:00","更新日時":"2025-02-03T09:15:00","作成者":"佐藤花子"},{"査定員生産性ID":"rec-20250142","査定員ID":"rec-20250089","対象年月":"2025-01","見積件数":8,"見積金額合計":45800000,"平均見積金額":5725000,"稼働日数":19,"日次平均件数":0.42,"生産性スコア":78,"作成日時":"2025-02-03 09:15:30","更新日時":"2025-02-03 09:15:30","作成者":"佐藤花子"},{"査定員生産性ID":"rec-20250145","査定員ID":"rec-20250089","対象年月":"2025-01","見積件数":47,"見積金額合計":18500000,"平均見積金額":393617,"稼働日数":19,"日次平均件数":2.5,"生産性スコア":88,"作成日時":"2025-02-03 09:15:00","更新日時":"2025-02-03 09:15:00","作成者":"佐藤花子"},{"査定員生産性ID":"rec-001","査定員ID":"rec-emp-047","対象年月":"2024-11","見積件数":42,"見積金額合計":18750000,"平均見積金額":446429,"稼働日数":20,"日次平均件数":2.1,"生産性スコア":78,"作成日時":"2024-12-01T09:30:00+09:00","更新日時":"2024-12-01T09:30:00+09:00","作成者":"system_admin"}],"月次査定件数":[{"月次査定件数ID":"rec-001","対象年月":"2024-11","査定員ID":"emp-0847","査定件数":156,"目標件数":120,"達成率":"130.0%","平均査定時間分":18,"生産性スコア":"S","備考":"経験年数15年のベテラン査定員。効率的な査定プロセスにより目標を大幅超過。品質管理部による抜き打ち検査でも誤認率0.3%と優秀。チーム内のロールモデルとして後進指導も積極的に実施。","作成日時":"2024-12-01 09:15:32","更新日時":"2024-12-05 14:42:18","作成者":"admin-yamada"},{"月次査定件数ID":"rec-001","対象年月":"2024-12","査定員ID":"rec-emp-047","査定件数":18,"目標件数":45,"達成率":"40.0%","平均査定時間分":52,"生産性スコア":"C","備考":"新人研修中。12月から配属。査定プロセスの習熟に時間を要しているため、達成率が低い。1月以降の改善を期待。OJT担当者による指導継続中。","作成日時":"2025-01-05 09:30:00","更新日時":"2025-01-05 09:30:00","作成者":"suzuki_hanako"},{"月次査定件数ID":"rec-20250115-0847","対象年月":"2025-01","査定員ID":"rec-assessor-0324","査定件数":47,"目標件数":50,"達成率":"94%","平均査定時間分":38,"生産性スコア":"B+","備考":"1月は年始業務の影響で目標達成率94%となったが、査定品質は良好。平均査定時間は安定しており、顧客満足度も高い。2月以降の巻き返しに期待。","作成日時":"2025-02-03 09:15:22","更新日時":"2025-02-03 09:15:22","作成者":"admin-yamada"},{"月次査定件数ID":"rec-001","対象年月":"2024-11","査定員ID":"emp-0847","査定件数":28,"目標件数":45,"達成率":"62.2%","平均査定時間分":38,"生産性スコア":"C","備考":"11月1日〜11月15日まで急性胃腸炎により休暇。11月18日より業務復帰。復帰後の査定件数は28件。月間目標45件に対して達成率62.2%。復帰後の業務進捗は順調だが、月間目標達成には至らず。","作成日時":"2024-12-01 09:30:00","更新日時":"2024-12-01 09:30:00","作成者":"admin_yamamoto"},{"月次査定件数ID":"rec-20250215-001","対象年月":"2025-01","査定員ID":"rec-emp-00847","査定件数":156,"目標件数":120,"達成率":"130.0%","平均査定時間分":28,"生産性スコア":"A","備考":"繁忙期応援配置により通常配置員を上回る件数を処理。品質低下なし。継続配置を検討。","作成日時":"2025-02-03 09:15:30","更新日時":"2025-02-03 09:15:30","作成者":"admin_yamada"},{"月次査定件数ID":"rec-001","対象年月":"2024-11","査定員ID":"rec-emp-0847","査定件数":18,"目標件数":25,"達成率":"72%","平均査定時間分":145,"生産性スコア":"C","備考":"11月は大型商業施設の耐震補強工事案件（複数階層、構造計算複雑）が3件集中。各案件で現地調査・関係者ヒアリング・図面精査に通常の2倍以上の時間を要した。平均査定時間が通常の60分から145分に増加。12月以降は案件分散予定のため達成率改善見込み。","作成日時":"2024-12-01T09:15:00","更新日時":"2024-12-05T14:32:00","作成者":"suzuki_hanako"},{"月次査定件数ID":"rec-20250201-001","対象年月":"2025-01","査定員ID":"rec-assessor-0847","査定件数":156,"目標件数":150,"達成率":"104.0%","平均査定時間分":28,"生産性スコア":"A","備考":"標準化プロセス導入により前月比で査定時間を5分短縮。チェックリスト活用で確認漏れが減少し、再査定件数が前月の3件から1件に低下。目標達成率は前月の96.5%から104.0%に向上。","作成日時":"2025-02-03T09:15:00+09:00","更新日時":"2025-02-03T09:15:00+09:00","作成者":"山田花子"},{"月次査定件数ID":"rec-20250215-001","対象年月":"2025-01","査定員ID":"emp-20240601-042","査定件数":95,"目標件数":95,"達成率":"100.0%","平均査定時間分":28,"生産性スコア":"A","備考":"1月7日～9日のシステム障害により月初業務が3日間停止。復旧後は追加シフト対応で挽回し、月末までに目標達成。平均査定時間は若干延伸したが、品質維持のため妥当な範囲。","作成日時":"2025-02-03T09:30:00+09:00","更新日時":"2025-02-03T09:30:00+09:00","作成者":"admin_yamada"},{"月次査定件数ID":"rec-001","対象年月":"2024-11","査定員ID":"emp-0847","査定件数":42,"目標件数":45,"達成率":"93.3%","平均査定時間分":38,"生産性スコア":"B+","備考":"新人査定員2名の指導を担当。指導時間を確保しつつ、目標比93%の達成。指導対象者の成長が順調で、来月の独立を予定。","作成日時":"2024-12-01T09:15:00","更新日時":"2024-12-05T14:30:00","作成者":"admin_tanaka"},{"月次査定件数ID":"rec-20250215-001","対象年月":"2025-01","査定員ID":"rec-assessor-0847","査定件数":156,"目標件数":140,"達成率":"111.4%","平均査定時間分":28,"生産性スコア":"A","備考":"特殊案件（大型案件5件）の追加対応により目標件数を当初130件から140件に上方修正。査定員の効率的な対応により目標を上回る実績を達成。","作成日時":"2025-02-01 09:30:00","更新日時":"2025-02-15 14:45:00","作成者":"system_admin"}],"変動パターン":[{"変動パターンID":"rec-001","パターン名":"春季繁忙","説明":"新年度開始に伴う契約更新及び決算前の査定件数増加期。企業の予算編成時期と重なり、融資審査・与信査定の申込件数が平年比で20～30%増加する傾向がある。","開始月":3,"終了月":5,"変動係数":"1.25","推奨人員数":8,"是否":true,"作成日時":"2024-11-15T09:30:00","更新日時":"2024-11-15T09:30:00","作成者":"山田花子","更新者":"山田花子"},{"変動パターンID":"rec-001","パターン名":"夏季休暇減少期","説明":"7月から8月にかけての夏季休暇シーズンにおいて、査定対象者の休暇取得に伴う査定業務件数の一時的な減少を想定したパターン。通常業務量の約70%程度に低下する傾向を反映。","開始月":7,"終了月":8,"変動係数":"0.7","推奨人員数":4,"是否":true,"作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2024-10-22T14:15:00+09:00","作成者":"山田花子","更新者":"鈴木一郎"},{"変動パターンID":"rec-001","パターン名":"秋季決算査定繁忙","説明":"9月から10月にかけての中間決算・通期予算編成に伴う人事査定ニーズの増加期。管理職の期末評価、昇進昇格判定、賞与査定が集中する時期であり、査定件数が通常比120%に達する。","開始月":9,"終了月":10,"変動係数":"1.2","推奨人員数":8,"是否":true,"作成日時":"2024-06-15T09:30:00+09:00","更新日時":"2024-11-20T14:45:00+09:00","作成者":"人事部_鈴木花子","更新者":"人事部_山田次郎"},{"変動パターンID":"rec-001","パターン名":"年末年始閑散期","説明":"12月中旬から1月上旬の年末年始休業期間を含むパターン。顧客の休業、査定業務の一時停止により査定件数が大幅に減少する。","開始月":12,"終了月":1,"変動係数":"0.4","推奨人員数":3,"是否":true,"作成日時":"2024-10-15T09:30:00","更新日時":"2024-11-20T14:45:00","作成者":"山田太郎","更新者":"佐藤花子"},{"変動パターンID":"rec-001","パターン名":"通常月標準パターン","説明":"通年を通じて平準化された標準的な査定業務パターン。季節変動が小さい月における通常の査定件数と人員配置を想定。","開始月":4,"終了月":11,"変動係数":"1.0","推奨人員数":8,"是否":true,"作成日時":"2024-04-01T09:30:00+09:00","更新日時":"2024-10-15T14:20:00+09:00","作成者":"鈴木花子","更新者":"佐藤次郎"},{"変動パターンID":"rec-001","パターン名":"四半期決算集中査定","説明":"3月・6月・9月・12月の四半期決算期に査定業務が集中するパターン。期末の業績評価と賞与査定が重なるため、査定件数が通常の1.5倍に増加する。","開始月":2,"終了月":12,"変動係数":"1.5","推奨人員数":8,"是否":true,"作成日時":"2024-01-15T09:30:00+09:00","更新日時":"2024-10-22T14:45:00+09:00","作成者":"佐藤健一","更新者":"鈴木美咲"},{"変動パターンID":"rec-0847","パターン名":"ゴールデンウィーク・お盆期間業務縮小","説明":"ゴールデンウィーク（4月29日～5月6日）とお盆期間（8月10日～8月18日）における査定業務の縮小パターン。この期間は申請件数が減少し、査定員の休暇取得が増加するため、通常体制から70%への縮小を想定。","開始月":4,"終了月":8,"変動係数":"0.7","推奨人員数":7,"是否":true,"作成日時":"2024-02-15T09:30:00Z","更新日時":"2024-11-20T14:45:00Z","作成者":"山田花子","更新者":"佐藤次郎"},{"変動パターンID":"rec-20250047","パターン名":"新商品ローンチ・キャンペーン繁忙期","説明":"新商品ローンチおよび大型キャンペーン実施期間における査定件数の急増に対応するパターン。通常比で約40%の件数増加が見込まれ、審査体制の強化が必要。","開始月":3,"終了月":5,"変動係数":"1.4","推奨人員数":18,"是否":true,"作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2025-01-22T14:15:00+09:00","作成者":"佐藤花子","更新者":"鈴木一郎"},{"変動パターンID":"rec-001","パターン名":"賞与支給月繁忙期","説明":"6月と12月の賞与支給月における査定業務の繁忙期。給与計算システム連携による査定件数の大幅な増加に対応するパターン。","開始月":6,"終了月":6,"変動係数":"1.8","推奨人員数":12,"是否":true,"作成日時":"2024-01-15T09:30:00","更新日時":"2024-12-01T14:22:00","作成者":"山田花子","更新者":"佐藤次郎"},{"変動パターンID":"rec-001","パターン名":"GW・正月繁忙期","説明":"4月下旬から5月上旬のゴールデンウィーク期間および12月下旬から1月上旬の正月休暇期間における査定業務の集中に対応するパターン。連休前後の申請件数増加に伴い、査定員の配置を増強し、業務効率を維持する。","開始月":4,"終了月":5,"変動係数":"1.35","推奨人員数":12,"是否":true,"作成日時":"2024-01-15T09:30:00+09:00","更新日時":"2024-11-20T14:15:00+09:00","作成者":"佐藤花子","更新者":"鈴木一郎"}],"人員配置計画":[{"人員配置計画ID":"rec-001","計画年月":"2024-01","配置部門":"東京支店","計画査定員数":12,"予想月次査定件数":480,"目標生産性":40,"変動パターンID":"pat-202401-tk","配置戦略":"通常配置","実績査定員数":10,"実績月次査定件数":385,"実績生産性":38,"ステータス":"完了","備考":"年始の人員不足により計画員数12名に対し実績10名となった。年末年始の休暇取得者が予想より多く、急遽2名の配置調整が必要となった。実績生産性は目標に近い水準を維持できたが、全体件数は約95件の未達となった。2月以降の体制強化を検討中。","作成日時":"2023-12-15 09:30:00","作成者":"鈴木花子","更新日時":"2024-02-01 16:45:00","更新者":"佐藤次郎"},{"人員配置計画ID":"rec-20240201-001","計画年月":"2024-02","配置部門":"東京支店","計画査定員数":28,"予想月次査定件数":1680,"目標生産性":60,"変動パターンID":"pat-20240115-002","配置戦略":"繁忙期強化","実績査定員数":27,"実績月次査定件数":1542,"実績生産性":57,"ステータス":"完了","備考":"決算期に伴う業務量増加に対応するため、営業所から2名の応援を配置。年度末調整案件が予想より15件少なかったため実績は計画比91.8%。","作成日時":"2024-01-22T09:30:00+09:00","作成者":"山田花子","更新日時":"2024-03-05T16:45:00+09:00","更新者":"鈴木次郎"},{"人員配置計画ID":"rec-2024-03-001","計画年月":"2024-03","配置部門":"関東支店","計画査定員数":12,"予想月次査定件数":840,"目標生産性":70,"変動パターンID":"pat-seasonal-001","配置戦略":"閑散期調整","実績査定員数":12,"実績月次査定件数":875,"実績生産性":73,"ステータス":"完了","備考":"3月の閑散期に向けて前月比20%の人員削減を実施。研修・スキルアップ活動を優先し、生産性目標を3ポイント上回る達成。次年度の繁忙期に備えた人材育成を並行実施。","作成日時":"2024-02-15T09:30:00","作成者":"佐藤花子","更新日時":"2024-03-31T18:45:00","更新者":"鈴木次郎"},{"人員配置計画ID":"rec-20240401-001","計画年月":"2024-04","配置部門":"東京支店","計画査定員数":12,"予想月次査定件数":840,"目標生産性":70,"変動パターンID":"pat-20240401-spring","配置戦略":"繁忙期強化","実績査定員数":12,"実績月次査定件数":768,"実績生産性":64,"ステータス":"完了","備考":"新入査定員5名が4月1日付で配置。研修期間中のため生産性が目標比91%に留まった。5月以降の改善を期待。OJT担当者は鈴木花子、山田次郎。","作成日時":"2024-03-22 09:15:00","作成者":"佐藤健一","更新日時":"2024-05-01 16:45:00","更新者":"鈴木花子"},{"人員配置計画ID":"rec-20240515-osaka-001","計画年月":"2024-05","配置部門":"OS-001","計画査定員数":12,"予想月次査定件数":840,"目標生産性":70,"変動パターンID":"pat-seasonal-202405","配置戦略":"繁忙期強化","実績査定員数":14,"実績月次査定件数":952,"実績生産性":68,"ステータス":"見直し","備考":"4月実績が予想を上回ったため、5月は配置員数を2名増加。GW期間の案件集中に対応するため繁忙期強化戦略に変更。6月以降の需要予測も踏まえ継続監視が必要。","作成日時":"2024-04-25 09:30:00","作成者":"山田花子","更新日時":"2024-05-08 14:15:00","更新者":"佐藤次郎"},{"人員配置計画ID":"rec-20240601-001","計画年月":"2024-06","配置部門":"東京支店_査定部","計画査定員数":12,"予想月次査定件数":480,"目標生産性":40,"変動パターンID":"pat-20240601-summer","配置戦略":"繁忙期強化","実績査定員数":10,"実績月次査定件数":385,"実績生産性":38,"ステータス":"見直し","備考":"6月は繁忙期を想定し12名配置予定であったが、退職者2名の補充が間に合わず実績は10名。目標480件に対し実績385件で達成率80.2%。7月以降の補充採用と業務効率化による改善を検討中。","作成日時":"2024-05-20 14:30:00","作成者":"山田花子","更新日時":"2024-07-02 09:15:00","更新者":"佐藤次郎"},{"人員配置計画ID":"rec-20240701-001","計画年月":"2024-07","配置部門":"東京支店-査定課","計画査定員数":28,"予想月次査定件数":2240,"目標生産性":80,"変動パターンID":"pat-summer-peak-001","配置戦略":"繁忙期強化","実績査定員数":29,"実績月次査定件数":2356,"実績生产性":81,"ステータス":"完了","備考":"上半期決算期に伴う査定件数の急増に対応し、6月比で査定員を4名増員。契約社員2名を緊急配置。目標生産性を達成し、積み残し件数を最小化。","作成日時":"2024-06-15 09:30:00","作成者":"山田花子","更新日時":"2024-08-05 16:45:00","更新者":"佐藤次郎"},{"人員配置計画ID":"rec-20240801-001","計画年月":"2024-08","配置部門":"東京支店","計画査定員数":12,"予想月次査定件数":840,"目標生産性":70,"変動パターンID":"pat-summer-2024","配置戦略":"夏季休暇調整","実績査定員数":11,"実績月次査定件数":748,"実績生産性":68,"ステータス":"完了","備考":"8月第2週から第3週にかけて5名が夏季休暇を取得。交代要員の確保が困難であったため、計画比で1名減の配置となった。実績生産性は目標値をほぼ達成。9月の人員調整で補填予定。","作成日時":"2024-07-15T09:30:00+09:00","作成者":"佐藤花子","更新日時":"2024-09-01T16:45:00+09:00","更新者":"鈴木健二"},{"人員配置計画ID":"rec-20240901-001","計画年月":"2024-09","配置部門":"東京支店","計画査定員数":12,"予想月次査定件数":480,"目標生産性":40,"変動パターンID":"pat-20240801-005","配置戦略":"繁忙期強化","実績査定員数":11,"実績月次査定件数":451,"実績生産性":41,"ステータス":"完了","備考":"8月実績に基づき9月下期計画を策定。1名の休職により計画員数12名に対し実績11名となったが、生産性向上により目標達成。10月以降の繁忙期対応に向け追加配置を検討中。","作成日時":"2024-09-02T09:30:00","作成者":"佐藤花子","更新日時":"2024-10-01T17:15:00","更新者":"鈴木一郎"},{"人員配置計画ID":"rec-20241001-staffplan-001","計画年月":"2024-10","配置部門":"東京支店-査定部","計画査定員数":12,"予想月次査定件数":480,"目標生産性":40,"変動パターンID":"rec-pattern-autumn-2024","配置戦略":"異動対応配置","実績査定員数":11,"実績月次査定件数":418,"実績生産性":38,"ステータス":"完了","備考":"9月末の人事異動に伴い大阪支店から3名が転入。新体制での生産性目標を40件/人に設定。実績は38件/人で目標比95%達成。新配置メンバーの習熟期間を考慮し11月以降の目標を42件/人に修正予定。","作成日時":"2024-09-25 09:30:00","作成者":"鈴木花子","更新日時":"2024-10-31 16:45:00","更新者":"佐藤次郎"}],"人員配置シナリオ":[{"シナリオID":"rec-001","シナリオ名":"2024年1月通常期標準配置案","対象年月":"2024-01","変動パターンID":"rec-pat-002","配置予定人数":12,"予想生産性":85,"予想総査定件数":1020,"コスト見積額":4800000,"シナリオ説明":"2024年1月の通常期における標準的な人員配置。査定員12名を配置し、月間1,020件の査定対応を想定。年度初めの業務量安定期であり、既存スタッフの配置で対応可能と判断。新規採用者2名を含む。","ステータス":"承認済み","作成日時":"2023-12-08T10:30:00","更新日時":"2023-12-15T14:45:00","作成者":"山田太郎","備考":"12月の実績データ（平均生産性82件/人/月）を基に設定。1月は正月休場の影響を考慮し予想生産性を85件/人/月と設定。予備人員なし。"},{"シナリオID":"rec-001","シナリオ名":"繁忙期対応案A","対象年月":"2024-03","変動パターンID":"rec-pat-008","配置予定人数":28,"予想生産性":185,"予想総査定件数":5180,"コスト見積額":8900000,"シナリオ説明":"決算期に伴う査定申請件数の増加に対応するため、通常配置24名から4名の臨時査定員を追加配置。既存査定員の残業時間を月80時間以内に抑えながら、業務品質の維持を前提とした増員案。","ステータス":"承認待ち","作成日時":"2024-01-15T09:30:00","更新日時":"2024-01-22T14:45:00","作成者":"山田花子","備考":"臨時査定員は派遣会社から調達予定。研修期間を考慮し2月中旬より配置開始。既存チームリーダーによるOJT体制を構築済み。"},{"シナリオID":"rec-001","シナリオ名":"夏季休暇対応案B（最小人数運用）","対象年月":"2024-08","変動パターンID":"rec-042","配置予定人数":12,"予想生産性":280,"予想総査定件数":3360,"コスト見積額":2840000,"シナリオ説明":"8月の夏季休暇（8月10日～8月18日）期間中の最小人数運用案。通常配置の査定員18名中、交代制で最大6名が同時休暇となる想定。残務処理と新規案件の優先順位付けにより対応。予想査定件数は通常月比約85%。","ステータス":"承認待ち","作成日時":"2024-06-28T14:30:00+09:00","更新日時":"2024-07-05T10:15:00+09:00","作成者":"佐藤花子","備考":"8月1日～9日および8月19日～31日は通常体制（18名）で対応。休暇中は優先度Cの案件は翌月回しを検討。残務処理能力に余裕がある場合は積極的に前倒し処理を推奨。"},{"シナリオID":"rec-20241115-001","シナリオ名":"2024年末繁忙期対応案A（大幅増員）","対象年月":"2024-12","変動パターンID":"rec-pattern-seasonal-001","配置予定人数":48,"予想生産性":185,"予想総査定件数":8880,"コスト見積額":12800000,"シナリオ説明":"年末繁忙期（12月）における査定件数の大幅増加に対応するため、通常配置（32名）から16名の増員を行うシナリオ。派遣社員8名、契約社員8名の採用を予定。残業時間を月平均45時間に設定。新入社員の研修期間を考慮し、生産性は通常時比91%を想定。","ステータス":"承認待ち","作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2024-11-15T09:30:00+09:00","作成者":"佐藤美咲","備考":"11月中旬までに増員採用手続き完了が必須。12月1日からの配置を予定。年末年始休暇スケジュール（12月27日～1月5日）を考慮済み。"},{"シナリオID":"rec-001","シナリオ名":"新規査定員研修期間対応案2025年4月","対象年月":"2025-04","変動パターンID":"rec-pat-015","配置予定人数":28,"予想生産性":85,"予想総査定件数":2380,"コスト見積額":4280000,"シナリオ説明":"新規採用査定員12名の段階的配置プラン。4月第1週は既存査定員によるOJT実施、第2週より現場配置開始。研修期間中は生産性を通常比70%と想定。既存査定員16名は指導業務のため生産性を通常比85%に設定。5月末までに新規査定員を通常生産性レベルへ育成予定。","ステータス":"承認待ち","作成日時":"2025-02-18T14:30:00","更新日時":"2025-02-20T09:15:00","作成者":"山田花子","備考":"人事部との調整済み。新規査定員の給与は月額28万円（既存平均32万円）で計上。研修教材費別途5万円/名。4月中旬に進捗確認ミーティング予定。"},{"シナリオID":"rec-001","シナリオ名":"コスト削減重視案A","対象年月":"2024-04","変動パターンID":"rec-pat-002","配置予定人数":18,"予想生産性":85,"予想総査定件数":1530,"コスト見積額":2850000,"シナリオ説明":"4月の通常期需要に対応するため、既存査定員の効率化と業務プロセス改善により、人員削減を実施。非正規職員の配置を最小化し、正規職員の稼働率を95%に設定。繁忙期対応案と比較して人員を25%削減し、月次コストを約320万円から285万円に圧縮。新人研修は3月末までに完了し、4月から即戦力での運用を想定。","ステータス":"承認待ち","作成日時":"2024-02-15T09:30:00","更新日時":"2024-02-20T14:15:00","作成者":"山田花子","備考":"変動パターンID rec-pat-002 は前年同月の実績データに基づいて設定。予想生産性85件/人/月は業界標準比95%の保守的見積。承認後は2024年3月中旬に詳細配置表を確定予定。"},{"シナリオID":"rec-20240415-001","シナリオ名":"2024年5月繁忙期移行案B","対象年月":"2024-05","変動パターンID":"rec-pattern-202404-02","配置予定人数":28,"予想生産性":145,"予想総査定件数":4060,"コスト見積額":8920000,"シナリオ説明":"4月の通常期（配置人数22名）から5月の繁忙期への段階的移行シナリオ。新規派遣社員6名の採用と既存スタッフの時間外勤務増加により対応。GW休暇を考慮し、実稼働日数を18日で計画。前年同期比で査定件数が約15%増加すると予測。","ステータス":"承認待ち","作成日時":"2024-04-15T09:30:00","更新日時":"2024-04-18T14:22:00","作成者":"佐藤美咲","備考":"新規派遣社員の研修期間を4月下旬に設定済み。5月下旬以降の本格繁忙期に向けて、さらに5名の追加配置を検討中。派遣会社との契約手続きは進行中。"},{"シナリオID":"rec-20240515-001","シナリオ名":"2024年6月離職対応代替配置案B","対象年月":"2024-06","変動パターンID":"rec-pattern-2024Q2-high","配置予定人数":28,"予想生産性":145,"予想総査定件数":4060,"コスト見積額":8920000,"シナリオ説明":"5月の離職予測（3名）を踏まえた代替配置案。新規配置2名、既存メンバーの時間外勤務増加により対応。繁忙期（6月末決算対応）の査定件数増加に対応可能な体制。契約社員1名の期間延長を含む。","ステータス":"承認待ち","作成日時":"2024-05-10T14:30:00+09:00","更新日時":"2024-05-15T09:45:00+09:00","作成者":"山田花子","備考":"新規配置予定者の研修期間は5月中旬から実施予定。既配置メンバー（鈴木健一、佐藤美咲）の時間外は月50時間上限で管理。6月末までの臨時体制。"},{"シナリオID":"rec-20240815-001","シナリオ名":"2024年9月生産性向上効率化案","対象年月":"2024-09","変動パターンID":"rec-pattern-2024-Q3","配置予定人数":28,"予想生産性":185,"予想総査定件数":5180,"コスト見積額":8920000,"シナリオ説明":"新しい査定支援システム導入による業務効率化を見込んだ配置案。ベテラン査定員12名、中堅査定員10名、新人査定員6名の構成。システム導入研修を8月に実施し、9月から本格運用開始予定。前年同月比で生産性15%向上を見込む。","ステータス":"承認待ち","作成日時":"2024-08-15T09:30:00","更新日時":"2024-08-20T14:15:00","作成者":"佐藤花子","備考":"8月末のシステム導入完了が前提条件。人員配置は営業部門との調整済み。予想生産性は過去3ヶ月の試行運用データに基づく。9月末に実績検証予定。"},{"シナリオID":"rec-001","シナリオ名":"2024年11月繁忙期対応・複数拠点分散配置案","対象年月":"2024-11","変動パターンID":"rec-pat-008","配置予定人数":47,"予想生産性":185,"予想総査定件数":8695,"コスト見積額":8920000,"シナリオ説明":"年末商戦に向けた繁忙期対応として、東京本社20名、大阪支社15名、名古屋支社12名に分散配置。既存査定員の効率的運用と臨時査定員5名の配置を想定。11月の予想査定件数8,500件超への対応を目指す。各拠点での業務フロー最適化と品質管理体制の強化を前提とする。","ステータス":"承認待ち","作成日時":"2024-10-15T09:30:00+09:00","更新日時":"2024-10-22T14:15:00+09:00","作成者":"山田花子","備考":"10月22日に佐藤次長より修正指示あり。臨時査定員の研修期間を考慮し、配置開始は11月1日予定。各拠点長への事前ヒアリング完了。予想生産性は保守的に見積もった値。"}],"配置実績":[{"配置実績ID":"rec-001","人員配置計画ID":"rec-plan-0847","査定員ID":"rec-assessor-2156","配置年月":"2024-11","配置開始日":"2024-11-01T09:00:00+09:00","配置終了日":null,"配置部門":"東京支店_品質管理部","配置役割":"査定","計画稼働日数":20,"実績稼働日数":20,"計画査定件数":240,"実績査定件数":242,"計画生産性":12,"実績生産性":12,"配置妥当性評価":"適切","備考":"計画通り稼働。品質指標も良好で、顧客満足度評価は4.8/5.0。特に複雑案件への対応能力が高く、チーム内での指導実績あり。","作成日時":"2024-11-01T10:30:00+09:00","更新日時":"2024-11-30T17:45:00+09:00","作成者":"admin_yamada","更新者":"manager_suzuki"},{"配置実績ID":"rec-20250047","人員配置計画ID":"rec-20250012","査定員ID":"rec-emp-0834","配置年月":"2025-01","配置開始日":"2025-01-06T09:00:00+09:00","配置終了日":null,"配置部門":"東京支店_品質管理部","配置役割":"査定","計画稼働日数":20,"実績稼働日数":16,"計画査定件数":240,"実績査定件数":186,"計画生産性":12,"実績生産性":12,"配置妥当性評価":"不足","備考":"1月中旬に家族の急病により3日間の休暇取得。当初計画では20日の稼働を見込んでいたが、実績は16日となった。本人の生産性は計画値を維持しているものの、稼働日数の減少により月間査定件数が計画比77.5%に留まった。今後の人員配置時は予備人員の確保を検討する必要がある。","作成日時":"2025-02-03T14:30:00+09:00","更新日時":"2025-02-03T14:30:00+09:00","作成者":"suzuki_hanako","更新者":"suzuki_hanako"},{"配置実績ID":"rec-001","人員配置計画ID":"rec-plan-0847","査定員ID":"rec-assessor-2156","配置年月":"2024-10","配置開始日":"2024-10-01T09:00:00+09:00","配置終了日":null,"配置部門":"大阪支店・品質管理部","配置役割":"査定","計画稼働日数":20,"実績稼働日数":21,"計画査定件数":140,"実績査定件数":168,"計画生産性":7,"実績生産性":8,"配置妥当性評価":"適切","備考":"配置後の適応が迅速で、第2週から計画を上回る生産性を達成。品質指標も良好（誤判定率0.8%以下）。査定員の佐藤美咲は実務経験が豊富で、チーム内での指導も積極的。継続配置を推奨。","作成日時":"2024-10-01T10:30:00+09:00","更新日時":"2024-10-31T17:45:00+09:00","作成者":"yamada_taro","更新者":"suzuki_hanako"},{"配置実績ID":"rec-001","人員配置計画ID":"plan-2024-11-087","査定員ID":"assessor-2023-156","配置年月":"2024-11","配置開始日":"2024-11-01T09:00:00+09:00","配置終了日":null,"配置部門":"東京支店品質管理課","配置役割":"品質管理","計画稼働日数":22,"実績稼働日数":21,"計画査定件数":440,"実績査定件数":385,"計画生産性":20,"実績生産性":18,"配置妥当性評価":"適切","備考":"査定業務から品質管理への配置転換。初月のため査定件数は減少したが、品質チェック業務に適応中。来月以降の生産性向上を期待。","作成日時":"2024-11-05T14:30:00+09:00","更新日時":"2024-11-28T16:45:00+09:00","作成者":"suzuki_hanako","更新者":"yamamoto_taro"},{"配置実績ID":"rec-001","人員配置計画ID":"rec-plan-0847","査定員ID":"rec-assessor-2156","配置年月":"2024-11","配置開始日":"2024-11-01T09:00:00+09:00","配置終了日":null,"配置部門":"東京支店-査定部","配置役割":"査定","計画稼働日数":20,"実績稼働日数":22,"計画査定件数":420,"実績査定件数":462,"計画生産性":21,"実績生産性":21,"配置妥当性評価":"適切","備考":"月中の11月15日に査定業務の繁忙により追加配置。結果として計画査定件数を超過達成。査定員・鈴木健一の高い生産性により業務品質を維持しながら件数達成を実現。","作成日時":"2024-11-01T10:30:00+09:00","更新日時":"2024-11-30T18:45:00+09:00","作成者":"admin-yamada","更新者":"manager-suzuki"},{"配置実績ID":"rec-20250201-001","人員配置計画ID":"rec-plan-2025-01","査定員ID":"rec-assessor-0847","配置年月":"2025-01","配置開始日":"2025-01-06T09:00:00","配置終了日":null,"配置部門":"東京支店_品質管理部","配置役割":"査定","計画稼働日数":20,"実績稼働日数":18,"計画査定件数":180,"実績査定件数":142,"計画生産性":9,"実績生産性":8,"配置妥当性評価":"過剰","備考":"繁忙期対応として1月は5名を配置予定していたが、実際の案件数が予想より20%少なかった。1月中旬以降は稼働率が低下し、待機時間が増加。2月以降の配置計画では4名体制への削減を検討中。","作成日時":"2025-02-03T14:30:00","更新日時":"2025-02-03T14:30:00","作成者":"山田花子","更新者":"山田花子"},{"配置実績ID":"rec-20250115-001","人員配置計画ID":"plan-20250101-042","査定員ID":"appraiser-20240615-087","配置年月":"2025-01","配置開始日":"2025-01-06T09:00:00+09:00","配置終了日":"2025-01-24T17:30:00+09:00","配置部門":"東京支店_品質管理課","配置役割":"査定","計画稼働日数":20,"実績稼働日数":13,"計画査定件数":280,"実績査定件数":168,"計画生産性":14,"実績生産性":13,"配置妥当性評価":"不足","備考":"1月15日に査定員が体調不良（インフルエンザ）により配置終了。1月20日より代替査定員（rec-appraiser-20240822-156）を配置予定。当初計画比で実績稼働日数65%、査定件数60%に留まった。","作成日時":"2025-01-25T10:15:00+09:00","更新日時":"2025-01-27T14:45:00+09:00","作成者":"suzuki_hanako","更新者":"yamamoto_taro"},{"配置実績ID":"rec-001","人員配置計画ID":"plan-2024-11-087","査定員ID":"assessor-2024-1156","配置年月":"2024-11","配置開始日":"2024-11-01T09:00:00+09:00","配置終了日":null,"配置部門":"東京支店_品質管理課","配置役割":"査定","計画稼働日数":20,"実績稼働日数":19,"計画査定件数":380,"実績査定件数":312,"計画生産性":19,"実績生産性":16,"配置妥当性評価":"適切","備考":"新人配置のため初期段階は生産性が計画比82%に留まったが、月後半の改善傾向が顕著。12月以降の生産性向上を期待。OJT指導者は佐藤花子。","作成日時":"2024-11-02T10:30:00+09:00","更新日時":"2024-11-30T17:45:00+09:00","作成者":"yamamoto_taro","更新者":"suzuki_hanako"},{"配置実績ID":"rec-20250047","人員配置計画ID":"rec-20250012","査定員ID":"rec-emp-00834","配置年月":"2025-02","配置開始日":"2025-02-03T09:00:00","配置終了日":null,"配置部門":"大阪支店_品質管理課","配置役割":"査定","計画稼働日数":18,"実績稼働日数":22,"計画査定件数":360,"実績査定件数":462,"計画生産性":20,"実績生産性":21,"配置妥当性評価":"適切","備考":"東京支店からの応援配置。1月の繁忙期延長に伴い、2月も継続配置となった。予定を上回る件数受付があり、追加稼働日4日間を実施。査定品質は基準を維持。","作成日時":"2025-02-28T17:30:00","更新日時":"2025-03-05T14:15:00","作成者":"佐藤花子","更新者":"鈴木次郎"},{"配置実績ID":"rec-001","人員配置計画ID":"rec-plan-0847","査定員ID":"rec-assessor-2156","配置年月":"2025-02","配置開始日":"2025-02-01T09:00:00+09:00","配置終了日":null,"配置部門":"東京支店品質管理課","配置役割":"リーダー","計画稼働日数":19,"実績稼働日数":18,"計画査定件数":285,"実績査定件数":312,"計画生産性":15,"実績生産性":17,"配置妥当性評価":"適切","備考":"2025年1月までは査定員として配置。2月からリーダー昇格に伴い品質管理・チーム指導業務を担当。実績生産性が計画を上回っているのは査定業務の効率化とチーム指導による波及効果。1日休暇取得。","作成日時":"2025-02-03T14:30:00+09:00","更新日時":"2025-02-28T16:45:00+09:00","作成者":"suzuki-hanako","更新者":"yamamoto-jiro"}],"乖離分析":[{"乖離分析ID":"rec-001-2024-11-001","分析年月":"2024-11","査定員ID":"rec-emp-00042","見積書ID":"rec-est-20241001-015","予測件数":85,"実績件数":102,"件数乖離":17,"件数乖離率":"+20.0%","予測生産性":"4.3件/日","実績生産性":"5.1件/日","生産性乖離":"+0.8件/日","変動パターンID":"rec-pat-positive-high","乖離要因":"査定員Aの業務効率改善と査定プロセスの最適化により、予測を大幅に上回る生産性を達成。特に書類審査の並行処理化と顧客対応の標準化が寄与。","対応フラグ":false,"対応内容":"好調事例として業務プロセスを他査定員へ共有。Aの作業方法をマニュアル化し、チーム全体の生産性向上に活用予定。","作成日時":"2024-12-05T09:30:00+09:00","更新日時":"2024-12-05T09:30:00+09:00","作成者":"佐藤花子"},{"乖離分析ID":"rec-20250115-001","分析年月":"2024-12","査定員ID":"rec-assessor-0847","見積書ID":"rec-estimate-2024-1205","予測件数":280,"実績件数":245,"件数乖離":-35,"件数乖離率":"-12.5%","予測生産性":"14.0","実績生産性":"12.3","生産性乖離":"-1.7","変動パターンID":"rec-pattern-seasonal-decline","乖離要因":"年末年始の休業日増加により稼働日数が予測比87%に低下。また、査定対象車両の複雑化（輸入車・カスタム車の割合が通常比+8%）により1件あたりの査定時間が延長。繁忙期の予測では標準的な査定案件を想定していたが、実績では高度な技術判定が必要な案件が集中。","対応フラグ":true,"対応内容":"2025年1月の人員配置を調整し、経験豊富な査定員2名を追加配置。査定プロセスの簡素化マニュアルを導入し、複雑案件の事前スクリーニング体制を構築。来季の需要予測モデルに季節係数と案件複雑度係数を追加組み込み。","作成日時":"2025-01-15T09:30:00+09:00","更新日時":"2025-01-15T14:20:00+09:00","作成者":"山田花子"},{"乖離分析ID":"rec-20250215-001","分析年月":"2025-02","査定員ID":"rec-emp-0847","見積書ID":"rec-est-2025-0156","予測件数":320,"実績件数":268,"件数乖離":-52,"件数乖離率":"-16.3%","予測生産性":"16.0件/日","実績生産性":"13.4件/日","生産性乖離":"-2.6件/日","変動パターンID":"rec-pat-0003","乖離要因":"査定員・山田花子が2月3日～2月14日の12日間病欠により、配置人員が計画比75%に低下。代替要員の配置遅延と業務引継ぎに伴う処理効率低下が重なり、月間件数が16.3%減少した。","対応フラグ":true,"対応内容":"2月15日より代替査定員・佐藤次郎を配置。2月18日から山田花子が復帰予定のため、3月の人員配置を正常化。2月中の未処理案件52件は3月に前倒し処理する計画を立案。","作成日時":"2025-02-17 10:30:00","更新日時":"2025-02-17 10:30:00","作成者":"suzuki_taro"},{"乖離分析ID":"rec-001-2025-0147","分析年月":"2025-02","査定員ID":"rec-emp-0892","見積書ID":"rec-est-2024-1156","予測件数":180,"実績件数":128,"件数乖離":-52,"件数乖離率":"-28.9%","予測生産性":"9.0件/日","実績生産性":"6.4件/日","生産性乖離":"-2.6件/日","変動パターンID":"rec-pat-0005","乖離要因":"新人査定員（佐藤美咲）の配置に伴う初期研修期間。査定基準の理解不足、査定プロセスの習熟度不足、先輩査定員によるレビュー・指導時間の増加により査定速度が低下。システム操作の習熟度も十分でなく、1件あたりの処理時間が平均15分から22分に延伸。","対応フラグ":true,"対応内容":"2025年2月下旬より佐藤美咲に対し集中研修プログラムを実施。先輩査定員（鈴木健一）によるOJT時間を週10時間から週15時間に増加。査定基準チェックリストの個別作成。3月の生産性目標を7.5件/日に設定し段階的な改善を計画。","作成日時":"2025-03-05T09:30:00+09:00","更新日時":"2025-03-05T09:30:00+09:00","作成者":"鈴木健一"},{"乖離分析ID":"rec-20250215-001","分析年月":"2025-01","査定員ID":"rec-assessor-047","見積書ID":"rec-estimate-2024-1205","予測件数":280,"実績件数":198,"件数乖離":-82,"件数乖離率":"-29.3%","予測生産性":"14.0","実績生産性":"9.9","生産性乖離":"-4.1","変動パターンID":"rec-pattern-abnormal-02","乖離要因":"1月15日から1月17日にかけてのシステム障害により、査定データの入力・管理システムが稼働停止。復旧までの3日間、査定業務は中断を余儀なくされた。復旧後の業務再開に伴い、積み残し案件の処理に時間を要したため、月間予測件数を大幅に下回った。","対応フラグ":true,"対応内容":"システム障害による損失分を補填するため、査定員2名を1月18日から2月末まで追加配置。また、優先度の高い案件から段階的に処理を進めるよう業務プロセスを見直し、2月の予測件数を350件に上方修正した。","作成日時":"2025-02-03T09:30:00+09:00","更新日時":"2025-02-03T09:30:00+09:00","作成者":"山田花子"},{"乖離分析ID":"rec-20250215-001","分析年月":"2025-01","査定員ID":"rec-assessor-0847","見積書ID":"rec-estimate-5623","予測件数":120,"実績件数":168,"件数乖離":48,"件数乖離率":"+40.0%","予測生産性":"6.0件/日","実績生産性":"8.4件/日","生産性乖離":"+2.4件/日","変動パターンID":"rec-pattern-0312","乖離要因":"大手自動車部品メーカーからの追加受注により、予定外の大量案件（48件）が月中旬に発生。査定員の時間外対応により対応件数が増加。","対応フラグ":true,"対応内容":"2025年1月20日に同一顧客向け案件について査定員2名を追加配置。残業時間の事前申告により労務管理を実施。2月の人員配置計画を120件から150件に上方修正。","作成日時":"2025-02-05 09:30:00","更新日時":"2025-02-10 14:15:00","作成者":"山田花子"},{"乖離分析ID":"rec-20250115-001","分析年月":"2025-01","査定員ID":"rec-emp-0847","見積書ID":"rec-est-2024-1203","予測件数":128,"実績件数":112,"件数乖離":-16,"件数乖離率":"-12.5%","予測生産性":"6.4件/日","実績生産性":"5.6件/日","生産性乖離":"-0.8件/日","変動パターンID":"rec-pattern-0302","乖離要因":"2024年12月の人事異動により新任地配置。業務フロー・システム習熟期間中であり、初期段階での生産性低下は想定範囲内。段階的改善を予定。","対応フラグ":true,"対応内容":"OJT期間を1月末まで延長。先輩査定員による日次フォローアップを強化。2月以降の目標値を段階的に設定（2月：5.8件/日、3月：6.2件/日）。","作成日時":"2025-02-03T09:15:00+09:00","更新日時":"2025-02-03T09:15:00+09:00","作成者":"佐藤花子"},{"乖離分析ID":"rec-20250128-001","分析年月":"2025-01","査定員ID":"rec-emp-0847","見積書ID":"rec-est-2024-1205","予測件数":280,"実績件数":198,"件数乖離":-82,"件数乖離率":"-29.3%","予測生産性":"14.0件/日","実績生産性":"9.9件/日","生産性乖離":"-4.1件/日","変動パターンID":"rec-pat-seasonal-decline","乖離要因":"正月休暇による営業日数減少（20営業日→19営業日）および年始の査定件数の季節的低迷。顧客の年始休場や査定需要の遅れが主因。","対応フラグ":true,"対応内容":"2月以降の繁忙期（2月-3月）に向けて、査定員3名を1月下旬から追加配置。並行して1月中旬に営業部門と打ち合わせ、2月の見積件数の事前把握を実施。","作成日時":"2025-02-03T09:30:00+09:00","更新日時":"2025-02-03T09:30:00+09:00","作成者":"佐藤花子"},{"乖離分析ID":"rec-20250145","分析年月":"2025-01","査定員ID":"rec-00847","見積書ID":"rec-05023","予測件数":95,"実績件数":102,"件数乖離":7,"件数乖離率":"+7.4%","予測生産性":"4.8件/日","実績生産性":"5.1件/日","生産性乖離":"+0.3件/日","変動パターンID":"rec-00312","乖離要因":"研修期間中（入社3ヶ月目）の査定員であるが、前月比で生産性が向上傾向を示している。査定スキルの習熟度が上昇し、案件処理速度が加速している。ただし品質管理指標は基準値内で維持されており、単なるスピード重視ではなく適切な成長段階と判断。","対応フラグ":false,"対応内容":"継続的な指導・育成を実施。現在のペースで習熟が進めば、研修終了後の配置先選定時に高難度案件の配分を検討。月次面談で本人の習熟度認識を確認し、モチベーション維持に努める。","作成日時":"2025-02-03T09:30:00","更新日時":"2025-02-03T09:30:00","作成者":"山田花子"},{"乖離分析ID":"rec-20250215-001","分析年月":"2025-01","査定員ID":"rec-assessor-0847","見積書ID":"rec-estimate-2024-1156","予測件数":285,"実績件数":198,"件数乖離":-87,"件数乖離率":"-30.5%","予測生産性":"14.3件/日","実績生産性":"9.9件/日","生産性乖離":"-4.4件/日","変動パターンID":"rec-pattern-overestimate","乖離要因":"見積根拠となった前年度実績が特殊案件に偏っていたため、通常業務での生産性を過剰に見積もった。実際の査定案件は複雑度が低く、予想より処理時間が短縮されたが、予測値の設定が過度に高かった。","対応フラグ":true,"対応内容":"2025年2月の見積書作成時に過去3年間の平均生産性データを再検証し、季節変動を考慮した予測モデルに修正。査定員の配置を見直し、同一査定員の担当案件を15%削減する人員配置調整を実施。","作成日時":"2025-02-05T09:30:00+09:00","更新日時":"2025-02-10T14:15:00+09:00","作成者":"佐藤美咲"}],"ログインユーザー":[{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"admin.tanaka","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","ユーザー名":"田中太郎","メールアドレス":"tanaka.taro@company.jp","ロール":"管理者","部門":"システム管理部","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:45Z","作成日時":"2024-04-01T10:00:00Z","更新日時":"2025-01-10T14:20:30Z","作成者":"550e8400-e29b-41d4-a716-446655440001"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"tanaka.taro","パスワードハッシュ":"$2b$12$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86E36P4/eVm","ユーザー名":"田中太郎","メールアドレス":"tanaka.taro@company.jp","ロール":"マネージャー","部門":"本社人事部","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:45Z","作成日時":"2023-06-20T08:00:00Z","更新日時":"2025-01-10T14:22:15Z","作成者":"550e8400-e29b-41d4-a716-446655440001"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"tanaka.taro","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr","ユーザー名":"田中太郎","メールアドレス":"tanaka.taro@company.jp","ロール":"マネージャー","部門":"営業部","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:45Z","作成日時":"2024-04-10T14:22:30Z","更新日時":"2025-01-10T16:45:20Z","作成者":"660f9511-f40c-52e5-b827-557766551111"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"sasatei-yamada","パスワードハッシュ":"$2b$12$R9h7cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jKHze","ユーザー名":"山田太郎","メールアドレス":"yamada.taro@company.jp","ロール":"査定員","部門":"製造部門","ステータス":"有効","最終ログイン日時":"2025-01-15T08:32:45Z","作成日時":"2024-04-10T10:15:00Z","更新日時":"2025-01-10T14:22:30Z","作成者":"550e8400-e29b-41d4-a716-446655440001"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"tanaka.hanako","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRST","ユーザー名":"田中花子","メールアドレス":"tanaka.hanako@company.jp","ロール":"査定員","部門":"企画部","ステータス":"有効","最終ログイン日時":null,"作成日時":"2025-01-15T09:30:00+09:00","更新日時":"2025-01-15T09:30:00+09:00","作成者":"550e8400-e29b-41d4-a716-446655440001"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"tanaka.hanako","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","ユーザー名":"田中花子","メールアドレス":"tanaka.hanako@company.jp","ロール":"マネージャー","部門":"営業企画部","ステータス":"休止","最終ログイン日時":"2024-11-15T14:32:00+09:00","作成日時":"2022-04-01T09:00:00+09:00","更新日時":"2025-01-10T10:15:00+09:00","作成者":"550e8400-e29b-41d4-a716-446655440001"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"tanaka.taro","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOP","ユーザー名":"田中太郎","メールアドレス":"tanaka.taro@company.jp","ロール":"査定員","部門":"営業企画部","ステータス":"有効","最終ログイン日時":"2025-01-24 14:32:15","作成日時":"2022-04-15 09:00:00","更新日時":"2025-01-24 14:32:15","作成者":"550e8400-e29b-41d4-a716-446655440001"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"tanaka.taro","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","ユーザー名":"田中太郎","メールアドレス":"tanaka.taro@company.jp","ロール":"営業","部門":"大阪営業所","ステータス":"有効","最終ログイン日時":"2025-01-15 09:30:45","作成日時":"2023-06-20 14:22:10","更新日時":"2025-01-10 16:45:30","作成者":"660f9511-f30c-52e5-b827-557766551111"},{"ユーザーID":"rec-001","ログインID":"tanaka.taro","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ","ユーザー名":"田中太郎","メールアドレス":"tanaka.taro@company.jp","ロール":"査定員","部門":"人事評価部","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:45Z","作成日時":"2024-03-20T10:15:00Z","更新日時":"2025-01-10T14:22:30Z","作成者":"rec-admin-001"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"tanaka.hanako","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","ユーザー名":"田中花子","メールアドレス":"tanaka.hanako@company.jp","ロール":"マネージャー","部門":"営業企画部","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2023-04-10T14:20:00+09:00","更新日時":"2025-01-14T16:45:00+09:00","作成者":"550e8400-e29b-41d4-a716-446655440001"}]};
+window.AIVIC_PRESET_SEED = {"見積書":[{"見積書ID":"rec-001","ユーザーID":"rec-u-042","見積書番号":"EST-2025-001234","見積日":"2025-01-15T09:30:00Z","有効期限":"2025-02-15T23:59:59Z","顧客名":"株式会社サンテック工業","見積金額":2850000,"査定ステータス":"承認","自動判定結果":"承認","判定理由":"大口顧客（年間取引額5000万円超）、過去24ヶ月の支払い遅延なし、与信限度額内（3000万円）、定期見積のため自動承認対象","備考":"2025年1月分の定期月次見積。納期：2025年2月10日。前月比5%増加。担当営業：田中太郎","作成日時":"2025-01-15T09:30:00Z","更新日時":"2025-01-15T14:22:35Z","作成者":"rec-u-042"},{"見積書ID":"rec-001","ユーザーID":"rec-usr-042","見積書番号":"EST-2025-00156","見積日":"2025-01-15T09:30:00Z","有効期限":"2025-02-14T23:59:59Z","顧客名":"株式会社フロンティア物流","見積金額":8500000,"査定ステータス":"却下","自動判定結果":"却下","判定理由":"新規取引先の初回見積であり、信用限度額設定前の案件です。見積金額が850万円で、新規取引先の初回査定における自動承認限度額500万円を超過しています。営業部門への手動査定が必要です。","備考":"顧客より納期短縮の要望あり。金額交渉の余地あり。営業担当者：鈴木健一","作成日時":"2025-01-15T10:15:22Z","更新日時":"2025-01-15T11:42:08Z","作成者":"rec-usr-042"},{"見積書ID":"rec-20250147","ユーザーID":"rec-00089","見積書番号":"QT-2025-0847","見積日":"2025-01-15T10:30:00","有効期限":"2025-02-15T23:59:59","顧客名":"株式会社ソリューション東京","見積金額":2850000,"査定ステータス":"査定中","自動判定結果":"要確認","判定理由":"既存顧客の追加案件のため信用スコアは良好。ただし見積金額が前回実績（180万円）から58%増加しており、案件内容の妥当性確認が必要。","備考":"営業担当者：山田花子。顧客からの急な追加要件により金額増加。納期は3月末予定。","作成日時":"2025-01-15T10:35:22","更新日時":"2025-01-16T14:20:45","作成者":"rec-00089"},{"見積書ID":"rec-001","ユーザーID":"rec-u-042","見積書番号":"EST-2025-00847","見積日":"2025-01-15T09:30:00Z","有効期限":"2025-01-22T23:59:59Z","顧客名":"株式会社テクノロジーソリューション","見積金額":185000,"査定ステータス":"承認","自動判定結果":"自動承認","判定理由":"緊急対応案件のため優先処理。金額が185,000円で承認基準以下。顧客は既存取引先で信用度が高い。","備考":"システム障害対応による緊急見積。納期は本日中。佐藤営業担当者より特急依頼あり。","作成日時":"2025-01-15T09:25:00Z","更新日時":"2025-01-15T09:35:00Z","作成者":"rec-u-042"},{"見積書ID":"rec-001","ユーザーID":"user-0847","見積書番号":"EST-2024-00156","見積日":"2024-11-15T09:30:00Z","有効期限":"2025-02-15T23:59:59Z","顧客名":"株式会社グローバルテック","見積金額":87500000,"査定ステータス":"査定中","自動判定結果":"要手動査定","判定理由":"見積金額が8,750万円で、自動判定基準の5,000万円を超過。複数部門（営業、技術、財務）の承認が必要な大型案件のため、手動査定プロセスへ自動エスカレーション","備考":"営業部門（田中太郎）、技術部門（佐藤花子）、財務部門（鈴木健二）による3段階査定を予定。納期は2025年6月末。分割納入対応あり。顧客との基本合意済み。","作成日時":"2024-11-15T10:15:22Z","更新日時":"2024-11-15T10:15:22Z","作成者":"user-0847"},{"見積書ID":"rec-20250156","ユーザーID":"rec-00847","見積書番号":"EST-2024-0847-001","見積日":"2024-11-15T09:30:00Z","有効期限":"2025-02-13T23:59:59Z","顧客名":"株式会社サンテック工業","見積金額":2850000,"査定ステータス":"承認","自動判定結果":"条件付き承認","判定理由":"見積金額が基準内（300万円以下）であり、顧客の信用情報も良好。ただし有効期限が30日以内のため再査定推奨","備考":"納期は2025年3月末予定。顧客より延長の可能性あり。有効期限切れ前に再見積の確認が必要","作成日時":"2024-11-15T09:45:22Z","更新日時":"2025-01-25T14:18:05Z","作成者":"rec-00847"},{"見積書ID":"rec-001","ユーザーID":"usr-0847","見積書番号":"EST-2025-00342-02","見積日":"2025-01-15T09:30:00Z","有効期限":"2025-02-15T23:59:59Z","顧客名":"株式会社フジテック工業","見積金額":2850000,"査定ステータス":"査定中","自動判定結果":"要確認","判定理由":"値引き率が15%を超えており、営業部長の承認が必要です。原価率が78%となるため、利益率確保の観点から手動査定を推奨します。","備考":"顧客との交渉により当初見積3,350,000円から500,000円の値引きに応じた修正見積です。納期は2025年3月末日で確定。支払条件は月末締め翌月末払い。","作成日時":"2025-01-15T09:35:22Z","更新日時":"2025-01-15T09:35:22Z","作成者":"usr-0847"},{"見積書ID":"rec-001","ユーザーID":"rec-u0847","見積書番号":"EST-2024-12-0156","見積日":"2024-11-15T09:30:00Z","有効期限":"2025-02-15T23:59:59Z","顧客名":"株式会社サンシャイン物流センター","見積金額":4850000,"査定ステータス":"承認","自動判定結果":"承認","判定理由":"季節繁忙期（年末年始）における人員配置見積。過去3年の同時期実績との比較で妥当性を確認。配置人数45名、日給単価9,500円、稼働日数112日の計算根拠が適切。自動判定基準値内（±15%以内）のため承認。","備考":"12月中旬から1月末までの冬季ピークシーズン対応。倉庫業務スタッフ30名、仕分け作業者15名の配置。既存取引先のため信用度高。","作成日時":"2024-11-15T09:30:00Z","更新日時":"2024-11-16T14:22:15Z","作成者":"rec-u0847"},{"見積書ID":"rec-001","ユーザーID":"rec-u0047","見積書番号":"EST-2024-08-0156","見積日":"2024-08-15T09:30:00Z","有効期限":"2024-10-15T23:59:59Z","顧客名":"株式会社ソフィア建設","見積金額":2850000,"査定ステータス":"未査定","自動判定結果":"判定待機中","判定理由":"査定プロセスが開始されていません","備考":"営業担当者：佐藤健一より依頼。オフィスビル改修工事の一括見積。顧客からの急な依頼のため、詳細仕様書の確認待ち状態。","作成日時":"2024-08-15T09:35:22Z","更新日時":"2024-08-15T09:35:22Z","作成者":"rec-u0047"},{"見積書ID":"rec-001","ユーザーID":"rec-usr-0847","見積書番号":"EST-2025-00156-02","見積日":"2025-01-15T09:30:00","有効期限":"2025-02-15T23:59:59","顧客名":"株式会社ハイテックソリューション","見積金額":2850000,"査定ステータス":"査定中","自動判定結果":"再審査中","判定理由":"初回却下理由：見積金額が予算上限を超過。修正後：金額を2,850,000円に調整し、納期短縮による効率化を反映。リスク評価：低。信用スコア：良好。再審査対象として承認。","備考":"顧客からの修正要望に基づき、納期を30日短縮（90日→60日）し、単価を調整。初回見積（EST-2025-00156-01）は2024年12月20日に却下。本見積は条件修正版として再提出。","作成日時":"2025-01-15T09:30:00","更新日時":"2025-01-16T14:22:15","作成者":"rec-usr-0847"}],"査定員":[{"査定員ID":"rec-001","ユーザーID":"rec-usr-0847","査定員コード":"AS20250115001","査定員名":"鈴木健太","部門":"品質査定部 初級チーム","資格レベル":"初級","査定対象カテゴリ":"衣料品・雑貨","ステータス":"稼働中","品質スコア":72,"査定件数":47,"作成日時":"2025-01-15T09:30:00+09:00","更新日時":"2025-01-22T14:15:00+09:00","作成者ID":"rec-usr-0102","更新者ID":"rec-usr-0102"},{"査定員ID":"rec-001","ユーザーID":"rec-usr-0847","査定員コード":"APP-2019-0156","査定員名":"佐藤健一","部門":"鑑定部門","資格レベル":"上級","査定対象カテゴリ":"時計・宝飾品","ステータス":"稼働中","品質スコア":94,"査定件数":8750,"作成日時":"2019-03-15 09:30:00","更新日時":"2025-01-22 14:45:00","作成者ID":"rec-usr-0001","更新者ID":"rec-usr-0042"},{"査定員ID":"rec-001-a7f2-4d89-9e3c-2b1f8c5a6d7e","ユーザーID":"rec-user-b3e9-5f2a-8c1d-7e4b9a2c3f5d","査定員コード":"AS-2024-0847","査定員名":"鈴木健一","部門":"ブランド品査定部","資格レベル":"中級","査定対象カテゴリ":"ブランドバッグ・財布","ステータス":"稼働中","品質スコア":82,"査定件数":1847,"作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-22T14:25:00+09:00","作成者ID":"rec-user-admin-001","更新者ID":"rec-user-admin-002"},{"査定員ID":"rec-001","ユーザーID":"rec-u-0847","査定員コード":"AP-2024-0156","査定員名":"鈴木由美","部門":"査定部第2課","資格レベル":"中級","査定対象カテゴリ":"ブランド品・時計","ステータス":"休止中","品質スコア":87,"査定件数":1247,"作成日時":"2023-08-15T09:30:00","更新日時":"2025-01-10T14:15:00","作成者ID":"rec-u-0001","更新者ID":"rec-u-0002"},{"査定員ID":"rec-001-appraisr-20250115","ユーザーID":"rec-001-user-20250115","査定員コード":"APR-2024-0847","査定員名":"山田健一","部門":"品質管理部","資格レベル":"上級","査定対象カテゴリ":"ブランド品/時計/宝飾品/美術品","ステータス":"稼働中","品質スコア":94,"査定件数":2847,"作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-15T14:22:00+09:00","作成者ID":"rec-001-user-admin-001","更新者ID":"rec-001-user-admin-002"},{"査定員ID":"rec-001","ユーザーID":"rec-usr-042","査定員コード":"AS-2019-0847","査定員名":"鈴木健一","部門":"美術品・骨董品査定部","資格レベル":"上級","査定対象カテゴリ":"美術品・骨董品・時計","ステータス":"退職","品質スコア":92,"査定件数":3847,"作成日時":"2019-04-15T09:30:00+09:00","更新日時":"2025-01-31T17:45:00+09:00","作成者ID":"rec-usr-001","更新者ID":"rec-usr-015"},{"査定員ID":"rec-001","ユーザーID":"rec-user-047","査定員コード":"ASS-2024-0847","査定員名":"佐藤健一","部門":"商品評価部第2課","資格レベル":"中級","査定対象カテゴリ":"電子機器・家電","ステータス":"稼働中","品質スコア":72,"査定件数":1248,"作成日時":"2024-04-15T09:30:00+09:00","更新日時":"2025-01-22T14:15:00+09:00","作成者ID":"rec-user-001","更新者ID":"rec-user-015"},{"査定員ID":"rec-001","ユーザーID":"rec-u-0847","査定員コード":"AP-2023-0156","査定員名":"佐藤健一","部門":"品質管理部","資格レベル":"中級","査定対象カテゴリ":"時計・ジュエリー","ステータス":"改善指導中","品質スコア":58,"査定件数":1247,"作成日時":"2023-06-15T09:30:00Z","更新日時":"2025-01-22T14:15:00Z","作成者ID":"rec-u-0001","更新者ID":"rec-u-0102"}],"見積書明細":[{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":1,"作業内容":"要件定義ドキュメント作成","作業説明":"クライアント要件のヒアリング、要件分析、要件定義書の作成および承認取得までを実施","数量":15,"単位":"人日","単価":75000,"金額":1125000,"必要人員数":2,"必要スキル":"シニアシステムエンジニア、ビジネスアナリスト","実施予定月":"2024年12月","備考":"クライアント側との調整会議は週2回を予定。成果物は要件定義書、ユースケース図、画面遷移図を含む","作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-20 14:15:00","作成者":"山田花子"},{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":2,"作業内容":"バックエンド API 開発","作業説明":"REST API の設計・実装、データベーススキーマ設計、認証認可機能の実装、ビジネスロジックの開発を含む","数量":40,"単位":"人日","単価":85000,"金額":3400000,"必要人員数":2,"必要スキル":"バックエンドエンジニア（Java/Python経験者）","実施予定月":"2025年2月〜3月","備考":"既存システムとの連携が必要。API仕様書は別途提供予定。テスト環境構築費用は含まれていません。","作成日時":"2024-12-15T09:30:00","更新日時":"2024-12-20T14:15:00","作成者":"鈴木花子"},{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":3,"作業内容":"統合テスト実施","作業説明":"システム全体の統合テストを実施。各モジュール間のインターフェース検証、データフロー確認、エラーハンドリング検証を含む。テスト計画書に基づき、テストケース実行及び不具合報告を行う。","数量":15,"単位":"人日","単価":65000,"金額":975000,"必要人員数":3,"必要スキル":"QAエンジニア・テスト自動化スキル保有者","実施予定月":"2025年2月","備考":"テスト環境はクライアント側で用意。不具合管理ツール(Redmine)を使用。週1回の進捗報告会を実施予定。","作成日時":"2024-11-15T09:30:00","更新日時":"2024-11-22T14:15:00","作成者":"佐藤花子"},{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":2,"作業内容":"AWS VPC・ネットワーク構築","作業説明":"VPC、サブネット、ルートテーブル、NACLの設計・構築。NAT Gateway、Internet Gatewayの設定。セキュリティグループの作成・設定。","数量":5,"単位":"人日","単価":85000,"金額":425000,"必要人員数":2,"必要スキル":"AWS認定ソリューションアーキテクト、ネットワークエンジニア","実施予定月":"2025年2月","備考":"既存オンプレミス環境からの移行を想定。ハイブリッド接続（AWS Direct Connect）の検討も含む。クライアント側との調整会議2回予定。","作成日時":"2024-12-15T09:30:00Z","更新日時":"2024-12-20T14:15:00Z","作成者":"佐藤花子"},{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":2,"作業内容":"月次定期メンテナンス","作業説明":"システムの月次定期メンテナンス業務。サーバーのヘルスチェック、ログファイルのクリーンアップ、バックアップ状態の確認、セキュリティパッチの適用を実施します。","数量":12,"単位":"月","単価":80000,"金額":960000,"必要人員数":2,"必要スキル":"Linux/Windows管理、ネットワーク管理","実施予定月":"毎月第2火曜日","備考":"営業時間外（22:00～翌6:00）での実施を推奨。緊急対応が必要な場合は別途対応料金が発生します。","作成日時":"2024-11-15T09:30:00","更新日時":"2024-11-20T14:15:00","作成者":"山田花子"},{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":2,"作業内容":"技術仕様書作成","作業説明":"システム全体の技術仕様書を作成します。アーキテクチャ、データベース設計、API仕様、セキュリティ要件などを網羅した詳細な仕様書をWord形式で納品します。","数量":1,"単位":"式","単価":450000,"金額":450000,"必要人員数":2,"必要スキル":"システムアーキテクト、テクニカルライター","実施予定月":"2025年1月～2月","備考":"既存システムドキュメントを参考資料として提供予定。レビュー会議は最大3回まで対応。","作成日時":"2024-12-15T09:30:00","更新日時":"2024-12-15T09:30:00","作成者":"山田花子"},{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":1,"作業内容":"プロジェクト計画・体制構築","作業説明":"プロジェクト全体の計画策定、WBS作成、体制構築、ステークホルダー管理計画の立案を実施します。","数量":3,"単位":"人日","単価":85000,"金額":255000,"必要人員数":1,"必要スキル":"PM/PL（プロジェクトマネージャー）","実施予定月":"2024年11月","備考":"キックオフミーティング含む。顧客承認プロセスを想定。","作成日時":"2024-10-15 10:30:00","更新日時":"2024-10-18 14:45:00","作成者":"佐藤花子"},{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":1,"作業内容":"外部ネットワーク脆弱性診断","作業説明":"貴社の外部公開システムに対して、自動スキャンツールおよび手動診断を実施し、既知の脆弱性および設定不備を検出します。診断対象はWebアプリケーション、APIエンドポイント、メールサーバーとなります。","数量":1,"単位":"式","単価":450000,"金額":450000,"必要人員数":2,"必要スキル":"セキュリティエンジニア、ペネトレーションテスター","実施予定月":"2025年2月","備考":"診断期間は5営業日を想定。事前にスコープ確認会議を実施予定。","作成日時":"2024-12-15 10:30:00","更新日時":"2024-12-15 10:30:00","作成者":"山田花子"},{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":2,"作業内容":"既存システムデータ抽出・検証","作業説明":"レガシーシステムから顧客マスタ、取引履歴、在庫データを抽出し、データ品質検証とクレンジングを実施します。データマッピング仕様書に基づき、新システムへの変換ルールを確認します。","数量":15,"単位":"人日","単価":85000,"金額":1275000,"必要人員数":3,"必要スキル":"データベース設計、SQL、ETLツール経験者","実施予定月":"2025年2月","備考":"既存システムはOracle 11g環境。GoldenGateまたはOWB使用予定。本番環境での検証期間を含む。","作成日時":"2024-12-15T10:30:00","更新日時":"2024-12-18T14:22:00","作成者":"山田花子"},{"明細ID":"rec-001","見積書ID":"est-2024-0847","行番号":2,"作業内容":"ユーザー研修実施","作業説明":"新システム導入に伴い、営業部門・事務部門を対象とした操作研修を実施。基本機能から応用操作まで段階的に指導し、実務レベルでの習熟度向上を図ります。","数量":3,"単位":"日","単価":180000,"金額":540000,"必要人員数":2,"必要スキル":"システムトレーナー、業務知識","実施予定月":"2025年3月","備考":"参加予定者数は約40名。講義資料は事前に日本語で作成し、デモンストレーション環境を用意。修了証の発行あり。","作成日時":"2024-11-15 09:30:00","更新日時":"2024-12-02 14:15:00","作成者":"佐藤美咲"}],"日次実績":[{"日次実績ID":"rec-20250115-001","査定員ID":"rec-assessor-0847","実績日":"2025-01-15T00:00:00Z","見積書ID":"rec-estimate-2401","完了件数":4,"売上金額":385000,"稼働時間":480,"移動時間":95,"訪問件数":6,"成約件数":4,"備考":"午前中に新規顧客2件、午後に既存顧客フォロー4件を訪問。うち新規2件と既存2件の計4件が成約に至った。天候良好で移動がスムーズ。顧客からの評判も良好。","作成日時":"2025-01-15T18:30:00Z","更新日時":"2025-01-15T18:30:00Z","作成者":"yamada.taro"},{"日次実績ID":"rec-20250115-001","査定員ID":"rec-assessor-0847","実績日":"2025-01-15T00:00:00Z","見積書ID":"rec-quote-2156","完了件数":2,"売上金額":85000,"稼働時間":180,"移動時間":90,"訪問件数":3,"成約件数":1,"備考":"大雪による交通状況悪化のため、予定していた5件中3件のみ訪問実施。移動時間が通常の1.5倍以上となった。残り2件は翌日以降に振替予定。","作成日時":"2025-01-15T18:30:00Z","更新日時":"2025-01-15T18:30:00Z","作成者":"鈴木花子"},{"日次実績ID":"rec-20250115-001","査定員ID":"rec-emp-0847","実績日":"2025-01-15T00:00:00Z","見積書ID":"rec-est-5623","完了件数":1,"売上金額":2850000,"稼働時間":480,"移動時間":240,"訪問件数":2,"成約件数":1,"備考":"大型商業施設の建物診断案件。朝6時に事務所出発、現地到着は8時30分。建物全体の構造調査と設備診断に従事。昼食時間を含め現地滞在は7時間。帰路の渋滞により帰社は19時30分。顧客の高い信頼を得られ、追加調査の依頼も受けた。","作成日時":"2025-01-15T20:15:00Z","更新日時":"2025-01-15T20:15:00Z","作成者":"鈴木花子"},{"日次実績ID":"rec-20250104-001","査定員ID":"rec-assessor-0847","実績日":"2025-01-04T00:00:00Z","見積書ID":"rec-quote-2501-0156","完了件数":8,"売上金額":2840000,"稼働時間":480,"移動時間":145,"訪問件数":12,"成約件数":4,"備考":"月初キャンペーンの効果で新規顧客からの問い合わせが集中。午前中に5件、午後に7件の訪問を実施。このうち4件が即日成約となり、売上目標を達成。移動時間が長かったのは市内各地への訪問のため。顧客満足度も高く、紹介案件が2件発生した。","作成日時":"2025-01-04T18:30:45Z","更新日時":"2025-01-04T18:30:45Z","作成者":"suzuki_hanako"},{"日次実績ID":"rec-20250115-001","査定員ID":"rec-assessor-042","実績日":"2025-01-15T00:00:00Z","見積書ID":null,"完了件数":0,"売上金額":0,"稼働時間":420,"移動時間":85,"訪問件数":3,"成約件数":1,"備考":"システム障害により見積書作成機能が利用不可。午前10時から午後2時まで約4時間にわたり障害発生。3件訪問したが見積書発行できず、1件は口頭での契約意思確認のみ。対応待機時間が発生し稼働効率が低下。明日以降の見積書作成予定。","作成日時":"2025-01-15T18:30:00Z","更新日時":"2025-01-15T18:30:00Z","作成者":"鈴木花子"},{"日次実績ID":"rec-20250215-001","査定員ID":"rec-assessor-087","実績日":"2025-02-15T00:00:00Z","見積書ID":"rec-quote-4521","完了件数":8,"売上金額":2850000,"稼働時間":480,"移動時間":95,"訪問件数":9,"成約件数":8,"備考":"既存顧客の鈴木工業からの追加受注。前月の施工実績が評価され、今月の新規案件3件を一括受注。うち2件は高額な機械装置の査定案件。顧客満足度が高く、今後の継続案件も見込める。","作成日時":"2025-02-15T18:30:00Z","更新日時":"2025-02-15T18:30:00Z","作成者":"yamada_hanako"},{"日次実績ID":"rec-20250214-001","査定員ID":"rec-emp-0847","実績日":"2025-02-14T00:00:00Z","見積書ID":"rec-est-2105","完了件数":2,"売上金額":0,"稼働時間":480,"移動時間":240,"訪問件数":8,"成約件数":0,"備考":"北区新規開拓エリア初期訪問。既存顧客からの紹介なし。新築分譲地での戸別訪問実施。警戒心強く、見積提案まで至ったのは2件のみ。次回訪問予約は1件のみ確保。エリア開拓には継続的なアプローチが必要と判断。","作成日時":"2025-02-14T18:30:00Z","更新日時":"2025-02-14T18:30:00Z","作成者":"yamada_taro"},{"日次実績ID":"rec-20250131-001","査定員ID":"rec-emp-0847","実績日":"2025-01-31T00:00:00Z","見積書ID":"rec-est-5234","完了件数":8,"売上金額":1240000,"稼働時間":540,"移動時間":85,"訪問件数":9,"成約件数":7,"備考":"月末締切対応により残業実施。午後から大型案件2件の追加訪問対応。夕方以降、事務処理と翌月準備で21時まで稼働。成約率は高かったが、移動ロスが発生。","作成日時":"2025-02-01T08:30:00Z","更新日時":"2025-02-01T08:30:00Z","作成者":"鈴木花子"},{"日次実績ID":"rec-20250215-001","査定員ID":"rec-emp-0847","実績日":"2025-02-15T00:00:00Z","見積書ID":"rec-est-5421","完了件数":3,"売上金額":180000,"稼働時間":420,"移動時間":145,"訪問件数":5,"成約件数":2,"備考":"午前の案件でキャンセル1件発生。顧客の都合により急遽別の地域への訪問に変更となり、移動時間が大幅に増加。変更対応により予定していた午後の案件1件を翌日に延期。最終的に成約件数は予定より1件減少。","作成日時":"2025-02-15T18:30:00Z","更新日時":"2025-02-15T18:30:00Z","作成者":"suzuki_hanako"},{"日次実績ID":"rec-001","査定員ID":"rec-002","実績日":"2024-12-20T00:00:00Z","見積書ID":"rec-003","完了件数":3,"売上金額":285000,"稼働時間":420,"移動時間":95,"訪問件数":4,"成約件数":2,"備考":"佐藤次郎査定員の年末休暇代行。午前は商業施設の火災保険見積2件、午後は住宅地の自動車保険見積2件を実施。うち2件が即日成約。移動距離が通常より長く、渋滞の影響あり。","作成日時":"2024-12-20T18:30:00Z","更新日時":"2024-12-20T18:30:00Z","作成者":"yamada_hanako"}],"査定員生産性":[{"査定員生産性ID":"rec-20250215-prod-047","査定員ID":"rec-20240401-appraiser-012","対象年月":"2025-01","見積件数":28,"見積金額合計":42500000,"平均見積金額":1517857,"稼働日数":20,"日次平均件数":1.4,"生産性スコア":92,"作成日時":"2025-02-01T09:30:45+09:00","更新日時":"2025-02-01T09:30:45+09:00","作成者":"佐藤次郎"},{"査定員生産性ID":"rec-001","査定員ID":"rec-emp-0847","対象年月":"2025-01","見積件数":12,"見積金額合計":2840000,"平均見積金額":236667,"稼働日数":14,"日次平均件数":0.86,"生産性スコア":28,"作成日時":"2025-02-03 09:15:00","更新日時":"2025-02-03 09:15:00","作成者":"山田太郎"},{"査定員生産性ID":"rec-20250115-001","査定員ID":"rec-emp-0847","対象年月":"2025-01","見積件数":18,"見積金額合計":8640000,"平均見積金額":480000,"稼働日数":16,"日次平均件数":1.13,"生産性スコア":58,"作成日時":"2025-02-03 09:30:45","更新日時":"2025-02-03 09:30:45","作成者":"佐藤花子"},{"査定員生産性ID":"rec-20250215-001","査定員ID":"rec-emp-00847","対象年月":"2025-01","見積件数":87,"見積金額合計":18450000,"平均見積金額":212069,"稼働日数":20,"日次平均件数":4.35,"生産性スコア":94,"作成日時":"2025-02-03T09:15:30","更新日時":"2025-02-03T09:15:30","作成者":"system_admin"},{"査定員生産性ID":"rec-20250145","査定員ID":"rec-20240089","対象年月":"2025-01","見積件数":48,"見積金額合計":18500000,"平均見積金額":385417,"稼働日数":20,"日次平均件数":2.4,"生産性スコア":87,"作成日時":"2025-02-03 09:15:32","更新日時":"2025-02-03 09:15:32","作成者":"佐藤花子"},{"査定員生産性ID":"rec-20250147","査定員ID":"rec-20250089","対象年月":"2025-01","見積件数":18,"見積金額合計":4850000,"平均見積金額":269444,"稼働日数":16,"日次平均件数":1.1,"生産性スコア":42,"作成日時":"2025-02-03T09:15:00+09:00","更新日時":"2025-02-03T09:15:00+09:00","作成者":"鈴木健太"},{"査定員生産性ID":"rec-20250148","査定員ID":"rec-20250089","対象年月":"2025-01","見積件数":18,"見積金額合計":8450000,"平均見積金額":469444,"稼働日数":19,"日次平均件数":0.95,"生産性スコア":62,"作成日時":"2025-02-03T09:15:30+09:00","更新日時":"2025-02-03T09:15:30+09:00","作成者":"system_admin"},{"査定員生産性ID":"rec-20250047","査定員ID":"rec-20240156","対象年月":"2025-01","見積件数":18,"見積金額合計":8450000,"平均見積金額":469444,"稼働日数":12,"日次平均件数":1.5,"生産性スコア":58,"作成日時":"2025-02-03 09:15:00","更新日時":"2025-02-03 09:15:00","作成者":"佐藤花子"},{"査定員生産性ID":"rec-20250147","査定員ID":"rec-20240823","対象年月":"2025-01","見積件数":12,"見積金額合計":285000000,"平均見積金額":23750000,"稼働日数":20,"日次平均件数":0.6,"生産性スコア":92,"作成日時":"2025-02-03 09:15:30","更新日時":"2025-02-03 09:15:30","作成者":"佐藤花子"},{"査定員生産性ID":"rec-20250228-001","査定員ID":"emp-00847","対象年月":"2025-02","見積件数":87,"見積金額合計":45600000,"平均見積金額":524138,"稼働日数":28,"日次平均件数":3.1,"生産性スコア":94,"作成日時":"2025-03-05 09:15:32","更新日時":"2025-03-05 09:15:32","作成者":"佐藤花子"}],"月次査定件数":[{"月次査定件数ID":"rec-001","対象年月":"2024-11","査定員ID":"rec-emp-047","査定件数":156,"目標件数":120,"達成率":"130.0%","平均査定時間分":28,"生産性スコア":"A+","備考":"経験15年のベテラン査定員。効率的な査定プロセスにより目標比130%を達成。顧客満足度も高く、品質を維持しながら件数超過達成。","作成日時":"2024-12-01T09:30:00","更新日時":"2024-12-01T09:30:00","作成者":"system_admin"},{"月次査定件数ID":"rec-001","対象年月":"2024-04","査定員ID":"rec-emp-0847","査定件数":18,"目標件数":45,"達成率":"40.0%","平均査定時間分":62,"生産性スコア":"C","備考":"新入査定員研修中。基本操作習得段階のため件数・効率ともに目標未達。5月以降の改善を期待。","作成日時":"2024-05-01 09:30:00","更新日時":"2024-05-01 09:30:00","作成者":"suzuki_hanako"},{"月次査定件数ID":"rec-001","対象年月":"2024-12","査定員ID":"rec-emp-047","査定件数":127,"目標件数":80,"達成率":"158.75%","平均査定時間分":32,"生産性スコア":"A+","備考":"年末繁忙期により査定件数が大幅に増加。査定員の協力体制強化により目標を大きく上回る成果を達成。品質管理においても基準値内を維持。","作成日時":"2025-01-05 09:30:00","更新日時":"2025-01-05 09:30:00","作成者":"yamada_taro"},{"月次査定件数ID":"rec-20250142","対象年月":"2025-01","査定員ID":"rec-emp-0847","査定件数":18,"目標件数":45,"達成率":"40.0%","平均査定時間分":52,"生産性スコア":"C","備考":"1月中旬より病休取得。復帰までの約2週間、査定業務を実施できなかったため件数が大幅に減少。復帰後は段階的に業務量を調整中。","作成日時":"2025-02-03 09:15:00","更新日時":"2025-02-03 09:15:00","作成者":"suzuki_hanako"},{"月次査定件数ID":"rec-20250201-001","対象年月":"2025-01","査定員ID":"rec-assessor-0847","査定件数":32,"目標件数":50,"達成率":"64.0%","平均査定時間分":48,"生産性スコア":"C","備考":"1月15日〜17日のシステム障害により査定業務が3日間停止。復旧後の業務集中により平均査定時間が増加。","作成日時":"2025-02-03 09:30:00","更新日時":"2025-02-03 09:30:00","作成者":"admin_yamada"},{"月次査定件数ID":"rec-20250201-001","対象年月":"2025-01","査定員ID":"rec-emp-047","査定件数":38,"目標件数":45,"達成率":"84.4%","平均査定時間分":48,"生産性スコア":"B","備考":"1月1日～15日は前任者（佐藤健二）との引き継ぎ期間。新任者（鈴木美咲）の担当案件は16日から本格開始。引き継ぎ期間中は案件確認と手続き習得に時間を要したため件数が目標比84.4%に留まった。2月以降の回復を見込む。","作成日時":"2025-02-03 09:15:00","更新日時":"2025-02-03 09:15:00","作成者":"admin-yamada"},{"月次査定件数ID":"rec-20250201-001","対象年月":"2025-02","査定員ID":"rec-emp-0847","査定件数":12,"目標件数":25,"達成率":"48.0%","平均査定時間分":45,"生産性スコア":"C","備考":"2月は業界全体の閑散期であり、査定依頼件数が大幅に減少。前年同月比で35%減。査定員の稼働時間削減を検討中。","作成日時":"2025-03-01 09:15:30","更新日時":"2025-03-01 09:15:30","作成者":"admin_yamada"},{"月次査定件数ID":"rec-001","対象年月":"2025-01","査定員ID":"rec-emp-047","査定件数":87,"目標件数":75,"達成率":"116%","平均査定時間分":28,"生産性スコア":"A","備考":"生産性改善施策（査定プロセス標準化、デジタル化推進）導入後、前月比で平均査定時間を12分短縮。査定件数は目標比116%達成。チェックリスト自動化により確認漏れが減少し、品質を維持しながら処理速度が向上。","作成日時":"2025-02-01T09:30:00+09:00","更新日時":"2025-02-01T09:30:00+09:00","作成者":"admin_yamada"},{"月次査定件数ID":"rec-20250201-0847","対象年月":"2025-01","査定員ID":"rec-emp-5234","査定件数":28,"目標件数":35,"達成率":"80.0%","平均査定時間分":87,"生産性スコア":"B","備考":"1月は相続税申告に関わる複雑案件が集中し、平均査定時間が通常の65分から87分に延長。特に評価額算定に関する追加調査が必要な案件が13件発生。査定件数は目標未達であるが、案件の複雑度を考慮すると適切な対応がなされている。","作成日時":"2025-02-05 09:30:00","更新日時":"2025-02-05 09:30:00","作成者":"佐藤花子"},{"月次査定件数ID":"rec-20250228-001","対象年月":"2025-02","査定員ID":"rec-assessor-0847","査定件数":156,"目標件数":150,"達成率":"104.0%","平均査定時間分":28,"生産性スコア":"A","備考":"繁忙期対応のため鈴木花子、佐藤健一との3名体制で対応。チームワークにより目標を上回る成果を達成。品質管理も良好。","作成日時":"2025-03-01 09:15:32","更新日時":"2025-03-01 09:15:32","作成者":"admin-yamada"}],"変動パターン":[{"変動パターンID":"rec-001","パターン名":"春季繁忙","説明":"3月から5月にかけて新規案件が急増する時期。企業の年度初めや新年度予算計上に伴う査定依頼が集中するため、通常比で20-30%の件数増加が見込まれる。この期間は査定員の追加配置と業務効率化が必須となる。","開始月":3,"終了月":5,"変動係数":"1.25","推奨人員数":8,"是否":true,"作成日時":"2024-01-15T09:30:00+09:00","更新日時":"2024-12-10T14:45:00+09:00","作成者":"佐藤花子","更新者":"鈴木健一"},{"変動パターンID":"rec-001","パターン名":"夏季休暇対応","説明":"7月から8月の夏季休暇時期における査定員の休暇取得に伴う査定件数の減少に対応するパターン。この期間は通常比で査定件数が20～30%減少するため、事前の査定案件の前倒し処理と人員配置の最適化を実施する。","開始月":7,"終了月":8,"変動係数":"0.75","推奨人員数":6,"是否":true,"作成日時":"2024-04-15T09:30:00","更新日時":"2024-06-20T14:45:00","作成者":"山田花子","更新者":"鈴木太郎"},{"変動パターンID":"rec-001","パターン名":"秋季決算前駆け込み","説明":"9月から11月の決算期前に企業の駆け込み査定需要が増加するパターン。特に10月から11月にかけて査定件数が集中する傾向がある。決算対策や融資枠確保のための緊急査定が多い。","開始月":9,"終了月":11,"変動係数":"1.5","推奨人員数":8,"是否":true,"作成日時":"2024-04-15T09:30:00","更新日時":"2024-08-22T14:45:00","作成者":"山田花子","更新者":"佐藤次郎"},{"変動パターンID":"rec-001","パターン名":"年末年始停滞期","説明":"12月から1月にかけての年末年始休暇により、査定業務が大幅に停滞する期間。官公庁や企業の年度末対応、従業員の休暇取得により査定件数が減少する。","開始月":12,"終了月":1,"変動係数":"0.6","推奨人員数":3,"是否":true,"作成日時":"2024-10-15T09:30:00+09:00","更新日時":"2024-10-15T09:30:00+09:00","作成者":"山田花子","更新者":"山田花子"},{"変動パターンID":"rec-001","パターン名":"四半期末集中査定期間","説明":"3月・6月・9月・12月の四半期末は決算対応に伴う査定件数が急増するため、通常比で30%程度の業務量増加に対応する期間。月末から月初にかけて集中的な査定業務が発生し、査定員の配置を強化する必要がある。","開始月":3,"終了月":3,"変動係数":"1.3","推奨人員数":8,"是否":true,"作成日時":"2024-01-15T09:30:00","更新日時":"2024-12-10T14:45:00","作成者":"鈴木花子","更新者":"佐藤次郎"},{"変動パターンID":"rec-001","パターン名":"連休期間査定件数変動","説明":"GW・お盆・年末年始などの大型連休期間における査定申請件数の増減パターン。連休前の駆け込み申請により件数が増加し、連休中は減少、連休明けに再度増加する傾向を示す。","開始月":4,"終了月":1,"変動係数":"1.35","推奨人員数":8,"是否":true,"作成日時":"2024-03-15T09:30:00+09:00","更新日時":"2024-11-20T14:15:00+09:00","作成者":"山田太郎","更新者":"佐藤花子"},{"変動パターンID":"rec-001","パターン名":"新商品ローンチ繁忙期","説明":"新商品ローンチに伴う特別査定需要対応。4月の新学期・新年度開始時期と重なり、ローン申込件数が通常比120%増加する。特に住宅ローン・自動車ローンの申込が集中するため、査定員の増員配置が必須。","開始月":4,"終了月":4,"変動係数":"1.2","推奨人員数":15,"是否":true,"作成日時":"2024-01-15T09:30:00+09:00","更新日時":"2024-12-10T14:45:00+09:00","作成者":"山田花子","更新者":"佐藤次郎"},{"変動パターンID":"rec-001","パターン名":"月末駆け込み査定ラッシュ","説明":"売上目標達成月の月末に発生する駆け込み案件の急増に対応するパターン。営業部門の目標達成意欲により、月末3〜5日間に査定依頼が集中する傾向が顕著。通常比1.8倍の査定件数が発生し、迅速な審査体制が必須となる。","開始月":1,"終了月":12,"変動係数":"1.8","推奨人員数":8,"是否":true,"作成日時":"2024-04-15T09:30:00","更新日時":"2025-01-20T14:45:00","作成者":"山田花子","更新者":"佐藤次郎"},{"変動パターンID":"rec-001","パターン名":"決算期融資申請増加","説明":"法人決算期前後（3月・9月）における融資申請件数の増加に対応するパターン。決算対策資金や設備投資計画に基づく申請が集中するため、査定業務量が通常比で約30～40%増加する。","開始月":2,"終了月":4,"変動係数":"1.35","推奨人員数":8,"是否":true,"作成日時":"2024-01-15T09:30:00","更新日時":"2024-12-20T14:45:00","作成者":"山田花子","更新者":"佐藤次郎"},{"変動パターンID":"rec-001","パターン名":"平常月標準配置","説明":"季節変動がない通常月における標準的な査定員配置パターン。年間を通じて安定した査定業務量を想定し、効率的な人員運用を実現する基準モデル。","開始月":1,"終了月":12,"変動係数":"1.0","推奨人員数":8,"是否":true,"作成日時":"2024-04-15 09:30:00","更新日時":"2024-10-22 14:15:00","作成者":"山田花子","更新者":"佐藤次郎"}],"人員配置計画":[{"人員配置計画ID":"rec-001","計画年月":"2024-01","配置部門":"東京支店","計画査定員数":12,"予想月次査定件数":480,"目標生産性":40,"変動パターンID":"rec-pat-001","配置戦略":"通常配置","実績査定員数":10,"実績月次査定件数":350,"実績生産性":35,"ステータス":"完了","備考":"年始の人事異動により配置員数が計画比2名減。新入職員の育成期間のため生産性が目標比12.5%低下。2月以降の配置見直し検討中。","作成日時":"2023-12-15T09:30:00","作成者":"佐藤花子","更新日時":"2024-02-01T16:45:00","更新者":"鈴木一郎"},{"人員配置計画ID":"rec-001-2025-02-osaka","計画年月":"2025-02","配置部門":"大阪支店","計画査定員数":28,"予想月次査定件数":2240,"目標生産性":80,"変動パターンID":"pat-001-seasonal-peak","配置戦略":"繁忙期強化","実績査定員数":27,"実績月次査定件数":2106,"実績生産性":78,"ステータス":"完了","備考":"決算月対応のため東京支店から査定員3名を応援配置。うち1名が体調不良で月中旬から休職したため実績査定員数が計画より1名減。目標生産性との差分は業務量変動対応のため許容範囲内。","作成日時":"2025-01-15T09:30:00+09:00","作成者":"山田花子","更新日時":"2025-03-01T16:45:00+09:00","更新者":"佐藤次郎"},{"人員配置計画ID":"rec-20250301-nagoya-001","計画年月":"2025-03","配置部門":"名古屋支店","計画査定員数":8,"予想月次査定件数":320,"目標生産性":40,"変動パターンID":"pat-seasonal-low-001","配置戦略":"閑散期調整","実績査定員数":7,"実績月次査定件数":287,"実績生産性":41,"ステータス":"完了","備考":"3月の閑散期に伴い計画員数を通常の12名から8名に削減。1名が研修出張のため実績は7名。生産性は目標を1件上回る。4月の繁忙期に向けた人員確保を優先。","作成日時":"2025-02-10T09:30:00","作成者":"山田花子","更新日時":"2025-04-01T16:45:00","更新者":"佐藤次郎"},{"人員配置計画ID":"rec-001-2024-sap-04","計画年月":"2024-04","配置部門":"札幌支店","計画査定員数":12,"予想月次査定件数":840,"目標生産性":70,"変動パターンID":"pat-002-spring-renewal","配置戦略":"繁忙期強化","実績査定員数":12,"実績月次査定件数":852,"実績生産性":71,"ステータス":"完了","備考":"新入社員5名配置に伴う段階的生産性向上計画。初期段階として目標生産性を65から70に設定。OJT期間を設け、先輩査定員によるメンタリング体制を構築。月中旬以降の習熟度向上に伴い、実績生産性が目標を上回った。","作成日時":"2024-02-15T09:30:00","作成者":"山田花子","更新日時":"2024-05-02T16:45:00","更新者":"鈴木健一"},{"人員配置計画ID":"rec-20250501-fukuoka-001","計画年月":"2025-05","配置部門":"福岡支店","計画査定員数":18,"予想月次査定件数":1080,"目標生産性":60,"変動パターンID":"pat-seasonal-gw-2025","配置戦略":"繁忙期強化","実績査定員数":18,"実績月次査定件数":1125,"実績生産性":63,"ステータス":"完了","備考":"ゴールデンウィーク明けの査定件数上振れに対応し、通常配置16名から2名増員。査定件数が予想を上回ったため、追加配置により対応。実績生産性も目標を上回り計画達成。","作成日時":"2025-04-15T09:30:00","作成者":"山田花子","更新日時":"2025-06-05T16:45:00","更新者":"佐藤次郎"},{"人員配置計画ID":"rec-20250601-staffplan-001","計画年月":"2025-06","配置部門":"東京支店-査定部","計画査定員数":12,"予想月次査定件数":840,"目標生産性":70,"変動パターンID":"rec-pattern-summer-peak-002","配置戦略":"繁忙期強化","実績査定員数":10,"実績月次査定件数":680,"実績生産性":68,"ステータス":"見直し","備考":"6月の人員不足により計画査定員数12名に対して実績10名の配置となった。退職者2名の補充が遅延。予想月次査定件数840件に対して実績680件となったため、目標生産性を70件から75件に再設定し、7月以降の配置計画を見直し。臨時派遣員の手配を検討中。","作成日時":"2025-05-15T09:30:00+09:00","作成者":"佐藤花子","更新日時":"2025-07-02T14:15:00+09:00","更新者":"鈴木一郎"},{"人員配置計画ID":"rec-20240701-tk-001","計画年月":"2024-07","配置部門":"東京支店","計画査定員数":8,"予想月次査定件数":320,"目標生産性":40,"変動パターンID":"pat-summer-2024","配置戦略":"閑散期調整","実績査定員数":7,"実績月次査定件数":285,"実績生産性":41,"ステータス":"完了","備考":"7月10日～8月18日の夏季休暇期間における最小限配置。交代勤務により業務継続性を確保。8月1日より通常配置に戻す予定。","作成日時":"2024-06-15T09:30:00","作成者":"山田花子","更新日時":"2024-08-02T16:45:00","更新者":"佐藤次郎"},{"人員配置計画ID":"rec-001","計画年月":"2024-08","配置部門":"東京支店","計画査定員数":28,"予想月次査定件数":1680,"目標生産性":60,"変動パターンID":"rec-pat-008","配置戦略":"繁忙期強化","実績査定員数":29,"実績月次査定件数":1624,"実績生産性":56,"ステータス":"完了","備考":"盆休み期間の人員調整が困難だったため、配置員数は計画以上に確保できたものの、新人査定員の配置比率が高まり全体生産性が低下。9月以降の体制見直しが必要。","作成日時":"2024-07-15T09:30:00","作成者":"山田花子","更新日時":"2024-09-05T16:45:00","更新者":"佐藤次郎"},{"人員配置計画ID":"rec-20240815-001","計画年月":"2024-09","配置部門":"広島支店","計画査定員数":12,"予想月次査定件数":840,"目標生産性":70,"変動パターンID":"pat-autumn-002","配置戦略":"繁忙期強化","実績査定員数":12,"実績月次査定件数":876,"実績生産性":73,"ステータス":"完了","備考":"秋季繁忙期に対応し、経験者3名を広島支店に配置。新人2名の育成も並行実施。実績が目標を125%達成し、顧客満足度も向上。来月以降の配置参考事例として推奨。","作成日時":"2024-08-15T09:30:00+09:00","作成者":"山田花子","更新日時":"2024-10-01T16:45:00+09:00","更新者":"佐藤次郎"},{"人員配置計画ID":"rec-20241015-001","計画年月":"2024-10","配置部門":"東京支店-査定部","計画査定員数":12,"予想月次査定件数":480,"目標生産性":40,"変動パターンID":"pat-autumn-2024","配置戦略":"通常配置","実績査定員数":11,"実績月次査定件数":418,"実績生産性":38,"ステータス":"完了","備考":"10月は1名が休職により配置員数が計画比91.7%。査定件数は予想比87.1%となり、生産性低下は新人育成の時間配分が主因。11月は査定員の増員配置と業務効率化研修により改善予定。","作成日時":"2024-09-20 09:30:00","作成者":"佐藤花子","更新日時":"2024-11-05 14:15:00","更新者":"鈴木健一"}],"人員配置シナリオ":[{"シナリオID":"rec-001","シナリオ名":"通常月標準配置案","対象年月":"2025-02","変動パターンID":"rec-pattern-003","配置予定人数":12,"予想生産性":85,"予想総査定件数":1020,"コスト見積額":3240000,"シナリオ説明":"通常月における標準的な人員配置案。査定員12名を配置し、月間1,020件の査定対応を想定。繁閑差が小さい月での安定的な運用を前提としている。","ステータス":"承認済み","作成日時":"2024-12-15T09:30:00","更新日時":"2024-12-20T14:15:00","作成者":"山田花子","備考":"前月実績を踏まえた配置。新入査定員2名を含む。研修期間中のため生産性は平均値より若干低めに設定。"},{"シナリオID":"rec-2025-0047","シナリオ名":"年度末繁忙期対応案A（3月増員体制）","対象年月":"2025-03","変動パターンID":"rec-pattern-0012","配置予定人数":28,"予想生産性":185,"予想総査定件数":5180,"コスト見積額":8920000,"シナリオ説明":"年度末繁忙期（3月）における査定件数増加への対応案。通常体制20名から8名の臨時増員を実施。既存スタッフの時間外勤務を最小限に抑えながら、期末決算に向けた査定業務の確実な完了を目指す。派遣社員2名、契約社員6名の配置を予定。","ステータス":"承認待ち","作成日時":"2025-01-15T09:30:00+09:00","更新日時":"2025-01-20T14:15:00+09:00","作成者":"佐藤花子","備考":"前年度実績では3月の査定件数が平均比150%に達したため、今年度は事前の増員で対応。既存メンバーの負担軽減を優先。契約社員の配置については人事部との調整完了済み。"},{"シナリオID":"rec-20250401-gw-minimal","シナリオ名":"GW・盆暮れ休暇期間最小限人員案","対象年月":"2025-04","変動パターンID":"rec-pattern-holiday-001","配置予定人数":8,"予想生産性":45,"予想総査定件数":360,"コスト見積額":2400000,"シナリオ説明":"ゴールデンウィーク（4月29日～5月6日）および盆暮れ休暇期間における最小限の人員配置案。基幹メンバーのみの体制で、通常の60%程度の査定件数対応を想定。交代勤務により営業日ごとに4名体制を確保。緊急案件への対応は限定的。","ステータス":"承認済み","作成日時":"2025-02-15T09:30:00+09:00","更新日時":"2025-03-01T14:20:00+09:00","作成者":"佐藤花子","備考":"休暇取得者との調整完了。代替要員の確保状況：確保済み5名、検討中3名。5月中旬の繁忙期に向けた人員確保計画と連動。"},{"シナリオID":"rec-001","シナリオ名":"新規営業案件急増対応案B","対象年月":"2025-03","変動パターンID":"rec-042","配置予定人数":28,"予想生産性":185,"予想総査定件数":5180,"コスト見積額":8920000,"シナリオ説明":"2025年3月の新規営業案件が前月比45%増加する見込みのため、通常配置24名から4名の臨時増員を実施。既存査定員の残業削減と業務品質維持を両立させるシナリオ。増員人員は2月下旬から研修開始予定。","ステータス":"承認待ち","作成日時":"2025-01-15T09:30:00","更新日時":"2025-01-22T14:15:00","作成者":"山田花子","備考":"臨時増員4名の給与は日給制（日給12,500円）を想定。既存メンバーの時間外手当削減により、実質コスト増加は約350万円と試算。3月末までの期間限定配置を予定。"},{"シナリオID":"rec-001","シナリオ名":"既存査定プロセス効率化による人員最適化案","対象年月":"2025-04","変動パターンID":"rec-pat-008","配置予定人数":18,"予想生産性":285,"予想総査定件数":5130,"コスト見積額":28500000,"シナリオ説明":"現在の査定業務フローを再検討し、RPA導入による定型業務の自動化、査定基準の標準化、チェックリスト電子化により、現行体制（25名）から18名への削減を実現するシナリオ。既存の経験豊富な査定員12名と新任査定員6名の構成。月間5,000件超の査定需要に対応可能。実装期間は2025年1月～3月を予定。","ステータス":"承認待ち","作成日時":"2024-11-15T10:30:00","更新日時":"2024-12-08T14:45:00","作成者":"山田花子","備考":"人員削減に伴う配置転換先の確保が前提。既存査定員5名は営業サポート部門への異動を検討中。生産性向上は業務改善施策の実行状況に依存するため、2025年2月時点で進捗確認が必要。"},{"シナリオID":"rec-2024-0847","シナリオ名":"下期繁忙期対応案B（段階的増員）","対象年月":"2024-09","変動パターンID":"rec-2024-0312","配置予定人数":28,"予想生産性":145,"予想総査定件数":4060,"コスト見積額":8920000,"シナリオ説明":"9月から11月の下期繁忙期に対応するため、現在の基幹メンバー20名に対して9月に6名、10月に2名の段階的な増員を実施するシナリオ。新規配置者の習熟期間を考慮し、9月は生産性140件/人/月、10月以降は145件/人/月を見込む。既存メンバーの残業削減と業務品質維持を両立させることが前提条件。","ステータス":"承認待ち","作成日時":"2024-07-15T09:30:00+09:00","更新日時":"2024-07-22T14:15:00+09:00","作成者":"佐藤美咲","備考":"人材派遣会社との契約手続きは7月末までに完了予定。10月の追加2名は内部配置転換を検討中。11月の繁忙ピーク時は臨時契約社員1名の追加配置も視野に入れている。"},{"シナリオID":"rec-20250115-001","シナリオ名":"新人育成期間対応案（2025年上期）","対象年月":"2025-04","変動パターンID":"rec-pattern-002","配置予定人数":28,"予想生産性":65,"予想総査定件数":1820,"コスト見積額":4280000,"シナリオ説明":"2025年4月新卒採用者12名を含む配置シナリオ。新人は最初の2ヶ月間は先輩査定員との同行査定により育成し、段階的に独立査定へ移行する想定。既存査定員16名で新人をサポート。育成期間中は生産性が通常比70%程度に低下するため、既存人員の残業対応を最小限にするため臨時派遣社員を活用。","ステータス":"承認待ち","作成日時":"2024-12-15 14:30:00","更新日時":"2025-01-10 09:45:00","作成者":"佐藤花子","備考":"新人育成担当は鈴木次郎（OJT責任者）。4月中旬に新人研修2週間実施予定。6月以降は新人の独立査定比率を段階的に70%まで引き上げることで、7月から通常体制への移行を見込む。"},{"シナリオID":"rec-001","シナリオ名":"夏季休暇対応案B（派遣活用）","対象年月":"2024-08","変動パターンID":"rec-042","配置予定人数":28,"予想生産性":185,"予想総査定件数":5180,"コスト見積額":4850000,"シナリオ説明":"8月の夏季休暇（盆休み）による正社員の欠勤率上昇（35%）に対応するため、派遣社員12名を新規配置。既存正社員16名との組み合わせで査定業務を継続。派遣社員は研修済みの経験者を想定。生産性は通常比92%を見込む。","ステータス":"承認待ち","作成日時":"2024-06-15T09:30:00","更新日時":"2024-06-18T14:20:00","作成者":"山田花子","備考":"派遣会社との契約期間は2024年8月1日～8月31日。派遣費用は月額単価28万円/名。既存スタッフの有給休暇取得予定日と調整済み。"},{"シナリオID":"rec-001","シナリオ名":"査定管理システム導入による生産性向上案","対象年月":"2025-04","変動パターンID":"rec-pat-003","配置予定人数":12,"予想生産性":185,"予想総査定件数":2220,"コスト見積額":8900000,"シナリオ説明":"新査定管理システム導入により業務効率化を実現。デジタル化による事務作業削減で、従来比30%の生産性向上を見込む。現行体制15名から12名への最適化により、固定費削減と柔軟な人員運用を両立させるシナリオ。導入研修期間は3月中に完了予定。","ステータス":"承認待ち","作成日時":"2024-12-15T09:30:00","更新日時":"2025-01-08T14:22:00","作成者":"鈴木美咲","備考":"システム導入費用は別途計上。既存査定員3名は他部門への配置転換を予定。2025年3月末までのシステム導入・研修完了が前提条件。"},{"シナリオID":"rec-20250215-001","シナリオ名":"2月月中追加配置案～1月実績不達対応～","対象年月":"2025-02","変動パターンID":"rec-pattern-emergency-002","配置予定人数":28,"予想生産性":185,"予想総査定件数":5180,"コスト見積額":4280000,"シナリオ説明":"1月実績が目標4500件に対して3950件（達成率87.8%）に終わったため、2月は月初から体制を強化。新規配置10名（うち派遣社員7名、契約社員3名）を2月10日から追加投入し、月中以降の件数確保を図る。既配置18名との混成体制で対応。生産性は経験者中心で185件/人/月を見込む。","ステータス":"承認待ち","作成日時":"2025-02-03T14:30:00","更新日時":"2025-02-03T14:30:00","作成者":"山田花子","備考":"派遣会社との調整済み。2月10日配置予定。OJT期間は5日間を予定。1月の不達要因は繁忙期想定の誤りと人員休暇の重複が主因。本案で2月は目標5200件達成を見込む。"}],"配置実績":[{"配置実績ID":"rec-001","人員配置計画ID":"rec-plan-047","査定員ID":"rec-assessor-156","配置年月":"2024-11","配置開始日":"2024-11-01T09:00:00Z","配置終了日":null,"配置部門":"東京支店_品質管理部","配置役割":"査定","計画稼働日数":20,"実績稼働日数":20,"計画査定件数":280,"実績査定件数":280,"計画生産性":14,"実績生産性":14,"配置妥当性評価":"適切","備考":"予定通り配置完了。稼働日数・査定件数ともに目標達成。査定品質も基準値内で推移。","作成日時":"2024-10-28T14:30:00Z","更新日時":"2024-11-30T18:45:00Z","作成者":"山田花子","更新者":"鈴木一郎"},{"配置実績ID":"rec-001","人員配置計画ID":"plan-2024-11-087","査定員ID":"appraiser-00456","配置年月":"2024-11","配置開始日":"2024-11-01T09:00:00","配置終了日":null,"配置部門":"東京支店_品質管理部","配置役割":"査定","計画稼働日数":20,"実績稼働日数":22,"計画査定件数":320,"実績査定件数":385,"計画生産性":16,"実績生産性":18,"配置妥当性評価":"適切","備考":"繁忙期の需要増に対応し、計画を上回る生産性を発揮。残業対応により実績稼働日数が計画を超過。品質水準も維持されており、配置の効果は高い。来月以降も継続配置を推奨。","作成日時":"2024-11-05T14:30:00","更新日時":"2024-11-30T18:45:00","作成者":"yamamoto_taro","更新者":"suzuki_hanako"},{"配置実績ID":"rec-20250145","人員配置計画ID":"rec-20250089","査定員ID":"rec-20240567","配置年月":"2025-02","配置開始日":"2025-02-01T09:00:00","配置終了日":"2025-02-14T17:30:00","配置部門":"東京支店_査定部","配置役割":"査定員","計画稼働日数":20,"実績稼働日数":12,"計画査定件数":240,"実績査定件数":132,"計画生産性":12,"実績生産性":11,"配置妥当性評価":"不足","備考":"2月10日に配置員が急性胃腸炎を発症し、医師の指示により2月14日まで休務となった。翌週からの配置継続は本人の体調回復状況を踏まえて検討予定。","作成日時":"2025-02-15T10:30:00","更新日時":"2025-02-16T14:15:00","作成者":"山田花子","更新者":"佐藤次郎"},{"配置実績ID":"rec-20250156","人員配置計画ID":"rec-20250089","査定員ID":"rec-20250412","配置年月":"2025-01","配置開始日":"2025-01-06T09:00:00","配置終了日":null,"配置部門":"東京支店_自動車査定課","配置役割":"査定員","計画稼働日数":20,"実績稼働日数":18,"計画査定件数":120,"実績査定件数":54,"計画生産性":6,"実績生産性":3,"配置妥当性評価":"不足","備考":"新卒入社の山田花子を配置。研修期間中のため生産性が計画の50%に留まっている。指導員の鈴木課長が付き添い指導中。2月中旬までに計画値への到達を見込む。","作成日時":"2025-02-03T14:30:00","更新日時":"2025-02-03T14:30:00","作成者":"suzuki_taro","更新者":"suzuki_taro"},{"配置実績ID":"rec-20250047","人員配置計画ID":"rec-20250012","査定員ID":"rec-emp-00834","配置年月":"2025-02","配置開始日":"2025-02-01T09:00:00","配置終了日":null,"配置部門":"大阪支店_鑑定課","配置役割":"査定","計画稼働日数":20,"実績稼働日数":19,"計画査定件数":380,"実績査定件数":198,"計画生産性":19,"実績生産性":10,"配置妥当性評価":"過剰","備考":"配置部門の業務量予測が過大であったため、実績稼働日数に対する査定件数が計画比52%に留まった。新年度の業務量見直しに伴い、3月末での配置解除を検討中。","作成日時":"2025-02-03T14:30:00","更新日時":"2025-02-28T16:45:00","作成者":"山田花子","更新者":"佐藤次郎"},{"配置実績ID":"rec-20250147","人員配置計画ID":"rec-20250089","査定員ID":"rec-20240156","配置年月":"2025-01","配置開始日":"2025-01-06T09:00:00","配置終了日":null,"配置部門":"品質管理部・東京支店","配置役割":"品質管理リーダー","計画稼働日数":20,"実績稼働日数":19,"計画査定件数":380,"実績査定件数":285,"計画生産性":19,"実績生産性":15,"配置妥当性評価":"過剰","備考":"査定員から品質管理職への配置転換に伴い、新規業務習得期間中のため査定件数が計画比75%に留まっている。品質管理業務の習熟に伴い、2月以降の生産性向上を見込む。査定スキルの維持のため月2回の査定業務も並行実施予定。","作成日時":"2025-01-10T14:30:00","更新日時":"2025-01-31T16:45:00","作成者":"佐藤花子","更新者":"山田次郎"},{"配置実績ID":"rec-20250047","人員配置計画ID":"rec-20250012","査定員ID":"rec-20240156","配置年月":"2025-02","配置開始日":"2025-02-01T09:00:00","配置終了日":null,"配置部門":"東京支店_品質管理室","配置役割":"品質管理リーダー","計画稼働日数":20,"実績稼働日数":16,"計画査定件数":240,"実績査定件数":168,"計画生産性":12,"実績生産性":10,"配置妥当性評価":"不足","備考":"支店統合（東京支店・横浜支店統合）に伴う一時配置。統合初期の混乱により、システム移行対応に時間を要したため稼働日数・査定件数が計画比で減少。4月の本格稼働に向けて体制整備中。佐藤花子査定員の支援により対応。","作成日時":"2025-02-03T14:30:00","更新日時":"2025-02-28T17:45:00","作成者":"user_yamada_001","更新者":"user_suzuki_002"},{"配置実績ID":"rec-001","人員配置計画ID":"rec-p-0847","査定員ID":"rec-a-2156","配置年月":"2024-10","配置開始日":"2024-10-01T09:00:00","配置終了日":null,"配置部門":"東京支店_品質管理部","配置役割":"査定リーダー","計画稼働日数":21,"実績稼働日数":21,"計画査定件数":420,"実績査定件数":567,"計画生産性":20,"実績生産性":27,"配置妥当性評価":"適切","備考":"経験15年のベテラン査定員の配置により、効率的な査定プロセスの構築と新人指導を同時に実施。チーム全体の生産性向上に貢献。品質指標も基準を超過達成。","作成日時":"2024-10-01T10:30:00","更新日時":"2024-10-31T18:45:00","作成者":"山田花子","更新者":"鈴木健一"},{"配置実績ID":"rec-20250047","人員配置計画ID":"rec-20250012","査定員ID":"rec-20240156","配置年月":"2025-01","配置開始日":"2025-01-06T09:00:00+09:00","配置終了日":null,"配置部門":"東京支店_品質管理課","配置役割":"査定","計画稼働日数":20,"実績稼働日数":16,"計画査定件数":240,"実績査定件数":176,"計画生産性":12,"実績生産性":11,"配置妥当性評価":"不足","備考":"1月8日〜1月10日のシステム障害により査定システムが利用不可となり、稼働日数が4日間減少。復旧後の1月13日から通常業務に復帰したが、未処理案件の積み残しが発生。生産性は計画比91.7%に低下。2月以降の配置人数増加を検討する必要あり。","作成日時":"2025-01-31T17:30:00+09:00","更新日時":"2025-02-03T10:15:00+09:00","作成者":"鈴木花子","更新者":"山田次郎"},{"配置実績ID":"rec-20250145","人員配置計画ID":"rec-20250089","査定員ID":"rec-emp-00847","配置年月":"2025-02","配置開始日":"2025-02-01T09:00:00","配置終了日":null,"配置部門":"東京支店品質管理部","配置役割":"査定・品質管理","計画稼働日数":20,"実績稼働日数":20,"計画査定件数":280,"実績査定件数":312,"計画生産性":14,"実績生産性":16,"配置妥当性評価":"適切","備考":"2月1日～2月14日は東京支店品質管理部に配置。2月15日の組織改編に伴い2月17日～月末は大阪支店査定部に配置変更。前半は品質管理業務、後半は査定業務に従事。生産性は計画を上回り配置変更は適切に機能した。","作成日時":"2025-02-17T14:30:00","更新日時":"2025-03-01T10:15:00","作成者":"yamada-taro","更新者":"suzuki-hanako"}],"乖離分析":[{"乖離分析ID":"rec-001-2025-01-15-a","分析年月":"2025-01","査定員ID":"emp-00234","見積書ID":"est-00567","予測件数":185,"実績件数":218,"件数乖離":33,"件数乖離率":"+17.8%","予測生産性":"9.3","実績生産性":"10.9","生産性乖離":"+1.6","変動パターンID":"pat-0005","乖離要因":"査定員Aの業務スキル向上に伴う処理速度の加速。案件の複雑度が予測より低かったことも寄与。チーム内での知見共有により効率化が浸透。","対応フラグ":false,"対応内容":"好調事例として査定員Aの業務プロセスをドキュメント化し、他の査定員への研修資料として活用予定。次月以降の予測値を上方修正（9.3→10.5件/日）。","作成日時":"2025-02-03T09:30:00+09:00","更新日時":"2025-02-03T09:30:00+09:00","作成者":"鈴木花子"},{"乖離分析ID":"rec-20250215-001","分析年月":"2025-01","査定員ID":"emp-b-0847","見積書ID":"est-2024-12-0156","予測件数":85,"実績件数":62,"件数乖離":-23,"件数乖離率":"-27.1%","予測生産性":"4.25件/日","実績生産性":"3.10件/日","生産性乖離":"-1.15件/日","変動パターンID":"pat-illness-absence","乖離要因":"査定員Bが1月7日～1月16日（計7営業日）の病欠および1月22日～1月23日の年休取得により、稼働日数が大幅に減少。欠勤期間中の業務は他の査定員でカバーしたが、個別案件の進捗遅延が発生。","対応フラグ":true,"対応内容":"1月下旬より査定員Cを2日間応援配置。2月の査定員B復帰後の業務量調整計画を策定。予測件数を下方修正し、2月は75件での見積書を作成。査定員Bの健康管理面談を実施し、復帰後の段階的業務量増加スケジュールを確認。","作成日時":"2025-02-03T14:30:00+09:00","更新日時":"2025-02-05T09:15:00+09:00","作成者":"suzuki_hanako"},{"乖離分析ID":"rec-001-20250215-7d4a","分析年月":"2025-01","査定員ID":"rec-assessor-00847","見積書ID":"rec-estimate-02156","予測件数":85,"実績件数":62,"件数乖離":-23,"件数乖離率":"-27.1%","予測生産性":"4.25件/日","実績生産性":"3.10件/日","生産性乖離":"-1.15件/日","変動パターンID":"rec-pattern-00312","乖離要因":"大型商業施設の建築確認申請案件で、構造計算書の複雑性が想定より高く、1件あたりの査定時間が平均35分から52分に増加。特に基礎部分の地盤調査データ確認に予想外の時間を要した。","対応フラグ":true,"対応内容":"2025年2月より同案件の査定を経験者2名体制に変更。難易度の高い案件の見積時間係数を1.3倍に改定。査定員の技能向上研修を3月に実施予定。","作成日時":"2025-02-15T09:30:00+09:00","更新日時":"2025-02-15T14:22:00+09:00","作成者":"佐藤美咲"},{"乖離分析ID":"rec-20250301-001","分析年月":"2025-03","査定員ID":"rec-emp-0047","見積書ID":"rec-est-2024-1203","予測件数":85,"実績件数":82,"件数乖離":-3,"件数乖離率":"-3.5%","予測生産性":"4.25","実績生産性":"4.10","生産性乖離":"-0.15","変動パターンID":"rec-pattern-0008","乖離要因":"新人査定員の習熟度向上により、前月比で予測値への接近が進行中。初期段階での業務効率低下から回復傾向を示しており、3ヶ月連続で乖離率が縮小している。個別案件の複雑度判定精度が向上し、査定時間の平準化が進展。","対応フラグ":false,"対応内容":"継続的なOJT実施。複雑案件の事前レビュー体制を維持し、査定品質の安定化を優先。4月以降の独立査定比率を段階的に引き上げる予定。","作成日時":"2025-03-31T15:30:00+09:00","更新日時":"2025-03-31T15:30:00+09:00","作成者":"佐藤美咲"},{"乖離分析ID":"rec-20250515-001","分析年月":"2024-04","査定員ID":"rec-emp-0847","見積書ID":"rec-est-2024-0312","予測件数":280,"実績件数":238,"件数乖離":-42,"件数乖離率":"-15.0%","予測生産性":"14.0","実績生産性":"11.9","生産性乖離":"-2.1","変動パターンID":"rec-pattern-0003","乖離要因":"繁忙期の需要増加に対し、査定員の配置数が不足。査定業務の複雑化により1件あたりの処理時間が延長。病休による欠員も発生し、実績が予測を下回った。","対応フラグ":true,"対応内容":"5月より経験豊富な査定員1名を配置転換。業務プロセスの効率化研修を実施。査定補助スタッフ2名を新規配置。結果、5月の生産性は13.8件/日まで回復。","作成日時":"2024-05-15T09:30:00+09:00","更新日時":"2024-05-20T14:15:00+09:00","作成者":"山田花子"},{"乖離分析ID":"rec-20250115-001","分析年月":"2025-01","査定員ID":"rec-emp-d-047","見積書ID":"rec-est-2024-1128","予測件数":180,"実績件数":142,"件数乖離":-38,"件数乖離率":"-21.1%","予測生産性":"9.0件/日","実績生産性":"7.1件/日","生産性乖離":"-1.9件/日","変動パターンID":"rec-pattern-decline-02","乖離要因":"査定員Dの離職に伴う引継ぎ期間。新任査定員Eへの業務引継ぎ・教育に時間を要し、査定員D本人の査定業務時間が圧縮。また新任者の習熟度不足により全体生産性が低下。","対応フラグ":true,"対応内容":"1月末までの限定的な対応として、査定員Cから査定業務の一部を査定員Dへ移管し負担軽減。同時に査定員Eの集中教育プログラムを2月に前倒し実施。2月以降は査定員Eが査定員Dの業務を完全引継予定。管理職による進捗確認を週1回実施。","作成日時":"2025-01-31T17:45:00+09:00","更新日時":"2025-02-05T09:30:00+09:00","作成者":"佐藤花子"},{"乖離分析ID":"rec-202501-0847","分析年月":"2025-01","査定員ID":"rec-assessor-0312","見積書ID":"rec-estimate-2024-1156","予測件数":156,"実績件数":142,"件数乖離":-14,"件数乖離率":"-9.0%","予測生産性":"7.8件/日","実績生産性":"7.1件/日","生産性乖離":"-0.7件/日","変動パターンID":"rec-pattern-0204","乖離要因":"2024年12月中旬のシステム障害により日次実績データの集計が遅延。1月上旬に前月分の補正データを確認したところ、年末年始の休場日数が予測値より2日多かったことが判明。また障害復旧期間中の査定作業が一部中断していたため、実績件数が予測を下回った。","対応フラグ":true,"対応内容":"システム障害対応として、2025年1月15日に情報システム部門と協議し、日次実績の自動集計ロジックを強化。査定員の年末年始勤務予定を事前に営業計画に反映させるプロセスを改善。今後の見積作成時には、システム障害リスクを考慮した予測値調整ガイドラインを運用開始予定。","作成日時":"2025-02-03T09:30:00","更新日時":"2025-02-03T09:30:00","作成者":"佐藤美咲"},{"乖離分析ID":"rec-20250215-001","分析年月":"2025-01","査定員ID":"rec-assessor-0847","見積書ID":"rec-estimate-2024-1203","予測件数":180,"実績件数":215,"件数乖離":35,"件数乖離率":"+19.4%","予測生産性":"8.6件/日","実績生産性":"10.2件/日","生産性乖離":"+1.6件/日","変動パターンID":"rec-pattern-0015","乖離要因":"自動車査定部門の案件急増に対応し、査定員3名を重点配置。既存スタッフの効率向上と新規配置メンバーの習熟度向上により、予測を上回る実績を達成。特に中古車買取案件の増加が顕著。","対応フラグ":false,"対応内容":"重点配置の効果が確認されたため、2月以降も同体制を継続。査定員の負担軽減のため、事務補助スタッフ1名を追加配置予定。","作成日時":"2025-02-15T09:30:00+09:00","更新日時":"2025-02-15T09:30:00+09:00","作成者":"佐藤美咲"},{"乖離分析ID":"rec-047382","分析年月":"2024-11","査定員ID":"rec-008591","見積書ID":"rec-012847","予測件数":185,"実績件数":218,"件数乖離":33,"件数乖離率":"+17.8%","予測生産性":"9.3件/日","実績生産性":"10.9件/日","生産性乖離":"+1.6件/日","変動パターンID":"rec-003125","乖離要因":"外部研修受講によるスキル向上。査定プロセスの効率化と判定精度の向上により、処理時間が短縮。特に複雑案件の処理速度が改善され、月間生産性が予測値を大幅に上回った。","対応フラグ":true,"対応内容":"査定員Eの研修成果を組織内で共有。他の査定員への研修機会拡大を検討。査定員Eを中心とした業務プロセス改善ワーキンググループを立ち上げ、ベストプラクティスの横展開を実施。月次目標値の段階的引き上げを予定。","作成日時":"2024-12-03T09:15:00+09:00","更新日時":"2024-12-10T14:42:30+09:00","作成者":"佐藤美咲"},{"乖離分析ID":"rec-20250115-001","分析年月":"2024-12","査定員ID":"rec-assessor-0847","見積書ID":"rec-estimate-5623","予測件数":420,"実績件数":578,"件数乖離":158,"件数乖離率":"+37.6%","予測生産性":"19.3件/日","実績生産性":"26.1件/日","生産性乖離":"+6.8件/日","変動パターンID":"rec-pattern-seasonal-001","乖離要因":"年末年始の繁忙期による査定需要の急増。12月中旬から1月上旬にかけて、決算対応および新年度契約に伴う一括査定申込が集中。予測時点では季節係数を過小評価していた。","対応フラグ":true,"対応内容":"12月15日より臨時査定員3名を配置。うち2名は経験者の派遣、1名は既存スタッフの時間外対応。査定プロセスの簡素化（事前チェックリスト導入）により処理時間を平均12%短縮。結果として予測を上回る件数処理が実現。","作成日時":"2025-01-16T09:30:00+09:00","更新日時":"2025-01-16T14:45:00+09:00","作成者":"山田花子"}],"ログインユーザー":[{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"admin_tanaka","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","ユーザー名":"田中太郎","メールアドレス":"tanaka.taro@company.jp","ロール":"管理者","部門":"システム管理部","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:45+09:00","作成日時":"2024-04-01T08:00:00+09:00","更新日時":"2025-01-10T14:22:30+09:00","作成者":"550e8400-e29b-41d4-a716-446655440000"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"tanaka.taro","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","ユーザー名":"田中太郎","メールアドレス":"tanaka.taro@company.jp","ロール":"マネージャー","部門":"本社人事部","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-01T10:00:00+09:00","更新日時":"2025-01-10T14:20:00+09:00","作成者":"550e8400-e29b-41d4-a716-446655440001"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"tanaka.taro","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","ユーザー名":"田中太郎","メールアドレス":"tanaka.taro@company.jp","ロール":"マネージャー","部門":"営業部門","ステータス":"有効","最終ログイン日時":"2025-01-15T09:32:45Z","作成日時":"2024-04-10T14:20:30Z","更新日時":"2025-01-10T16:45:20Z","作成者":"660f9511-f40c-52e5-b827-557766551111"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"tanaka.shift.mgr","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","ユーザー名":"田中太郎","メールアドレス":"tanaka.taro@company.jp","ロール":"マネージャー","部門":"製造部門","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:45+09:00","作成日時":"2023-06-20T14:22:10+09:00","更新日時":"2025-01-10T16:45:30+09:00","作成者":"550e8400-e29b-41d4-a716-446655440001"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"sasatei_yamada","パスワードハッシュ":"$2b$12$R9h7cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jKHzW","ユーザー名":"山田太郎","メールアドレス":"yamada.taro@company.jp","ロール":"査定員","部門":"資産評価部","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:45Z","作成日時":"2023-06-20T14:22:10Z","更新日時":"2024-12-10T16:45:30Z","作成者":"550e8400-e29b-41d4-a716-446655440001"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"tanaka.hanako","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrst","ユーザー名":"田中花子","メールアドレス":"tanaka.hanako@company.jp","ロール":"マネージャー","部門":"経理部","ステータス":"有効","最終ログイン日時":"2025-01-15T09:32:18+09:00","作成日時":"2024-04-10T14:22:05+09:00","更新日時":"2025-01-10T16:45:30+09:00","作成者":"550e8400-e29b-41d4-a716-446655440001"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"tanaka.jiro","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr","ユーザー名":"田中次郎","メールアドレス":"tanaka.jiro@company.jp","ロール":"マネージャー","部門":"営業部第一課","ステータス":"休止","最終ログイン日時":"2024-10-15T14:32:45Z","作成日時":"2022-04-01T09:00:00Z","更新日時":"2025-01-10T10:15:30Z","作成者":"550e8400-e29b-41d4-a716-446655440001"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"suzuki.hanako","パスワードハッシュ":"$2b$12$R9h7cIPz9GItMeYyUUhkCOYt8RWNvPcX5K8m2nQ7pL9vJ3xK8mN2e","ユーザー名":"鈴木花子","メールアドレス":"suzuki.hanako@company.co.jp","ロール":"マネージャー補佐","部門":"営業企画部","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-12-01T10:00:00+09:00","更新日時":"2025-01-10T14:20:00+09:00","作成者":"550e8400-e29b-41d4-a716-446655440001"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"consultant_yamada_2024","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","ユーザー名":"山田太郎（外部コンサルタント）","メールアドレス":"yamada.taro@consulting-firm.co.jp","ロール":"分析員","部門":"経営戦略室","ステータス":"有効","最終ログイン日時":"2025-01-15 14:32:18","作成日時":"2024-11-01 09:15:00","更新日時":"2025-01-10 10:45:30","作成者":"220e8400-e29b-41d4-a716-446655440001"},{"ユーザーID":"550e8400-e29b-41d4-a716-446655440000","ログインID":"audit_yamamoto","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQ","ユーザー名":"山本監査太郎","メールアドレス":"yamamoto.audit@company.jp","ロール":"監査員","部門":"監査部門","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:45Z","作成日時":"2024-04-01T08:00:00Z","更新日時":"2025-01-10T14:20:30Z","作成者":"550e8400-e29b-41d4-a716-446655440001"}]};
 window.AIVIC_PAGE_SCREEN_ID = "scr-1783331733715";
 window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {}";
 </script>
@@ -574,52 +538,49 @@ window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {}";
 </head>
 <body>
 <nav style="display:flex;align-items:center;overflow-x:auto;background:var(--top-bar-bg,var(--bg-sidebar,#0e1a31));border-bottom:1px solid var(--top-bar-border,var(--border,#2a3a5d));padding:0 12px;height:40px;flex-shrink:0;"><span data-aivic-app-name style="padding:6px 14px;font-size:13px;font-weight:700;letter-spacing:0.02em;color:var(--text,#e8eefc);white-space:nowrap;">見積査定システム</span><a href="./scr-1783330941502.html" data-aivic-nav-system="itg-2" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">査定品質管理・標準化システム</a><a href="./scr-1783331639867.html" data-aivic-nav-system="itg-3" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:1;border-bottom:2px solid var(--primary,#2b66ff);font-weight:600;">月次変動対応・人員配置最適化システム</a><a href="./scr-1783331967202.html" data-aivic-nav-system="itg-4" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">組織拡張・横展開支援システム</a><a href="./scr-1783392980155.html" data-aivic-nav-system="itg-5" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">システム運用・継続改善管理システム</a><a href="./scr-1783393616747.html" data-aivic-nav-system="itg-6" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">見積査定結果説明・透明性確保ポータル</a><a href="./scr-1783394432685.html" data-aivic-nav-system="itg-7" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">経営ダッシュボード・効果測定システム</a><a href="./scr-1783330328733.html" data-aivic-nav-system="itg-1" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--text,#e8eefc);opacity:0.6;border-bottom:2px solid transparent;font-weight:400;">見積査定自動化・判定システム</a></nav>
-  <header>
-    <div class="header-logo">月次変動対応・人員配置最適化</div>
-    <div class="header-user">
-      <div class="user-avatar">U</div>
-      <div class="user-name">ユーザー</div>
-      <a href="./login.html" class="user-logout">ログアウト</a>
-    </div>
-  </header>
-
-  <div class="container">
-    <aside>
-      <div class="nav-section">
-        <div class="nav-label">実績分析</div>
-        <a class="nav-item aivic-active" data-aivic-nav="scr-1783331639867" onclick="window.showScreen('scr-1783331639867')">日次実績集計</a>
-        <a class="nav-item" data-aivic-nav="scr-1783331718188" onclick="window.showScreen('scr-1783331718188')">月次処理集計</a>
+  <div class="shell-container">
+    <header class="top-bar">
+      <div class="logo">月次変動対応・人員配置最適化</div>
+      <div class="user-area">
+        <div class="avatar">U</div>
+        <div class="user-name">ユーザー</div>
+        <a href="./login.html" class="logout-link">ログアウト</a>
       </div>
+    </header>
 
-      <div class="nav-section">
-        <div class="nav-label">変動分析</div>
-        <a class="nav-item" data-aivic-nav="scr-1783331654491" onclick="window.showScreen('scr-1783331654491')">月次変動パターン</a>
-        <a class="nav-item" data-aivic-nav="scr-1783331766567" onclick="window.showScreen('scr-1783331766567')">統合管理画面</a>
-      </div>
+    <div class="main-wrapper">
+      <aside class="sidebar">
+        <div class="nav-section">
+          <div class="nav-section-title">分析</div>
+          <a class="nav-item aivic-active" data-aivic-nav="scr-1783331639867" onclick="window.showScreen('scr-1783331639867')">日次実績集計・生産性分析</a>
+          <a class="nav-item" data-aivic-nav="scr-1783331654491" onclick="window.showScreen('scr-1783331654491')">月次変動パターン分析</a>
+          <a class="nav-item" data-aivic-nav="scr-1783331718188" onclick="window.showScreen('scr-1783331718188')">月次処理件数・処理時間集計</a>
+        </div>
 
-      <div class="nav-section">
-        <div class="nav-label">配置計画</div>
-        <a class="nav-item" data-aivic-nav="scr-1783331684574" onclick="window.showScreen('scr-1783331684574')">配置ダッシュボード</a>
-        <a class="nav-item" data-aivic-nav="scr-1783331669705" onclick="window.showScreen('scr-1783331669705')">シナリオ自動生成</a>
-        <a class="nav-item" data-aivic-nav="scr-1783331733715" onclick="window.showScreen('scr-1783331733715')">シミュレーション</a>
-        <a class="nav-item" data-aivic-nav="scr-1783331750518" onclick="window.showScreen('scr-1783331750518')">計画書自動生成</a>
-      </div>
+        <div class="nav-section">
+          <div class="nav-section-title">配置計画</div>
+          <a class="nav-item" data-aivic-nav="scr-1783331669705" onclick="window.showScreen('scr-1783331669705')">人員配置シナリオ自動生成</a>
+          <a class="nav-item" data-aivic-nav="scr-1783331733715" onclick="window.showScreen('scr-1783331733715')">人員配置シミュレーション</a>
+          <a class="nav-item" data-aivic-nav="scr-1783331750518" onclick="window.showScreen('scr-1783331750518')">人員配置計画書自動生成</a>
+        </div>
 
-      <div class="nav-section">
-        <div class="nav-label">最適化</div>
-        <a class="nav-item" data-aivic-nav="scr-1783331700649" onclick="window.showScreen('scr-1783331700649')">乖離分析・提案</a>
-        <a class="nav-item" data-aivic-nav="scr-1783331783308" onclick="window.showScreen('scr-1783331783308')">変動分析・シミュレーション</a>
-      </div>
-    </aside>
+        <div class="nav-section">
+          <div class="nav-section-title">ダッシュボード</div>
+          <a class="nav-item" data-aivic-nav="scr-1783331684574" onclick="window.showScreen('scr-1783331684574')">配置計画・配置実績ダッシュボード</a>
+          <a class="nav-item" data-aivic-nav="scr-1783331700649" onclick="window.showScreen('scr-1783331700649')">乖離分析・翌月配置修正提案</a>
+          <a class="nav-item" data-aivic-nav="scr-1783331766567" onclick="window.showScreen('scr-1783331766567')">月次変動パターン分析・人員配置最適化</a>
+          <a class="nav-item" data-aivic-nav="scr-1783331783308" onclick="window.showScreen('scr-1783331783308')">月次変動分析・人員配置シミュレーション</a>
+        </div>
+      </aside>
 
-    <main>
-      <div data-aivic-panel="scr-1783331639867" style="display:none"></div>
-      <div data-aivic-panel="scr-1783331654491" style="display:none"></div>
-      <div data-aivic-panel="scr-1783331669705" style="display:none"></div>
-      <div data-aivic-panel="scr-1783331684574" style="display:none"></div>
-      <div data-aivic-panel="scr-1783331700649" style="display:none"></div>
-      <div data-aivic-panel="scr-1783331718188" style="display:none"></div>
-      <div data-aivic-panel="scr-1783331733715" style="display:block"><div style="display: flex; flex-direction: column; height: 100%; background: var(--bg-main); color: var(--text); font-family: var(--font-family); font-size: var(--font-size-base);">
+      <main class="content-area">
+        <div data-aivic-panel="scr-1783331639867" style="display:none"></div>
+        <div data-aivic-panel="scr-1783331654491" style="display:none"></div>
+        <div data-aivic-panel="scr-1783331669705" style="display:none"></div>
+        <div data-aivic-panel="scr-1783331684574" style="display:none"></div>
+        <div data-aivic-panel="scr-1783331700649" style="display:none"></div>
+        <div data-aivic-panel="scr-1783331718188" style="display:none"></div>
+        <div data-aivic-panel="scr-1783331733715" style="display:block"><div style="display: flex; flex-direction: column; height: 100%; background: var(--bg-main); color: var(--text); font-family: var(--font-family); font-size: var(--font-size-base);">
   
   <!-- ヘッダー -->
   <div style="background: var(--top-bar-bg); border-bottom: 1px solid var(--top-bar-border); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
@@ -843,10 +804,11 @@ window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {}";
 <div id="success-message" style="display: none; position: fixed; bottom: 16px; right: 16px; background: #2e7d32; color: #fff; padding: 12px 16px; border-radius: 4px; font-size: var(--font-size-sm); z-index: 999; max-width: 300px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
   <span data-testid="success-text"></span>
 </div></div>
-      <div data-aivic-panel="scr-1783331750518" style="display:none"></div>
-      <div data-aivic-panel="scr-1783331766567" style="display:none"></div>
-      <div data-aivic-panel="scr-1783331783308" style="display:none"></div>
-    </main>
+        <div data-aivic-panel="scr-1783331750518" style="display:none"></div>
+        <div data-aivic-panel="scr-1783331766567" style="display:none"></div>
+        <div data-aivic-panel="scr-1783331783308" style="display:none"></div>
+      </main>
+    </div>
   </div>
 
   
